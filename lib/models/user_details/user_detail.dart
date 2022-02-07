@@ -11,6 +11,7 @@ class UserDetailsModel {
    String? location;
    int? age;
    int? xp;
+   List? images;
 
   UserDetailsModel({ this.userId,
     this.userName,
@@ -19,7 +20,9 @@ class UserDetailsModel {
     this.phoneNumber,
     this.location,
     this.age,
-    this.xp});
+    this.xp,
+    this.images
+  });
 
 
   factory UserDetailsModel.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
@@ -32,7 +35,8 @@ class UserDetailsModel {
       location: d['location'],
       age: d['age'],
       xp: d['xp'],
-      phoneNumber: d['phoneNumber']
+      phoneNumber: d['phoneNumber'],
+      images: d['images']
     );
   }
 
