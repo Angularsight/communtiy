@@ -48,6 +48,12 @@ dependencies:
   #Getx
   get: ^4.6.1
 
+  #UI
+  #Don't change google_fonts version coz it will throw error
+  google_fonts: 2.2.0
+  flutter_icons: ^1.1.0
+  carousel_pro: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

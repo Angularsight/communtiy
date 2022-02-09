@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PartyDetails2 extends StatelessWidget {
-  const PartyDetails2({Key? key}) : super(key: key);
+   PartyDetails2({Key? key}) : super(key: key);
+
+  final FirebaseController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,9 @@ class PartyDetails2 extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GetX<FirebaseController>(builder: (controller) {
+          GetX<FirebaseController>(
+            // init: Get.put(FirebaseController()),
+              builder: (controller) {
             if (controller.parties == null && controller == null) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -43,10 +47,14 @@ class PartyDetails2 extends StatelessWidget {
                     height: 30,
                   ),
                   const Text("User details imported as shown below"),
-                  SizedBox(
+                  Container(
                       width:MediaQuery.of(context).size.height * 0.2,
                     height:MediaQuery.of(context).size.height * 0.2,
-                      child: Image.network(controller.userDetails[0].userProfilePic.toString(),fit: BoxFit.cover,) ),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(image: NetworkImage(controller.userDetails[0].userProfilePic.toString()),fit: BoxFit.cover)
+            ),
+                      // child: Image.network(controller.userDetails[0].userProfilePic.toString(),fit: BoxFit.cover,)
+                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -61,8 +69,11 @@ class PartyDetails2 extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () async{
-                          await controller.fetchGuests(controller.parties[0].guests![0]).then((guests) {
-                            return Get.to(() =>  GuestList2(guests: guests,));
+
+                          /// Fetching Guests and their interests of that particular party
+                          var v = await controller.fetchGuestsInterests(controller.parties[0].guests!);
+                          await controller.fetchGuests(controller.parties[0].guests!).then((guests) {
+                            return Get.to(() =>  GuestList2(guests: guests,interests: v,));
                           });
 
                         },
