@@ -26,8 +26,8 @@ class Themes {
     Color(0xffE3D170),
     Color(0xffFFFFFF)
   ],
-  begin: Alignment.topCenter,
-    end: Alignment.bottomCenter
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter
   );
 
   static LinearGradient softBlackGradientReverse = LinearGradient(colors: [const Color(0xff0C0C0C).withOpacity(0.8),const Color(0xff0C0C0C).withOpacity(0.7),Colors.black.withOpacity(0.0),],

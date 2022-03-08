@@ -32,28 +32,28 @@ class MatchedScreen extends StatelessWidget {
               height: h*0.6,
               width: w,
               child: GetX<FirebaseController>(
-                builder: (ctr) {
-                  return CarouselSlider.builder(
-                      itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images!.length,
-                      itemBuilder: (context,index,realIndex){
-                        return SizedBox(
-                            height: h * 0.7,
-                            width: w,
-                            child: Image.network(
-                              controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
-                            ));
+                  builder: (ctr) {
+                    return CarouselSlider.builder(
+                        itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images!.length,
+                        itemBuilder: (context,index,realIndex){
+                          return SizedBox(
+                              height: h * 0.7,
+                              width: w,
+                              child: Image.network(
+                                controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
+                              ));
                         },
-                      options: CarouselOptions(
-                        height: h*0.7,
-                        viewportFraction: 1,
-                        enableInfiniteScroll: false,
-                        enlargeCenterPage: true,
-                        initialPage: 0,
-                        onPageChanged: (int index,reason){
-                          controller.pageIndicatorIndex.value = index;
-                        }
-                      ));
-                }
+                        options: CarouselOptions(
+                            height: h*0.7,
+                            viewportFraction: 1,
+                            enableInfiniteScroll: false,
+                            enlargeCenterPage: true,
+                            initialPage: 0,
+                            onPageChanged: (int index,reason){
+                              controller.pageIndicatorIndex.value = index;
+                            }
+                        ));
+                  }
               ),
             ),
           ),
@@ -111,20 +111,20 @@ class MatchedScreen extends StatelessWidget {
                                       controller.partyIndexForMatchedPage.value = index;
                                     },
                                     child: GetX<FirebaseController>(
-                                      builder: (controller) {
-                                        return Container(
-                                          width: w * 0.3,
-                                          height: h*0.13,
-                                          margin: const EdgeInsets.only(right: 10,left: 10),
-                                          decoration: BoxDecoration(
-                                              border: index==controller.partyIndexForMatchedPage.value?Border.all(color: t.primaryColor):Border.all(color: Colors.transparent),
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
-                                          child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(10),
-                                              child: Image.network(controller.parties[index].images![0].toString(),fit: BoxFit.cover,)),
-                                        );
-                                      }
+                                        builder: (controller) {
+                                          return Container(
+                                            width: w * 0.3,
+                                            height: h*0.13,
+                                            margin: const EdgeInsets.only(right: 10,left: 10),
+                                            decoration: BoxDecoration(
+                                                border: index==controller.partyIndexForMatchedPage.value?Border.all(color: t.primaryColor):Border.all(color: Colors.transparent),
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Image.network(controller.parties[index].images![0].toString(),fit: BoxFit.cover,)),
+                                          );
+                                        }
                                     ),
                                   ),
                                   const SizedBox(height: 10,),
@@ -159,29 +159,29 @@ class MatchedScreen extends StatelessWidget {
           ),
 
           GetX<FirebaseController>(
-            builder: (controller) {
-              return Padding(
-                padding:  EdgeInsets.only(top:h*0.08),
-                child: Container(
-                  height: h*0.12,
-                  width: w,
-                  decoration: BoxDecoration(
-                    gradient: Themes.softBlackGradientReverse,
+              builder: (controller) {
+                return Padding(
+                  padding:  EdgeInsets.only(top:h*0.08),
+                  child: Container(
+                    height: h*0.12,
+                    width: w,
+                    decoration: BoxDecoration(
+                      gradient: Themes.softBlackGradientReverse,
+                    ),
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("${controller.parties[controller.partyIndexForMatchedPage.value].time.toString()} pm",style: Theme.of(context).textTheme.headline3!.copyWith(
+                            color: Colors.white),),
+                        Text(controller.parties[controller.partyIndexForMatchedPage.value].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
+                            color: Colors.white),),
+                        Text("Rs.${controller.parties[controller.partyIndexForMatchedPage.value].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
+                            color: Colors.white),),
+                      ],
+                    ),
                   ),
-                  child:Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text("${controller.parties[controller.partyIndexForMatchedPage.value].time.toString()} pm",style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),),
-                      Text(controller.parties[controller.partyIndexForMatchedPage.value].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),),
-                      Text("Rs.${controller.parties[controller.partyIndexForMatchedPage.value].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),),
-                    ],
-                  ),
-                ),
-              );
-            }
+                );
+              }
           )
 
         ],

@@ -17,13 +17,13 @@ class HostModel{
   factory HostModel.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
     final d = snapshot.data();
     return HostModel(
-        age: d!['age'],
-        hostId: d['hostId'],
-        hostName: d['hostName'],
-        location: d['location'],
-        password: d['password'],
-        profilePic: d['profilePic'],
-        xp: d['xp'],
+      age: d!['age'],
+      hostId: d['hostId'],
+      hostName: d['hostName'],
+      location: d['location'],
+      password: d['password'],
+      profilePic: d['profilePic'],
+      xp: d['xp'],
     );
   }
 

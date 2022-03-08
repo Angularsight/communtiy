@@ -92,7 +92,7 @@ class _PartyUploadState extends State<PartyUpload> {
         children: [
           SingleChildScrollView(
             child: Form(
-              key: _formKey,
+                key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
@@ -101,8 +101,8 @@ class _PartyUploadState extends State<PartyUpload> {
                         width: w,
                         height: h * 0.3,
                         decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(10)
+                            color: Colors.grey.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(10)
                         ),
 
                         child: Center(
@@ -111,12 +111,12 @@ class _PartyUploadState extends State<PartyUpload> {
                                 _pickImageFromGallery();
                               },
                               child: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey.withOpacity(0.4)),
-                                child:const Center(child: Text("+", style: TextStyle(fontSize: 35, color: Colors.white),),)
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.withOpacity(0.4)),
+                                  child:const Center(child: Text("+", style: TextStyle(fontSize: 35, color: Colors.white),),)
                               ),
                             )),
                       ),
@@ -129,15 +129,15 @@ class _PartyUploadState extends State<PartyUpload> {
                             width: w*0.58,
                             child: TextFormField(
                               decoration: InputDecoration(
-                                fillColor: Color(0xffFFF6F6),
-                                filled: true,
-                                hintText: 'Party title',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    style: BorderStyle.none
+                                  fillColor: Color(0xffFFF6F6),
+                                  filled: true,
+                                  hintText: 'Party title',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          style: BorderStyle.none
+                                      )
                                   )
-                                )
                               ),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
@@ -357,9 +357,9 @@ class _PartyUploadState extends State<PartyUpload> {
                       ),
 
 
-                ],
-              ),
-            )),
+                    ],
+                  ),
+                )),
           ),
         ],
       ),
@@ -392,7 +392,7 @@ class _PartyUploadState extends State<PartyUpload> {
                 height: h*0.06,
                 width: h*0.15,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.4),
+                    color: Colors.grey.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(5)
                 ),
                 child: const Center(child:Icon(Icons.add,size: 25,color: Colors.white,)),
@@ -403,7 +403,7 @@ class _PartyUploadState extends State<PartyUpload> {
               width: w*0.3,
               height: h*0.3,
               child: ListView.builder(
-                itemCount: imageList.length,
+                  itemCount: imageList.length,
                   itemBuilder: (context,index){
                     return InkWell(
                         onTap: (){
@@ -417,7 +417,7 @@ class _PartyUploadState extends State<PartyUpload> {
                             const SizedBox(height: 10,)
                           ],
                         ));
-              }),
+                  }),
             ),
           ],
         )

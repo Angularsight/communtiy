@@ -1,12 +1,11 @@
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class GuestList2 extends StatelessWidget {
-<<<<<<< HEAD
-<<<<<<< HEAD
   /// Guests and their interests who have entered the party
   final List<UserDetailsModel>? guests;
   final List<Interests>? interests;
@@ -46,7 +45,7 @@ class GuestList2 extends StatelessWidget {
         builder: (context) {
           return Dialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 10,
             backgroundColor: Color(0xff292929),
             child: ClipRRect(
@@ -107,13 +106,13 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Height : ${interests.height}", style: t.textTheme.headline3!.copyWith(
-                                      color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: Color(0xffA4A4A4), fontSize: 13),
                                 ),
                                 const SizedBox(
                                   width: 20,
                                 ),
                                 Text("Weight : 60kgs", style: t.textTheme.headline3!.copyWith(
-                                      color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: Color(0xffA4A4A4), fontSize: 13),
                                 ),
                               ],
                             ),
@@ -125,7 +124,7 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Movie : ", style: t.textTheme.headline3!.copyWith(
-                                      color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: Color(0xffA4A4A4), fontSize: 13),
                                 ),
                                 buildInterestAttributeList(h, w, interests.movies, t, false)
                               ],
@@ -136,7 +135,7 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Anime : ", style: t.textTheme.headline3!.copyWith(
-                                      color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: Color(0xffA4A4A4), fontSize: 13),
                                 ),
                                 buildInterestAttributeList(h, w, interests.anime, t, false)
                               ],
@@ -147,13 +146,13 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Sports : ", style: t.textTheme.headline3!.copyWith(
-                                      color: Color(0xffA4A4A4), fontSize: 13),),
+                                    color: Color(0xffA4A4A4), fontSize: 13),),
                                 buildInterestAttributeList(h, w, interests.sport, t, false)
                               ],
                             ),
                             const SizedBox(height: 5,),
                             Text("Pet : ${interests.pet}", style: t.textTheme.headline3!.copyWith(
-                                  color: Color(0xffA4A4A4), fontSize: 13),),
+                                color: Color(0xffA4A4A4), fontSize: 13),),
 
                             const SizedBox(height: 20,),
                             Text("Hobbies and Likes", style: t.textTheme.headline3!.copyWith(
@@ -166,86 +165,42 @@ class GuestList2 extends StatelessWidget {
                       )
                     ],
                   ),
-=======
-  final List<UserDetailsModel>? guests;
-  GuestList2({Key? key, this.guests}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-=======
-  final List<UserDetailsModel>? guests;
-  GuestList2({Key? key, this.guests}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
->>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Guests of this particular party fetched below"),
-        Text(guests![0].age.toString()),
-        Flexible(
-          flex: 8,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: const LinearGradient(
-                          colors: [Colors.red, Colors.yellow],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight)),
-                  child: const Center(
-                      child: Text(
-                    "Go Back",
-                    style: TextStyle(color: Colors.black),
-                  )),
-<<<<<<< HEAD
->>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
                 ),
               ),
-            ],
-          ),
-        ),
-      ],
-    ));
+            ),
+          );
+        });
   }
 
   SizedBox buildInterestAttributeList(double h, double w, var list, ThemeData t, bool hobbies) {
     if (hobbies) {
       return SizedBox(
-            height: 20,
-            width: w,
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                      color: Color(0xffA4A4A4), fontSize: 13),
-                  );
-                },
-                separatorBuilder: (context, index) => const SizedBox(width: 10,),
-                itemCount: list.length),
-          );
+        height: 20,
+        width: w,
+        child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
+                  color: Color(0xffA4A4A4), fontSize: 13),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            itemCount: list.length),
+      );
     } else {
       return SizedBox(
-            height: 20,
-            width: w * 0.5,
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                      color: Color(0xffA4A4A4), fontSize: 13),
-                  );
-                },
-                separatorBuilder: (context, index) => const SizedBox(width: 10,),
-                itemCount: list.length),
-          );
+        height: 20,
+        width: w * 0.5,
+        child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
+                  color: Color(0xffA4A4A4), fontSize: 13),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            itemCount: list.length),
+      );
     }
   }
 
@@ -382,14 +337,5 @@ class RPSCustomPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
-=======
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ));
->>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   }
 }

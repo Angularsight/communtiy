@@ -23,17 +23,17 @@ class PartyDetails with ChangeNotifier{
   factory PartyDetails.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
     final d = snapshot.data();
     return PartyDetails(
-      partyName: d!['partyName'],
-      partyId: d['partyId'],
-      partyHostId: d['partyHostId'],
-      hostId: d['hostId'],
-      entryFee: d['entryFee'],
-      description: d['description'],
-      location: d['location'],
-      time: d['time'],
-      guests:d['guests'],
-      images:d['images'],
-      date: d['date']
+        partyName: d!['partyName'],
+        partyId: d['partyId'],
+        partyHostId: d['partyHostId'],
+        hostId: d['hostId'],
+        entryFee: d['entryFee'],
+        description: d['description'],
+        location: d['location'],
+        time: d['time'],
+        guests:d['guests'],
+        images:d['images'],
+        date: d['date']
     );
 
   }
