@@ -41,6 +41,8 @@ class CustomIcons{
   static IconData bookmark = Icons.bookmark_border;
   static IconData bookmark2 = Icons.bookmark;
   static IconData heartFilled = MaterialCommunityIcons.heart;
+  static IconData chevronRight = Icons.double_arrow_outlined;
+  static IconData threeDotsHorizontal = Icons.more_horiz;
 
   static Map<String,IconData> amenitiesMap = {
     'Wifi':Icons.wifi,

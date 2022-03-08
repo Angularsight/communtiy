@@ -1,16 +1,20 @@
 
 
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
+import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
+import 'package:communtiy/getx_ui/party_upload.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
 import 'matched_screen.dart';
 class BottomNavigationPage extends StatelessWidget {
   BottomNavigationPage({Key? key}) : super(key: key);
 
+  final FirebaseController firebaseController = Get.put(FirebaseController());
   final BottomNavController controller = Get.put(BottomNavController());
 
   @override
@@ -26,6 +30,7 @@ class BottomNavigationPage extends StatelessWidget {
             children:  [
               MainScreen(),
               MatchedScreen(),
+              PartyUpload()
             ],
           ),
           bottomNavigationBar: BottomAppBar(
@@ -33,7 +38,6 @@ class BottomNavigationPage extends StatelessWidget {
             elevation: 0,
             child: BottomNavigationBar(
               onTap: (int index){
-                print('index:$index');
                 controller.changeIndex(index);
               },
 
@@ -50,6 +54,10 @@ class BottomNavigationPage extends StatelessWidget {
                 BottomNavigationBarItem(
                     label: 'Matched',
                     icon: Icon(Icons.image)),
+                BottomNavigationBarItem(
+                    label: 'Host',
+                    icon: Icon(MaterialCommunityIcons.ab_testing)
+                ),
               ],
             ),
           )

@@ -13,11 +13,12 @@ class PartyDetails with ChangeNotifier{
   final String? description;
   final String? location;
   final String? time;
+  final String? date;
   final List? guests;
   final List? images;
 
   PartyDetails(
-      {this.partyName, this.partyId, this.partyHostId, this.hostId, this.entryFee, this.description, this.location, this.time,this.guests,this.images});
+      {this.partyName, this.partyId, this.partyHostId, this.hostId, this.entryFee, this.description, this.location, this.time,this.date,this.guests,this.images});
 
   factory PartyDetails.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
     final d = snapshot.data();
@@ -31,7 +32,8 @@ class PartyDetails with ChangeNotifier{
       location: d['location'],
       time: d['time'],
       guests:d['guests'],
-      images:d['images']
+      images:d['images'],
+      date: d['date']
     );
 
   }

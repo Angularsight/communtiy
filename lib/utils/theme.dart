@@ -16,6 +16,26 @@ class Themes {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
 
+  static LinearGradient softBlackGradient = LinearGradient(colors: [Colors.black.withOpacity(0.0),const Color(0xff0C0C0C).withOpacity(0.7),const Color(0xff0C0C0C).withOpacity(0.8)],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: const [0.0,0.5,1]
+  );
+
+  static LinearGradient partyDetailsGradient = const LinearGradient(colors: [
+    Color(0xffE3D170),
+    Color(0xffFFFFFF)
+  ],
+  begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  );
+
+  static LinearGradient softBlackGradientReverse = LinearGradient(colors: [const Color(0xff0C0C0C).withOpacity(0.8),const Color(0xff0C0C0C).withOpacity(0.7),Colors.black.withOpacity(0.0),],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: const [0.0,0.5,1]
+  );
+
   ThemeData themeData() {
     return ThemeData(
       scaffoldBackgroundColor: const Color(0xff292929),

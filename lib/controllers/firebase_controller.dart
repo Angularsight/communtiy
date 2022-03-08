@@ -18,17 +18,16 @@ class FirebaseController extends GetxController {
   final _hostDetails = [HostModel()].obs;
   List<HostModel> get hostDetails => _hostDetails.value;
 
+  final _guests = [UserDetailsModel()].obs;
+  List<UserDetailsModel> get guests => _guests.value;
+
 
   var queryComplete = false.obs;
   var userQueryImages = <UserDetailsModel>[].obs;
   var partyQueryImages = <PartyDetails>[].obs;
 
-  // void updateQueryComplete(bool value){
-  //   _queryComplete = value;
-  //   update();
-  // }
-
-  var pageViewIndex = 0.obs;
+  RxInt pageIndicatorIndex = 0.obs;
+  RxInt partyIndexForMatchedPage = 0.obs;
 
 
   @override
@@ -71,6 +70,13 @@ class FirebaseController extends GetxController {
     return res;
   }
 
+  Future<List<HostModel>> fetchHostDetailsFuture(String hostId) async{
+    return FirebaseFirestore.instance.collection('Host').where('hostId',isEqualTo: hostId).get().then((query) {
+      _hostDetails.value = query.docs.map((e) => HostModel.fromDocument(e)).toList();
+      return _hostDetails.value;
+    });
+  }
+
   Stream<List<HostModel>> fetchHostDetails(String hostId) {
     return FirebaseFirestore.instance.collection('Host').where('hostId',isEqualTo: hostId).snapshots().map((query) {
       return query.docs.map((e) => HostModel.fromDocument(e)).toList();
@@ -96,8 +102,8 @@ class FirebaseController extends GetxController {
       element.toString();
     }
     return FirebaseFirestore.instance.collection('UserDetails').where('userId',whereIn: query).get().then((querySnap) {
-      var v = querySnap.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
-      return v;
+      _guests.value = querySnap.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+      return _guests.value;
     });
   }
 
