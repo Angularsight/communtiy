@@ -46,6 +46,7 @@ dependencies:
   #Getx
   get: ^4.6.1
 
+<<<<<<< HEAD
   #UI
   #Don't change google_fonts version coz it will throw error
   google_fonts: 2.2.0
@@ -61,6 +62,8 @@ dependency_overrides:
   cloud_firestore:
   firebase_storage:
 
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 dev_dependencies:
   flutter_test:
     sdk: flutter

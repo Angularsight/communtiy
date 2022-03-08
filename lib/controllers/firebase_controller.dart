@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:get/get.dart';
 
 class FirebaseController extends GetxController {
-
-
   final _parties = [PartyDetails()].obs;
   List<PartyDetails> get parties => _parties.value;
 
@@ -18,6 +15,7 @@ class FirebaseController extends GetxController {
   final _hostDetails = [HostModel()].obs;
   List<HostModel> get hostDetails => _hostDetails.value;
 
+<<<<<<< HEAD
   final _guests = [UserDetailsModel()].obs;
   List<UserDetailsModel> get guests => _guests.value;
 
@@ -30,6 +28,8 @@ class FirebaseController extends GetxController {
   RxInt partyIndexForMatchedPage = 0.obs;
 
 
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   @override
   void onInit() {
     // TODO: implement onInit
@@ -39,7 +39,7 @@ class FirebaseController extends GetxController {
       _userDetail.bindStream(fetchUserDetails(_parties[0].guests!));
     });
     Future.delayed(const Duration(seconds: 2), () {
-      _hostDetails.bindStream(fetchHostDetails(_parties[1].hostId!));
+      _hostDetails.bindStream(fetchHostDetails(_parties[0].hostId!));
     });
 
   }
@@ -84,6 +84,7 @@ class FirebaseController extends GetxController {
   }
 
 
+<<<<<<< HEAD
   /// Fetching interests whenever an element in the guestList is tapped
   Future<List<Interests>> fetchGuestsInterests(List guestsId)async{
     for (var element in guestsId) {
@@ -107,6 +108,8 @@ class FirebaseController extends GetxController {
     });
   }
 
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   /// Search Bar Query For Parties
   Future<List<PartyDetails>> searchQueryParty(String query)async{
     return FirebaseFirestore.instance.collection('PartyDetails').where('partyName',isEqualTo: query).get().then((querySnap) {
@@ -118,11 +121,17 @@ class FirebaseController extends GetxController {
   Future<List<UserDetailsModel>> searchQueryUser(String query)async{
     return FirebaseFirestore.instance.collection('UserDetails').where('userName',isEqualTo: query).get().then((querySnap) {
       var v = querySnap.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+
       return v;
     });
   }
 
-
+  Future<List<UserDetailsModel>> fetchGuests(String query)async{
+    return FirebaseFirestore.instance.collection('UserDetails').where('userId',isEqualTo: query).get().then((querySnap) {
+      var v = querySnap.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+      return v;
+    });
+  }
   
   
   
