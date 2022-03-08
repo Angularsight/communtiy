@@ -7,10 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 import 'getx_ui/main_screen.dart';
 
 void main()async {
@@ -33,7 +29,7 @@ class MyApp2 extends StatelessWidget {
       home:  MainScreen(),
       getPages: [
         GetPage(name: '/main', page: ()=> MainScreen()),
-        GetPage(name: '/partyDetails', page: ()=>const PartyDetails2()),
+        GetPage(name: '/partyDetails', page: ()=> PartyDetails2()),
         GetPage(name: '/guestList', page: ()=> GuestList2())
       ],
     );

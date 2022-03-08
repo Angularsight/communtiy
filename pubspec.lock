@@ -16,6 +16,7 @@ packages:
     source: hosted
     version: "2.1.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   carousel_pro:
     dependency: "direct main"
     description:
@@ -30,6 +31,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 =======
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   characters:
@@ -82,6 +85,7 @@ packages:
     source: hosted
     version: "1.15.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   cross_file:
     dependency: transitive
     description:
@@ -96,6 +100,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 =======
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   cupertino_icons:
@@ -226,6 +232,7 @@ packages:
     source: hosted
     version: "4.6.1"
   http_parser:
+<<<<<<< HEAD
     dependency: transitive
     description:
       name: http_parser
@@ -247,6 +254,8 @@ packages:
     source: hosted
     version: "2.1.6"
   image_picker_platform_interface:
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
     dependency: transitive
     description:
       name: image_picker_platform_interface
@@ -310,6 +319,7 @@ packages:
     source: hosted
     version: "1.8.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   path_provider:
     dependency: transitive
     description:
@@ -333,12 +343,15 @@ packages:
     version: "2.0.7"
 =======
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   path_provider_linux:
     dependency: transitive
     description:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
 <<<<<<< HEAD
     version: "2.1.5"
   path_provider_macos:
@@ -348,6 +361,9 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+=======
+    version: "2.1.4"
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 =======
     version: "2.1.4"
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 class PartyDetails2 extends StatelessWidget {
 <<<<<<< HEAD
+<<<<<<< HEAD
   final int? index;
    PartyDetails2({Key? key, this.index}) : super(key: key);
 
@@ -17,6 +18,9 @@ class PartyDetails2 extends StatelessWidget {
 
   List<HostModel> host = [];
   List<UserDetailsModel> guests = [];
+=======
+  const PartyDetails2({Key? key}) : super(key: key);
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 =======
   const PartyDetails2({Key? key}) : super(key: key);
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)

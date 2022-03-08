@@ -7,6 +7,7 @@ import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:get/get.dart';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -19,6 +20,12 @@ class _MainScreenState extends State<MainScreen> {
   final FirebaseController partyController = Get.find();
   final bottomNavController = Get.put(BottomNavController());
 
+=======
+class MainScreen extends StatelessWidget {
+  MainScreen({Key? key}) : super(key: key);
+
+  final partyController = Get.put(FirebaseController());
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
   late PageController pageController;
@@ -27,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
 
+<<<<<<< HEAD
   final partyController = Get.put(FirebaseController());
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
@@ -53,10 +61,18 @@ class MainScreen extends StatelessWidget {
     });
 
   }
+=======
+  bool queryComplete = false;
+  List<UserDetailsModel> userQueryImages = [];
+  List<PartyDetails> partyQueryImages = [];
+
+  int imagesLength = 0;
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
 <<<<<<< HEAD
       body: GestureDetector(
         onTap: (){
@@ -306,6 +322,8 @@ class MainScreen extends StatelessWidget {
                         ..strokeWidth = 4
                         ..color = Colors.black
 =======
+=======
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
       resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -335,6 +353,9 @@ class MainScreen extends StatelessWidget {
                     suffixIcon: const Icon(
                       Icons.search,
                       color: Colors.grey,
+<<<<<<< HEAD
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
+=======
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
                     ),
                   ),
@@ -426,6 +447,7 @@ class MainScreen extends StatelessWidget {
               ],
             ),
 <<<<<<< HEAD
+<<<<<<< HEAD
           ),
         ]
     );
@@ -490,6 +512,10 @@ class MainScreen extends StatelessWidget {
           ),
         ),
 
+=======
+          )
+        ],
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
 =======
           )
         ],

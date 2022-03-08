@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 class GuestList2 extends StatelessWidget {
 <<<<<<< HEAD
+<<<<<<< HEAD
   /// Guests and their interests who have entered the party
   final List<UserDetailsModel>? guests;
   final List<Interests>? interests;
@@ -171,6 +172,13 @@ class GuestList2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+=======
+  final List<UserDetailsModel>? guests;
+  GuestList2({Key? key, this.guests}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,6 +206,7 @@ class GuestList2 extends StatelessWidget {
                     "Go Back",
                     style: TextStyle(color: Colors.black),
                   )),
+<<<<<<< HEAD
 >>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
                 ),
               ),
@@ -373,5 +382,14 @@ class RPSCustomPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+=======
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ));
+>>>>>>> parent of 6823e27 (Main Screen and Matching Screen)
   }
 }
