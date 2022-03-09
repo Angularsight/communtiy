@@ -49,24 +49,6 @@ class PartyDetails2 extends StatelessWidget {
                       ),
                     ),
 
-                    // const Text("Party Details imported as shown below"),
-                    // Container(
-                    //   width: Get.width * 0.5,
-                    //   height: Get.width * 0.5,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10)),
-                    //   child: ListView.separated(
-                    //       itemBuilder: (context, index) {
-                    //         var image = Image.network(controller.parties[0].images![index], fit: BoxFit.cover,);
-                    //         if(image==null){
-                    //           return const Center(child:CircularProgressIndicator());
-                    //         }else{
-                    //           return image;
-                    //         }
-                    //       },
-                    //       separatorBuilder: (context, index) => const SizedBox(width: 10,),
-                    //       itemCount: controller.parties[0].images!.length,scrollDirection: Axis.horizontal,),
-                    // ),
                     const SizedBox(
                       height: 30,
                     ),
@@ -85,58 +67,71 @@ class PartyDetails2 extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    width: w*0.3,
-                                    height: h*0.07,
-                                    decoration: BoxDecoration(
-                                      color: t.primaryColor,
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(30),
+                              Flexible(
+                                flex: 5,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+
+                                    GestureDetector(
+                                      onTap:(){},
+                                      child: Container(
+                                        width: w*0.3,
+                                        height: h*0.07,
+                                        decoration: BoxDecoration(
+                                          color: t.primaryColor,
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(30),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text("Enter Fest",style: t.textTheme.headline2!.copyWith(
+                                              shadows: [
+                                                Shadow(
+                                                  color: Colors.black.withOpacity(0.2),
+                                                  offset: const Offset(0,3),
+                                                  blurRadius: 4,
+                                                )
+                                              ],
+                                              color: Colors.black,
+                                              fontSize: 18
+                                          ),),
+                                        ),
                                       ),
-                                    ),
-                                    child: Center(
-                                      child: Text("Enter Fest",style: t.textTheme.headline2!.copyWith(
-                                          shadows: [
-                                            Shadow(
-                                              color: Colors.black.withOpacity(0.2),
-                                              offset: const Offset(0,3),
-                                              blurRadius: 4,
-                                            )
-                                          ],
-                                          color: Colors.black,
-                                          fontSize: 18
-                                      ),),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
 
                               const SizedBox(height: 25,),
-                              Container(
-                                width: w*0.50,
-                                height: h*0.07,
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    border: Border.all(color: Colors.black,width: 1.5)
+                              Flexible(
+                                flex:5,
+                                child: Container(
+                                  width: w*0.50,
+                                  height: h*0.07,
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      border: Border.all(color: Colors.black,width: 1.5)
+                                  ),
+                                  child: Center(child:buildStrokeText(controller.parties[index!].partyName!, t,Colors.black,Colors.white,22)),
                                 ),
-                                child: Center(child:buildStrokeText(controller.parties[index!].partyName!, t,Colors.black,Colors.white,22)),
                               ),
 
                               const SizedBox(height: 20,),
                               buildStrokeText("Venue : ${controller.parties[index!].location}", t, Color(0xff5B5B5B), Colors.white,17),
 
                               const SizedBox(height: 15,),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 40.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Date : ${controller.parties[index!].date}",style: t.textTheme.headline3,),
-                                    Text("Time : ${controller.parties[index!].time} pm",style: t.textTheme.headline3,),
-                                  ],
+                              Flexible(
+                                flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 40.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Date : ${controller.parties[index!].date}",style: t.textTheme.headline3,),
+                                      Text("Time : ${controller.parties[index!].time} pm",style: t.textTheme.headline3,),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10,),
@@ -168,17 +163,20 @@ class PartyDetails2 extends StatelessWidget {
                               Row(
                                 children: [
                                   buildStrokeText("Guest List", t, Color(0xff5B5B5B), Colors.white,17),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 15.0),
-                                    child: InkWell(
-                                        splashColor: Colors.white,
-                                        onTap: ()async{
-                                          /// Fetching Guests and their interests of that particular party in this page itself
-                                          await controller.fetchGuestsInterests(controller.parties[index!].guests!).then((value) {
-                                            return Get.to(() =>  GuestList2(guests: guests,interests: value,));
-                                          });
-                                        },
-                                        child: Icon(CustomIcons.chevronRight,color: const Color(0xff5B5B5B),)),
+                                  Flexible(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 15.0),
+                                      child: InkWell(
+                                          splashColor: Colors.white,
+                                          onTap: ()async{
+                                            /// Fetching Guests and their interests of that particular party in this page itself
+                                            await controller.fetchGuestsInterests(controller.parties[index!].guests!).then((value) {
+                                              return Get.to(() =>  GuestList2(guests: guests,interests: value,));
+                                            });
+                                          },
+                                          child: Icon(CustomIcons.chevronRight,color: const Color(0xff5B5B5B),)),
+                                    ),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

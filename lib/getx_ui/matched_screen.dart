@@ -36,12 +36,18 @@ class MatchedScreen extends StatelessWidget {
                     return CarouselSlider.builder(
                         itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images!.length,
                         itemBuilder: (context,index,realIndex){
-                          return SizedBox(
-                              height: h * 0.7,
-                              width: w,
-                              child: Image.network(
-                                controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
-                              ));
+                          return GestureDetector(
+                            onTap: (){
+                              final partyIndex = controller.partyIndexForMatchedPage.value;
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>PartyDetails2(index: partyIndex,)));
+                            },
+                            child: SizedBox(
+                                height: h * 0.7,
+                                width: w,
+                                child: Image.network(
+                                  controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
+                                )),
+                          );
                         },
                         options: CarouselOptions(
                             height: h*0.7,

@@ -9,7 +9,9 @@ import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -69,48 +71,94 @@ class _MainScreenState extends State<MainScreen> {
                             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06,vertical: Get.height * 0.03),
                             child: SizedBox(
                               height: 50,
-                              child: TextField(
-                                focusNode: searchFocusNode,
-                                controller: searchController,
-                                autocorrect: true,
-                                autofocus: false,
-                                showCursor: true,
-                                decoration: InputDecoration(
-                                  focusColor: Colors.transparent,
-                                  border:  OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(7),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent,
-                                          style: BorderStyle.none)),
-                                  filled: true,
-                                  fillColor: Theme.of(context).canvasColor,
-                                  hintText: "Dont think just look it up",
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                                  hintStyle: Theme.of(context).textTheme.headline1!.copyWith(
-                                      color: Colors.black.withOpacity(0.5)
-                                  ),
-                                  prefixIcon: const Icon(
-                                    Icons.search,
-                                    color: Color(0xff505050),
-                                  ),
+                              child: TypeAheadField<PartyDetails?>(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: searchController,
+                                  focusNode: searchFocusNode,
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    focusColor: Colors.transparent,
+                                    border:  OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(7),
+                                        borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                            style: BorderStyle.none)),
+                                    filled: true,
+                                    fillColor: Theme.of(context).canvasColor,
+                                    hintText: "Look up parties",
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                                    hintStyle: Theme.of(context).textTheme.headline1!.copyWith(
+                                        color: Colors.black.withOpacity(0.5)
+                                    ),
+                                    prefixIcon: const Icon(
+                                      Icons.search,
+                                      color: Color(0xff505050),
+                                    ),
+                                  )
                                 ),
-                                onEditingComplete: () async {
-                                  Future.wait([
-                                    partyController.searchQueryUser(searchController.text).then((value) {
-                                      queryComplete = true;
-                                      searchFocusNode.unfocus();
-                                      userQueryImages = value;
-                                      print('user details : ${userQueryImages}');
-                                    }),
-                                    partyController.searchQueryParty(searchController.text).then((value) {
-                                      queryComplete = true;
-                                      searchFocusNode.unfocus();
-                                      partyQueryImages = value;
-                                      print('party details : ${partyQueryImages}');
-                                    })
-                                  ]);
-                                },
-                              ),
+
+                                  suggestionsCallback: partyController.partyQuerySuggestions,
+                                  debounceDuration: const Duration(milliseconds: 500),
+                                  itemBuilder: (context,PartyDetails? suggestions){
+                                    return ListTile(
+                                      leading: Container(
+                                        height: 40,
+                                        width:40,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          image: DecorationImage(image: NetworkImage(suggestions!.images![0].toString()),fit: BoxFit.cover)
+                                        ),
+                                      ),
+                                      title: Text("${suggestions.partyName}"),);
+                                    },
+                                  noItemsFoundBuilder: (context)=>Center(child:Text("Nothing found yet",style: Theme.of(context).textTheme.headline1,)),
+                                  onSuggestionSelected: (PartyDetails? suggested){
+                                  final partyIndex = partyController.parties.indexWhere((element) => element.partyName==suggested!.partyName);
+                                  print(partyIndex);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PartyDetails2(index: partyIndex,)));
+                                  }),
+                              // child: TextField(
+                              //   focusNode: searchFocusNode,
+                              //   controller: searchController,
+                              //   autocorrect: true,
+                              //   autofocus: false,
+                              //   showCursor: true,
+                              //   decoration: InputDecoration(
+                              //     focusColor: Colors.transparent,
+                              //     border:  OutlineInputBorder(
+                              //         borderRadius: BorderRadius.circular(7),
+                              //         borderSide: const BorderSide(
+                              //             color: Colors.transparent,
+                              //             style: BorderStyle.none)),
+                              //     filled: true,
+                              //     fillColor: Theme.of(context).canvasColor,
+                              //     hintText: "Dont think just look it up",
+                              //     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                              //     hintStyle: Theme.of(context).textTheme.headline1!.copyWith(
+                              //         color: Colors.black.withOpacity(0.5)
+                              //     ),
+                              //     prefixIcon: const Icon(
+                              //       Icons.search,
+                              //       color: Color(0xff505050),
+                              //     ),
+                              //   ),
+                              //   onEditingComplete: () async {
+                              //     Future.wait([
+                              //       partyController.searchQueryUser(searchController.text).then((value) {
+                              //         queryComplete = true;
+                              //         searchFocusNode.unfocus();
+                              //         userQueryImages = value;
+                              //         print('user details : ${userQueryImages}');
+                              //       }),
+                              //       partyController.searchQueryParty(searchController.text).then((value) {
+                              //         queryComplete = true;
+                              //         searchFocusNode.unfocus();
+                              //         partyQueryImages = value;
+                              //         print('party details : ${partyQueryImages}');
+                              //       })
+                              //     ]);
+                              //   },
+                              // ),
                             )
                         ),
 
@@ -123,7 +171,50 @@ class _MainScreenState extends State<MainScreen> {
                               itemCount: partyController.parties.length,
                               itemBuilder: (context,index){
                                 bool isActive = (index==currentPage);
-                                return pageViewCard(index,isActive);
+                                try{
+                                  return pageViewCard(index, isActive);
+                                }catch(e){
+                                  return ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Container(
+                                      height: 400,
+                                      width: double.infinity,
+                                      color: const Color(0xff414141),
+                                      child: Shimmer.fromColors(
+                                        baseColor: const Color(0xff2d2d2d),
+                                        highlightColor: const Color(0xff6a737c),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 300.0,left: 8,right: 8),
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * 0.4,
+                                                height: 25,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(10)
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20,),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 20,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(10)
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                // return pageViewCard(index,isActive);
                               }),
                         ),
 

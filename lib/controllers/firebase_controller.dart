@@ -35,12 +35,12 @@ class FirebaseController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     _parties.bindStream(fetchPartyFromFirebase());
-    Future.delayed(const Duration(seconds: 3), () {
-      _userDetail.bindStream(fetchUserDetails(_parties[0].guests!));
-    });
-    Future.delayed(const Duration(seconds: 2), () {
-      _hostDetails.bindStream(fetchHostDetails(_parties[1].hostId!));
-    });
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   _userDetail.bindStream(fetchUserDetails(_parties[0].guests!));
+    // });
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   _hostDetails.bindStream(fetchHostDetails(_parties[1].hostId!));
+    // });
 
   }
 
@@ -121,6 +121,18 @@ class FirebaseController extends GetxController {
       return v;
     });
   }
+
+
+  Future<List<PartyDetails>> partyQuerySuggestions(String query)async{
+    var v = await FirebaseFirestore.instance.collection('PartyDetails').get();
+    return v.docs.map((doc) => PartyDetails.fromDocument(doc)).where((party) {
+      final partyName = party.partyName!.toLowerCase();
+      final inputQuery = query.toLowerCase();
+      return partyName.contains(inputQuery);
+    }).toList();
+
+  }
+
 
 
 

@@ -308,7 +308,7 @@ class _PartyUploadState extends State<PartyUpload> {
                         children: [
                           InkWell(
                             onTap:(){
-                              print("$partyName,$entryFee,$location,$time,$description,$promotionBrand,$imageList");
+                              print("$imageList");
                             },
                             child: Container(
                               width: w*0.3,

@@ -58,6 +58,13 @@ dependencies:
   smooth_page_indicator:
   image_picker: ^0.8.4
 
+  #For search and autocomplete
+  flutter_typeahead: ^3.2.4
+  #For loading
+  shimmer: ^2.0.0
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
