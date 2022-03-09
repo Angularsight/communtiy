@@ -1,4 +1,5 @@
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/guest_list.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
@@ -12,6 +13,7 @@ class PartyDetails2 extends StatelessWidget {
   PartyDetails2({Key? key, this.index}) : super(key: key);
 
   final FirebaseController controller = Get.find();
+  final RazorPayController razorPayController = Get.put(RazorPayController());
   PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
 
   List<HostModel> host = [];
@@ -74,7 +76,14 @@ class PartyDetails2 extends StatelessWidget {
                                   children: [
 
                                     GestureDetector(
-                                      onTap:(){},
+                                      onTap:(){
+                                        razorPayController.openCheckout(
+                                            "Vishnu Pranav R",
+                                            controller.parties[index!].entryFee!,
+                                            "7411001185",
+                                            "angularsight77@gmail.com",
+                                            "Gpay");
+                                      },
                                       child: Container(
                                         width: w*0.3,
                                         height: h*0.07,
