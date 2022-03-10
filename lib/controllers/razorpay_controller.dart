@@ -30,12 +30,12 @@ class RazorPayController extends GetxController{
     }
 
 
-  void openCheckout(String name, int amount,String contact, String email, String wallet) async {
+  void openCheckout(String name, int amount,String contact, String email, List<String> wallet,String hostContact) async {
     var options = {
       'key': 'rzp_test_nlTDgSSBzbj4bS',
       'amount': amount*100,
-      'name': 'Acme Corp.',
-      'description': 'Fine T-Shirt',
+      'name': name,
+      'description': 'Host contact : $hostContact',
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {'contact': contact, 'email': email},

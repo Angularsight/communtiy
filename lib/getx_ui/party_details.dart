@@ -78,11 +78,12 @@ class PartyDetails2 extends StatelessWidget {
                                     GestureDetector(
                                       onTap:(){
                                         razorPayController.openCheckout(
-                                            "Vishnu Pranav R",
+                                            controller.parties[index!].partyName!,
                                             controller.parties[index!].entryFee!,
                                             "7411001185",
                                             "angularsight77@gmail.com",
-                                            "Gpay");
+                                            ["Gpay","paytm","PhonePe"],
+                                            "9482397595");
                                       },
                                       child: Container(
                                         width: w*0.3,
