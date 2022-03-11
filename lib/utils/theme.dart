@@ -7,6 +7,10 @@ class Themes {
     const Color(0xff303030).withOpacity(0.47)
   ]);
 
+  static LinearGradient transparentGradient = LinearGradient(colors: [
+    const Color(0xffC4C4C4).withOpacity(0.25),
+    const Color(0xffC4C4C4).withOpacity(0.35)
+  ]);
 
   static LinearGradient tempBodyGradient = LinearGradient(colors: [
     const Color(0xff2E3549),

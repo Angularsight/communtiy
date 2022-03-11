@@ -115,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                                   onSuggestionSelected: (PartyDetails? suggested){
                                   final partyIndex = partyController.parties.indexWhere((element) => element.partyName==suggested!.partyName);
                                   print(partyIndex);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PartyDetails2(index: partyIndex,)));
+                                    Get.to(()=>PartyDetails2(index: partyIndex,));
                                   }),
                               // child: TextField(
                               //   focusNode: searchFocusNode,

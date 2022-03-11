@@ -39,7 +39,7 @@ class MatchedScreen extends StatelessWidget {
                           return GestureDetector(
                             onTap: (){
                               final partyIndex = controller.partyIndexForMatchedPage.value;
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>PartyDetails2(index: partyIndex,)));
+                              Get.to(()=>PartyDetails2(index: partyIndex,));
                             },
                             child: SizedBox(
                                 height: h * 0.7,

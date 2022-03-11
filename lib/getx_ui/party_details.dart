@@ -1,5 +1,6 @@
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
+import 'package:communtiy/getx_ui/checkout_page.dart';
 import 'package:communtiy/getx_ui/guest_list.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
@@ -77,13 +78,8 @@ class PartyDetails2 extends StatelessWidget {
 
                                     GestureDetector(
                                       onTap:(){
-                                        razorPayController.openCheckout(
-                                            controller.parties[index!].partyName!,
-                                            controller.parties[index!].entryFee!,
-                                            "7411001185",
-                                            "angularsight77@gmail.com",
-                                            ["Gpay","paytm","PhonePe"],
-                                            "9482397595");
+                                        final partyDetails = controller.parties[index!];
+                                        Get.to(CheckoutPage(party: partyDetails, host: host[0],));
                                       },
                                       child: Container(
                                         width: w*0.3,
@@ -145,37 +141,40 @@ class PartyDetails2 extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 10,),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 50.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(child: Text("Ratio : Will be updated ",style: t.textTheme.headline3,)),
-                                    // Text("Host : ${controller.parties[index!].hostId}",style: t.textTheme.headline3,),
-                                    FutureBuilder(
-                                      builder: (context,AsyncSnapshot<List<HostModel>>snapshot){
-                                        host = snapshot.data!;
-                                        if(snapshot.hasData) {
-                                          return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
-                                        } else {
-                                          return const CircularProgressIndicator();
-                                        }
-                                      },
-                                      future: controller.fetchHostDetailsFuture(controller.parties[index!].hostId.toString()),
+                              Flexible(
+                                flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 50.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(child: Text("Ratio : Will be updated ",style: t.textTheme.headline3,)),
+                                      // Text("Host : ${controller.parties[index!].hostId}",style: t.textTheme.headline3,),
+                                      FutureBuilder(
+                                        builder: (context,AsyncSnapshot<List<HostModel>>snapshot){
+                                          host = snapshot.data!;
+                                          if(snapshot.hasData) {
+                                            return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
+                                          } else {
+                                            return const CircularProgressIndicator();
+                                          }
+                                        },
+                                        future: controller.fetchHostDetailsFuture(controller.parties[index!].hostId.toString()),
 
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
 
 
                               const SizedBox(height: 20,),
-                              Row(
-                                children: [
-                                  buildStrokeText("Guest List", t, Color(0xff5B5B5B), Colors.white,17),
-                                  Flexible(
-                                    flex: 5,
-                                    child: Padding(
+                              Flexible(
+                                flex: 5,
+                                child: Row(
+                                  children: [
+                                    buildStrokeText("Guest List", t, Color(0xff5B5B5B), Colors.white,17),
+                                    Padding(
                                       padding: const EdgeInsets.only(right: 15.0),
                                       child: InkWell(
                                           splashColor: Colors.white,
@@ -186,10 +185,10 @@ class PartyDetails2 extends StatelessWidget {
                                             });
                                           },
                                           child: Icon(CustomIcons.chevronRight,color: const Color(0xff5B5B5B),)),
-                                    ),
-                                  )
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    )
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                ),
                               ),
                               const SizedBox(height: 10,),
 

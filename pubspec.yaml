@@ -57,6 +57,7 @@ dependencies:
   infinite_carousel: ^1.0.2
   smooth_page_indicator:
   image_picker: ^0.8.4
+  dotted_line: ^3.1.0
 
   #For search and autocomplete
   flutter_typeahead: ^3.2.4
@@ -66,6 +67,16 @@ dependencies:
 
   #Payment gateway
   razorpay_flutter:
+
+
+  #qr code generator and scanner
+  qr_flutter: ^4.0.0
+
+  #Save screenshot to gallery and share
+  screenshot: ^1.2.3
+  image_gallery_saver: ^1.7.1
+
+
 
 
 dev_dependencies:

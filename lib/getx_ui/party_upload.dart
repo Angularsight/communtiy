@@ -71,6 +71,9 @@ class _PartyUploadState extends State<PartyUpload> {
     final imagePicker = ImagePicker();
     final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
+
+
+
     setState(() {
       pickedImageBool = true;
       pickedImage = pickedImageFile;
@@ -78,6 +81,8 @@ class _PartyUploadState extends State<PartyUpload> {
       photoIndex = imageList.length-1;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -309,6 +314,7 @@ class _PartyUploadState extends State<PartyUpload> {
                           InkWell(
                             onTap:(){
                               print("$imageList");
+
                             },
                             child: Container(
                               width: w*0.3,

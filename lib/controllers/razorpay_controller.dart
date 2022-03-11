@@ -1,11 +1,23 @@
 
 
+import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/getx_ui/ticket_page.dart';
+import 'package:communtiy/models/host/host.dart';
+import 'package:communtiy/models/party_details.dart';
 import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RazorPayController extends GetxController{
 
   late Razorpay _razorpay;
+  PartyDetails? partyDetails;
+  HostModel? host;
+  String? paymentId;
+
+  void updateTicketDetails(PartyDetails party,HostModel hostDetail){
+    partyDetails = party;
+    host = hostDetail;
+  }
 
   @override
   void onInit() {
@@ -17,7 +29,9 @@ class RazorPayController extends GetxController{
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    Get.snackbar("Payment Succesful", "Order Id :${response.orderId} \n Payment Id :${response.paymentId} \n Signature : ${response.signature}");
+    paymentId = response.paymentId;
+    // Get.snackbar("Payment Succesful", "Order Id :${response.orderId} \n Payment Id :${response.paymentId} \n Signature : ${response.signature}");
+    Get.to(TicketPage());
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
