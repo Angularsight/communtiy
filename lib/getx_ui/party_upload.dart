@@ -1,11 +1,14 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class PartyUpload extends StatefulWidget {
   PartyUpload({Key? key}) : super(key: key);
@@ -22,6 +25,7 @@ class _PartyUploadState extends State<PartyUpload> {
   final TextEditingController timeController = TextEditingController();
   final TextEditingController descriptionController  = TextEditingController();
   final TextEditingController promotionController  = TextEditingController();
+  final TextEditingController guestLimitController = TextEditingController();
 
   late FocusNode partyTitleNode ;
   late FocusNode entryFeeNode ;
@@ -29,6 +33,7 @@ class _PartyUploadState extends State<PartyUpload> {
   late FocusNode timeNode ;
   late FocusNode descriptionNode ;
   late FocusNode promotionNode ;
+  late FocusNode guestLimitNode;
 
   String partyName = '';
   String entryFee = '';
@@ -36,6 +41,8 @@ class _PartyUploadState extends State<PartyUpload> {
   String time = '';
   String description = '';
   String promotionBrand = '';
+  String date = "";
+  String guestLimit = '';
 
 
   @override
@@ -48,6 +55,7 @@ class _PartyUploadState extends State<PartyUpload> {
     timeNode = FocusNode();
     descriptionNode = FocusNode();
     promotionNode = FocusNode();
+    guestLimitNode = FocusNode();
   }
 
   @override
@@ -67,12 +75,12 @@ class _PartyUploadState extends State<PartyUpload> {
   bool pickedImageBool = false;
   List<File> imageList = [];
   int photoIndex = 0;
+  final urlList = [];
+  final redundancyList =[];
   void _pickImageFromGallery() async{
     final imagePicker = ImagePicker();
     final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
-
-
 
     setState(() {
       pickedImageBool = true;
@@ -82,6 +90,75 @@ class _PartyUploadState extends State<PartyUpload> {
     });
   }
 
+  void _uploadToFirebase() async{
+    int i=1;
+    for(int j=0;j<imageList.length;j++){
+      final ref = FirebaseStorage.instance.ref().child("parties").child(partyName).child(partyName+i.toString()+'.jpg');
+      await ref.putFile(imageList[j]).whenComplete(()async {
+        await ref.getDownloadURL().then((value) {
+          // redundancyList.add(value);
+          // if(!redundancyList.contains(value) || i==1) {
+          //   urlList.add(value);
+          // }
+          urlList.add(value);
+        });
+      });
+      i+=1;
+    }
+
+    print(urlList);
+    FirebaseFirestore.instance.collection('PartyDetails').doc().set({
+      'partyName':partyName,
+      'partyId':"#mvpis",
+      "partyHostId": 'Blank',
+      'hostId':"#mvpis",
+      'entryFee':int.parse(entryFee),
+      'description':description,
+      'location':location,
+      'time':time,
+      'date':date,
+      'guests':[],
+      'images':urlList
+    });
+
+  }
+
+
+  Future _pickDateTime() async{
+    final datePicked = await _pickDate();
+    if(datePicked!=null){
+      setState(() {
+        // date = "${datePicked.day}/${datePicked.month}/${datePicked.year}";
+        date = DateFormat('EEE, MMM d, ''yyy ').format(datePicked).toString();
+      });
+    }
+
+    final timePicked = await _pickTime();
+    if(timePicked!=null){
+      setState(() {
+        time = "${timePicked.hour}:${timePicked.minute}${timePicked.period.name}";
+      });
+    }
+    print("$date \n Time: $time");
+    timeController.text = " $date  @$time";
+  }
+
+
+  Future<DateTime?> _pickDate(){
+    return showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year+1)
+    );
+  }
+
+  Future<TimeOfDay?> _pickTime(){
+    return showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
+    );
+  }
 
 
   @override
@@ -213,7 +290,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               focusNode: locationNode,
                               onFieldSubmitted: (text){
                                 location = text;
-                                FocusScope.of(context).requestFocus(timeNode);
+                                FocusScope.of(context).requestFocus(guestLimitNode);
                               },
                             ),
                           ),
@@ -222,9 +299,9 @@ class _PartyUploadState extends State<PartyUpload> {
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: Color(0xffFFF6F6),
-                                  suffixIcon: const Icon(Icons.access_time_outlined),
+                                  suffixIcon: const Icon(Icons.people_outline),
                                   filled: true,
-                                  hintText: 'Time',
+                                  hintText: 'Limit',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -235,16 +312,42 @@ class _PartyUploadState extends State<PartyUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
 
-                              key: ValueKey('time'),
-                              controller: timeController,
-                              focusNode: timeNode,
+                              key: ValueKey('Guest Limit'),
+                              controller: guestLimitController,
+                              focusNode: guestLimitNode,
                               onFieldSubmitted: (text){
-                                time = text;
-                                FocusScope.of(context).requestFocus(descriptionNode);
+                                guestLimit = text;
+                                FocusScope.of(context).requestFocus(timeNode);
                               },
                             ),
                           )
                         ],
+                      ),
+                      const SizedBox(height: 10,),
+                      SizedBox(
+                        width: w,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              fillColor: Color(0xffFFF6F6),
+                              suffixIcon: const Icon(Icons.access_time_outlined),
+                              filled: true,
+                              hintText: 'Date and Time',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      style: BorderStyle.none
+                                  )
+                              )
+                          ),
+                          textInputAction: TextInputAction.next,
+                          readOnly: true,
+                          key: const ValueKey('Date and Time'),
+                          controller: timeController,
+                          focusNode: timeNode,
+                          onTap: (){
+                            _pickDateTime();
+                          },
+                        ),
                       ),
                       const SizedBox(height: 10,),
                       SizedBox(
@@ -314,6 +417,7 @@ class _PartyUploadState extends State<PartyUpload> {
                           InkWell(
                             onTap:(){
                               print("$imageList");
+                              _uploadToFirebase();
 
                             },
                             child: Container(
@@ -342,6 +446,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               imageList.clear();
                               setState(() {
                                 pickedImageBool = false;
+                                urlList.clear();
                               });
                             },
                             child: Container(

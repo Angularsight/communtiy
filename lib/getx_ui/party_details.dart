@@ -79,7 +79,7 @@ class PartyDetails2 extends StatelessWidget {
                                     GestureDetector(
                                       onTap:(){
                                         final partyDetails = controller.parties[index!];
-                                        Get.to(CheckoutPage(party: partyDetails, host: host[0],));
+                                        Get.to(()=>CheckoutPage(party: partyDetails, host: host[0],));
                                       },
                                       child: Container(
                                         width: w*0.3,
