@@ -99,38 +99,6 @@ class TicketPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // child: Padding(
-                        //   padding: const EdgeInsets.only(left: 10.0,right: 10,top: 100),
-                        //   child: Column(
-                        //     children: [
-                        //       Text(party.partyName!,style: t.textTheme.caption!.copyWith(
-                        //           shadows: [
-                        //             const Shadow(
-                        //                 color: Colors.black,
-                        //                 offset: Offset(0,4),
-                        //                 blurRadius: 2
-                        //             ),
-                        //             const Shadow(
-                        //                 color: Colors.black,
-                        //                 offset: Offset(0,4),
-                        //                 blurRadius: 1
-                        //             )
-                        //           ],
-                        //           fontSize: 32,
-                        //           color: Colors.white
-                        //       ),),
-                        //
-                        //       const SizedBox(height: 15,),
-                        //       buildPartyDetailRow(context, "Date", party.date!, "Time", party.time!),
-                        //       const SizedBox(height: 20,),
-                        //       insertDottedLine(),
-                        //       const SizedBox(height: 20,),
-                        //       buildPartyDetailRow(context, "Venue", party.location!, "Organiser", host!.hostName!),
-                        //
-                        //
-                        //     ],
-                        //   ),
-                        // ),
                       ),
                     ],
                   ),
@@ -168,23 +136,6 @@ class TicketPage extends StatelessWidget {
                     ),
                   ),
 
-                  // SizedBox(height: h*0.15,),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: const [
-                  //       CircleAvatar(
-                  //         radius: 7,
-                  //         backgroundColor: Colors.white,
-                  //       ),
-                  //       CircleAvatar(
-                  //         radius: 7,
-                  //         backgroundColor: Colors.white,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             ),
@@ -223,7 +174,7 @@ class TicketPage extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: QrImage(
-                                data: 'paymentId:${razorPayController.paymentId} \n Date:${party.date} @${party.time} \n Venue:${party.location} \n Host:${host!.hostName}',
+                                data: 'paymentId:${razorPayController.paymentId} \n Date:${party.date} @${party.time} \n Venue:${party.location} \n Host:${host.hostName}',
                                 backgroundColor: Colors.white,
                                 size: 200,
                               ),

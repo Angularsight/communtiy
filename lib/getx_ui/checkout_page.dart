@@ -209,18 +209,14 @@ class CheckoutPage extends StatelessWidget {
                               ["Gpay","paytm","PhonePe"],
                               "9482397595");
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const SizedBox(width: 10,),
-                            Text("Proceed to Payment",
-                              style: t.textTheme.headline3!.copyWith(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                fontWeight: FontWeight.normal
-                              ),
+                        child: Center(
+                          child: Text("Proceed to Payment",
+                            style: t.textTheme.headline3!.copyWith(
+                                fontSize: 16,
+                                color: Colors.black,
+                              fontWeight: FontWeight.normal
                             ),
-                          ],
+                          ),
                         ),
                       ),
 
