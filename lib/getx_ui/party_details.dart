@@ -8,6 +8,7 @@ import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PartyDetails2 extends StatelessWidget {
   final int? index;
@@ -160,7 +161,21 @@ class PartyDetails2 extends StatelessWidget {
                                               return const CircularProgressIndicator();
                                             }
                                           }catch(e){
-                                            return const Center(child:CircularProgressIndicator());
+                                            return ClipRRect(
+                                              borderRadius: BorderRadius.circular(5),
+                                              child: Shimmer.fromColors(
+                                                baseColor: const Color(0xffd5d7d5),
+                                                highlightColor: const Color(0xfff3f3f3),
+                                                child: Container(
+                                                  width: 50,
+                                                  height: 15,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(5)
+                                                  ),
+                                                ),
+                                              ),
+                                            );
                                           }
 
                                         },
@@ -232,7 +247,13 @@ class PartyDetails2 extends StatelessWidget {
                                     return const CircularProgressIndicator();
                                   }
                                 }catch(e){
-                                  return const Center(child: CircularProgressIndicator());
+                                  return Shimmer.fromColors(
+                                    baseColor: const Color(0xffd5d7d5),
+                                    highlightColor: const Color(0xfff3f3f3),
+                                    child: const CircleAvatar(
+                                      radius: 40,
+                                      backgroundColor: Colors.white,
+                                    ),);
                                 }
 
                               },
