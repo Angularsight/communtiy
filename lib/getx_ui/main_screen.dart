@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:accordion/accordion.dart';
+import 'package:accordion/controllers.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 
@@ -49,11 +52,12 @@ class _MainScreenState extends State<MainScreen> {
         });
       }
     });
-
   }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: GestureDetector(
           onTap: (){
@@ -218,6 +222,10 @@ class _MainScreenState extends State<MainScreen> {
                               }),
                         ),
 
+                        const SizedBox(height: 25,),
+                        buildActivitiesAndSpecialAppearance(context,partyController.parties[currentPage])
+
+
                       ],
                     ),
                   )
@@ -229,131 +237,161 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  // Column buildMainScreen(BuildContext context) {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       Flexible(
-  //           flex: 8,
-  //           child: GetX<FirebaseController>(builder: (controller) {
-  //             /// Search Bar Queries
-  //             /// For both users and parties
-  //             return TextField(
-  //               focusNode: searchFocusNode,
-  //               controller: searchController,
-  //               autocorrect: true,
-  //               autofocus: false,
-  //               decoration: InputDecoration(
-  //                 focusColor: Colors.transparent,
-  //                 border: const OutlineInputBorder(
-  //                     borderSide: BorderSide(
-  //                         color: Colors.transparent,
-  //                         style: BorderStyle.none)),
-  //                 filled: true,
-  //                 hintText: controller.parties[0].partyName.toString(),
-  //                 hintStyle: TextStyle(
-  //                     color: Colors.grey.withOpacity(0.5)
-  //                 ),
-  //                 suffixIcon: const Icon(
-  //                   Icons.search,
-  //                   color: Colors.grey,
-  //                 ),
-  //               ),
-  //               onEditingComplete: () async {
-  //                 Future.wait([
-  //                   controller.searchQueryUser(searchController.text).then((value) {
-  //                     queryComplete = true;
-  //                     searchFocusNode.unfocus();
-  //                     userQueryImages = value;
-  //                     // controller.partyQueryImages.value = [];
-  //                     print('userQueryImages : ${controller.userQueryImages.value}');
-  //                   }),
-  //                   controller.searchQueryParty(searchController.text).then((value) {
-  //                     queryComplete = true;
-  //                     searchFocusNode.unfocus();
-  //                     partyQueryImages = value;
-  //                     // controller.userQueryImages.value = [];
-  //                   })
-  //                 ]);
-  //               },
-  //             );
-  //           })),
-  //       Flexible(
-  //         flex: 8,
-  //         child: GetX<FirebaseController>(builder: (controller) {
-  //           if (controller.parties == null && controller == null) {
-  //             return const Center(
-  //               child: CircularProgressIndicator(),
-  //             );
-  //           } else {
-  //             return Column(
-  //               children: [
-  //                 /// Displaying image if search query request is successful
-  //                 /// Else displaying an empty SizedBox() instead of its place
-  //                 controller.queryComplete.value ? Expanded(
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.all(8.0),
-  //                     child: Container(
-  //                       width: double.infinity,
-  //                       height: 300,
-  //                       decoration: BoxDecoration(
-  //                           borderRadius: BorderRadius.circular(10)),
-  //                       child: ListView.separated(
-  //                         itemBuilder: (context, index) {
-  //                           if(userQueryImages.isEmpty){
-  //                             return Image.network(partyQueryImages[0].images![index], fit: BoxFit.cover,);
-  //                           }else{
-  //                             return Image.network(userQueryImages[0].images![index], fit: BoxFit.cover,);
-  //                           }
-  //                         },
-  //                         separatorBuilder: (context, index) => const SizedBox(width: 10,),
-  //                         itemCount: 2,
-  //                         scrollDirection: Axis.horizontal,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ) : const SizedBox(),
-  //                 const SizedBox(
-  //                   height: 30,
-  //                 ),
-  //                 Text("${controller.parties[0].time}"),
-  //               ],
-  //             );
-  //           }
-  //         }),
-  //       ),
-  //       Flexible(
-  //         flex: 4,
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             TextButton(
-  //               onPressed: () {
-  //                 Get.to(() =>  PartyDetails2(index: currentPage,));
-  //               },
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width * 0.3,
-  //                 height: 40,
-  //                 decoration: BoxDecoration(
-  //                     borderRadius: BorderRadius.circular(20),
-  //                     gradient: const LinearGradient(
-  //                         colors: [Colors.red, Colors.yellow],
-  //                         begin: Alignment.topLeft,
-  //                         end: Alignment.bottomRight)),
-  //                 child: const Center(
-  //                     child: Text(
-  //                       "Party Details",
-  //                       style: TextStyle(color: Colors.black),
-  //                     )),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
+  Accordion buildActivitiesAndSpecialAppearance(BuildContext context, PartyDetails party) {
+    try{
+      final activities = {};
+      for (String element in party.activities!) {
+        final split = element.toString().split(',');
+        activities[split[0]] = split[1];
+      }
+      return Accordion(
+          scrollIntoViewOfItems: ScrollIntoViewOfItems.slow,
+          maxOpenSections: 2,
+          headerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          rightIcon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+          contentBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          children: [
+            AccordionSection(
+                contentVerticalPadding: 0,
+                header: Text("Activities",style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white
+                ),),
+                content:Container(
+                  width: double.infinity,
+                  constraints: const BoxConstraints(
+                      minHeight: 100,
+                      maxHeight: 300
+                  ),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: activities.length,
+                      itemBuilder: (context,index){
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(activities.keys.toList()[index],style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold
+                            )),
+                            Text(activities[activities.keys.toList()[index]].toString(),style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal
+                            )),
+                            const SizedBox(height: 10,)
+                          ],
+                        );
+                      }),
+                )
+
+            ),
+            AccordionSection(
+                contentVerticalPadding:MediaQuery.of(context).size.width * 0.05 ,
+                header: Text("Special Appearance",style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white
+                ),),
+                content: party.specialAppearance!?Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.width * 0.5,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(party.djPhoto!),
+                              fit: BoxFit.cover),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10)
+                          )
+                      ),
+
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.8),
+                                offset: const Offset(0,4),
+                                blurRadius: 4,
+                                spreadRadius: 0
+                            )
+                          ]
+                      ),
+                      child: Column(
+                        children: [
+                          Text(party.djName!,style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold
+                          ) ,),
+                          Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal
+                          ))
+                        ],
+                      ),
+                    )
+                  ],
+                ) :
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width * 0.5,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:  [
+                        Text("Not available for this event ",style: Theme.of(context).textTheme.headline2!.copyWith(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 15
+                        )),
+                        Text("Keep looking in other parties",style: Theme.of(context).textTheme.headline2!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18
+                        ),)
+                      ],
+                    ),
+                  ),
+                )
+
+            ),
+          ]);
+    }catch(e){
+      return Accordion(
+          scrollIntoViewOfItems: ScrollIntoViewOfItems.slow,
+          maxOpenSections: 2,
+          headerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          rightIcon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+          contentBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          children: [
+            AccordionSection(
+                header: Text("Activities",style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white
+                ),),
+                content: const Text("")),
+            AccordionSection(
+                header: Text("Special Appearance",style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontSize: 16,
+                    color: Colors.white
+                ),),
+                content: const Text(""))
+
+          ]);
+    }
+
+  }
+
 
   buildAppBar(BuildContext context) {
     return SliverAppBar(
@@ -368,7 +406,7 @@ class _MainScreenState extends State<MainScreen> {
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.5),
-                    offset: Offset(0,4),
+                    offset: const Offset(0,4),
                     blurRadius: 4,
                     spreadRadius: 0
                 )

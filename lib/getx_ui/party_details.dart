@@ -152,12 +152,17 @@ class PartyDetails2 extends StatelessWidget {
                                       // Text("Host : ${controller.parties[index!].hostId}",style: t.textTheme.headline3,),
                                       FutureBuilder(
                                         builder: (context,AsyncSnapshot<List<HostModel>>snapshot){
-                                          host = snapshot.data!;
-                                          if(snapshot.hasData) {
-                                            return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
-                                          } else {
-                                            return const CircularProgressIndicator();
+                                          try{
+                                            host = snapshot.data!;
+                                            if(snapshot.hasData) {
+                                              return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
+                                            } else {
+                                              return const CircularProgressIndicator();
+                                            }
+                                          }catch(e){
+                                            return const Center(child:CircularProgressIndicator());
                                           }
+
                                         },
                                         future: controller.fetchHostDetailsFuture(controller.parties[index!].hostId.toString()),
 
@@ -193,38 +198,43 @@ class PartyDetails2 extends StatelessWidget {
                               const SizedBox(height: 10,),
 
                               FutureBuilder(builder: (context,AsyncSnapshot<List<UserDetailsModel>> snapshot){
-                                guests = snapshot.data!;
-                                if(snapshot.hasData) {
-                                  return SizedBox(
-                                    width: w,
-                                    height: h*0.1,
-                                    child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context,thisIndex){
-                                          return CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: Color(0xff1BC100),
-                                            child: CircleAvatar(
-                                              radius: 38,
-                                              child: ClipOval(
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(controller.guests[thisIndex].userProfilePic.toString()),
-                                                          fit: BoxFit.cover
-                                                      )
+                                try{
+                                  guests = snapshot.data!;
+                                  if(snapshot.hasData) {
+                                    return SizedBox(
+                                      width: w,
+                                      height: h*0.1,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context,thisIndex){
+                                            return CircleAvatar(
+                                              radius: 40,
+                                              backgroundColor: Color(0xff1BC100),
+                                              child: CircleAvatar(
+                                                radius: 38,
+                                                child: ClipOval(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(controller.guests[thisIndex].userProfilePic.toString()),
+                                                            fit: BoxFit.cover
+                                                        )
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        separatorBuilder: (context,index)=>const SizedBox(width: 12,),
-                                        itemCount: controller.parties[index!].guests!.length),
-                                  );
-                                } else {
-                                  return const CircularProgressIndicator();
+                                            );
+                                          },
+                                          separatorBuilder: (context,index)=>const SizedBox(width: 12,),
+                                          itemCount: controller.parties[index!].guests!.length),
+                                    );
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                }catch(e){
+                                  return const Center(child: CircularProgressIndicator());
                                 }
+
                               },
                                 future: controller.fetchGuests(controller.parties[index!].guests!),
                               ),

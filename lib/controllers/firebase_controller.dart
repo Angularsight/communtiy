@@ -35,12 +35,6 @@ class FirebaseController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     _parties.bindStream(fetchPartyFromFirebase());
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   _userDetail.bindStream(fetchUserDetails(_parties[0].guests!));
-    // });
-    // Future.delayed(const Duration(seconds: 2), () {
-    //   _hostDetails.bindStream(fetchHostDetails(_parties[1].hostId!));
-    // });
 
   }
 
