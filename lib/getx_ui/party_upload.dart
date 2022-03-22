@@ -96,10 +96,7 @@ class _PartyUploadState extends State<PartyUpload> {
       final ref = FirebaseStorage.instance.ref().child("parties").child(partyName).child(partyName+i.toString()+'.jpg');
       await ref.putFile(imageList[j]).whenComplete(()async {
         await ref.getDownloadURL().then((value) {
-          // redundancyList.add(value);
-          // if(!redundancyList.contains(value) || i==1) {
-          //   urlList.add(value);
-          // }
+
           urlList.add(value);
         });
       });
@@ -107,19 +104,19 @@ class _PartyUploadState extends State<PartyUpload> {
     }
 
     print(urlList);
-    FirebaseFirestore.instance.collection('PartyDetails').doc().set({
-      'partyName':partyName,
-      'partyId':"#mvpis",
-      "partyHostId": 'Blank',
-      'hostId':"#mvpis",
-      'entryFee':int.parse(entryFee),
-      'description':description,
-      'location':location,
-      'time':time,
-      'date':date,
-      'guests':[],
-      'images':urlList
-    });
+    // FirebaseFirestore.instance.collection('PartyDetails').doc().set({
+    //   'partyName':partyName,
+    //   'partyId':"#mvpis",
+    //   "partyHostId": 'Blank',
+    //   'hostId':"#mvpis",
+    //   'entryFee':int.parse(entryFee),
+    //   'description':description,
+    //   'location':location,
+    //   'time':time,
+    //   'date':date,
+    //   'guests':[],
+    //   'images':urlList
+    // });
 
   }
 
@@ -211,7 +208,7 @@ class _PartyUploadState extends State<PartyUpload> {
                             width: w*0.58,
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  fillColor: Color(0xffFFF6F6),
+                                  fillColor: const Color(0xffFFF6F6),
                                   filled: true,
                                   hintText: 'Party title',
                                   border: OutlineInputBorder(
@@ -224,7 +221,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
 
-                              key: ValueKey('party Name'),
+                              key: const ValueKey('party Name'),
                               controller: partyTitleController,
                               focusNode: partyTitleNode,
                               onFieldSubmitted: (text){
@@ -285,7 +282,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
 
-                              key: ValueKey('Venue'),
+                              key: const ValueKey('Venue'),
                               controller: locationController,
                               focusNode: locationNode,
                               onFieldSubmitted: (text){
@@ -298,7 +295,7 @@ class _PartyUploadState extends State<PartyUpload> {
                             width: w*0.3,
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  fillColor: Color(0xffFFF6F6),
+                                  fillColor: const Color(0xffFFF6F6),
                                   suffixIcon: const Icon(Icons.people_outline),
                                   filled: true,
                                   hintText: 'Limit',
@@ -312,7 +309,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType: const TextInputType.numberWithOptions(decimal: true),
 
-                              key: ValueKey('Guest Limit'),
+                              key: const ValueKey('Guest Limit'),
                               controller: guestLimitController,
                               focusNode: guestLimitNode,
                               onFieldSubmitted: (text){
@@ -328,7 +325,7 @@ class _PartyUploadState extends State<PartyUpload> {
                         width: w,
                         child: TextFormField(
                           decoration: InputDecoration(
-                              fillColor: Color(0xffFFF6F6),
+                              fillColor: const Color(0xffFFF6F6),
                               suffixIcon: const Icon(Icons.access_time_outlined),
                               filled: true,
                               hintText: 'Date and Time',
@@ -355,7 +352,7 @@ class _PartyUploadState extends State<PartyUpload> {
                         height: h*0.25,
                         child: TextFormField(
                           decoration: InputDecoration(
-                              fillColor: Color(0xffFFF6F6),
+                              fillColor: const Color(0xffFFF6F6),
                               filled: true,
                               hintText: 'Tell us about your party here',
                               border: OutlineInputBorder(
@@ -370,7 +367,7 @@ class _PartyUploadState extends State<PartyUpload> {
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.multiline,
 
-                          key: ValueKey('time'),
+                          key: const ValueKey('time'),
                           controller: descriptionController,
                           focusNode: descriptionNode,
                           onFieldSubmitted: (text){
@@ -386,7 +383,7 @@ class _PartyUploadState extends State<PartyUpload> {
                             width: w*0.4,
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  fillColor: Color(0xffFFF6F6),
+                                  fillColor: const Color(0xffFFF6F6),
                                   filled: true,
                                   hintText: 'Promotion Brand',
                                   border: OutlineInputBorder(
@@ -399,7 +396,7 @@ class _PartyUploadState extends State<PartyUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
 
-                              key: ValueKey('time'),
+                              key: const ValueKey('time'),
                               controller: promotionController,
                               focusNode: promotionNode,
                               onFieldSubmitted: (text){
@@ -480,7 +477,7 @@ class _PartyUploadState extends State<PartyUpload> {
   Widget afterImagePick() {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    final t = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
