@@ -102,7 +102,6 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
 
                                   suggestionsCallback: partyController.partyQuerySuggestions,
-                                  debounceDuration: const Duration(milliseconds: 500),
                                   itemBuilder: (context,PartyDetails? suggestions){
                                     return ListTile(
                                       leading: Container(

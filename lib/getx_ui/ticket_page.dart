@@ -229,64 +229,6 @@ class TicketPage extends StatelessWidget {
             ),
 
 
-            // Positioned(
-            //   left: 80,
-            //   bottom: 20,
-            //   child: Container(
-            //     width: w*0.6,
-            //     height: 40,
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(10),
-            //         color: t.canvasColor,
-            //     ),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Padding(
-            //           padding: const EdgeInsets.only(left: 30.0),
-            //           child: Text("Take Screenshot",
-            //             style: t.textTheme.headline3!.copyWith(
-            //                 fontSize: 18,
-            //                 color: Colors.black,
-            //                 fontWeight: FontWeight.bold
-            //             ),
-            //           ),
-            //         ),
-            //         InkWell(
-            //           onTap: ()async{
-            //             /// Captures screenshot
-            //             final screenshot = await screenshotController.capture();
-            //             if(screenshot==null) return;
-            //
-            //             /// Stores in gallery
-            //             await saveImageToGallery(context,screenshot);
-            //
-            //           },
-            //           child: Container(
-            //             width: 50,
-            //             height: 40,
-            //             decoration: BoxDecoration(
-            //                 borderRadius: BorderRadius.circular(10),
-            //                 color: t.canvasColor,
-            //                 boxShadow: [
-            //                   BoxShadow(
-            //                       color: Colors.black.withOpacity(0.25),
-            //                       offset: const Offset(-4,4),
-            //                       blurRadius: 4,
-            //                       spreadRadius: 0
-            //                   )
-            //                 ]
-            //             ),
-            //             child: const Center(
-            //                 child:Icon(Icons.camera_alt_outlined,color: Colors.black,size: 25,)),
-            //           ),
-            //         )
-            //       ],
-            //     ),
-            //
-            //   ),
-            // ),
-
           ],
         ),
       ),

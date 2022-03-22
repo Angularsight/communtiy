@@ -1,6 +1,8 @@
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/guest_list.dart';
+import 'package:communtiy/getx_ui/login_screen.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
+import 'package:communtiy/getx_ui/splash_screen.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/providers/firebase_provider.dart';
 import 'package:communtiy/ui/home_page.dart';
@@ -35,7 +37,7 @@ class MyApp2 extends StatelessWidget {
       defaultTransition: Transition.rightToLeftWithFade,
       themeMode: ThemeMode.light,
       theme: Themes().themeData(),
-      home: BottomNavigationPage(),
+      home: const SplashScreen(),
       getPages: [
         GetPage(name: '/bottomNav',page: ()=> BottomNavigationPage()),
         GetPage(name: '/main', page: ()=> MainScreen()),
