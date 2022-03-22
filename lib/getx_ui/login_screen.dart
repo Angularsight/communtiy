@@ -142,6 +142,7 @@ class LoginScreen extends StatelessWidget {
                             password = text;
                           },
                         ),
+
                         SizedBox(height: h*0.02,),
                         Center(
                           child: InkWell(
