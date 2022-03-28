@@ -16,6 +16,7 @@ class PartyDetails with ChangeNotifier{
   final String? date;
   final List? guests;
   final List? images;
+
   final bool? specialAppearance;
   final String? djName;
   final List? playing;

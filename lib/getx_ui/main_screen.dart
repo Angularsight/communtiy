@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
         body: GestureDetector(
           onTap: (){
@@ -165,64 +165,72 @@ class _MainScreenState extends State<MainScreen> {
                             )
                         ),
 
-                        SizedBox(
-                          width: double.infinity,
-                          height: 400,
-                          child: PageView.builder(
-                              controller: pageController,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: partyController.parties.length,
-                              itemBuilder: (context,index){
-                                bool isActive = (index==currentPage);
-                                try{
-                                  return pageViewCard(index, isActive);
-                                }catch(e){
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Container(
-                                      height: 400,
-                                      width: double.infinity,
-                                      color: const Color(0xff414141),
-                                      child: Shimmer.fromColors(
-                                        baseColor: const Color(0xff2d2d2d),
-                                        highlightColor: const Color(0xff6a737c),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 300.0,left: 8,right: 8),
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width * 0.4,
-                                                height: 25,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(10)
+                        GetX<FirebaseController>(
+                          builder: (FirebaseController partyController) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 400,
+                              child: PageView.builder(
+                                  controller: pageController,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: partyController.parties.length,
+                                  itemBuilder: (context,index){
+                                    bool isActive = (index==currentPage);
+                                    try{
+                                      return pageViewCard(index, isActive);
+                                    }catch(e){
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Container(
+                                          height: 400,
+                                          width: w*0.9,
+                                          color: const Color(0xff414141),
+                                          child: Shimmer.fromColors(
+                                            baseColor: const Color(0xff2d2d2d),
+                                            highlightColor: const Color(0xff6a737c),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 300.0,left: 8,right: 8),
+                                                  child: Container(
+                                                    width: MediaQuery.of(context).size.width * 0.4,
+                                                    height: 25,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(10)
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                const SizedBox(height: 20,),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    height: 20,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(10)
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                            const SizedBox(height: 20,),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 20,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(10)
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                // return pageViewCard(index,isActive);
-                              }),
+                                      );
+                                    }
+                                    // return pageViewCard(index,isActive);
+                                  }),
+                            );
+                          }
                         ),
 
                         const SizedBox(height: 25,),
-                        buildActivitiesAndSpecialAppearance(context,partyController.parties[currentPage])
+                        // GetX<FirebaseController>(
+                        //   builder: (FirebaseController partyController) {
+                        //     return buildActivitiesAndSpecialAppearance(context,partyController.parties[currentPage]);
+                        //   }
+                        // )
 
 
                       ],
@@ -263,6 +271,7 @@ class _MainScreenState extends State<MainScreen> {
                       maxHeight: 300
                   ),
                   child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: activities.length,
                       itemBuilder: (context,index){
@@ -474,6 +483,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+
   Widget pageViewCard(int index, bool isActive) {
     double paddingTop = isActive?0:40;
     // double containerHeight = isActive?150:100;
@@ -483,7 +493,7 @@ class _MainScreenState extends State<MainScreen> {
         Get.to(() =>  PartyDetails2(index:currentPage));
       },
       child: AnimatedPadding(
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 500),
         padding: EdgeInsets.only(top: paddingTop,right: 30),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),

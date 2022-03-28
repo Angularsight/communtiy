@@ -53,6 +53,7 @@ class SplashScreen extends StatelessWidget {
                                 end: Alignment.bottomCenter).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0))
               ),
               child: AnimatedTextKit(
+                repeatForever: false,
                 pause: const Duration(milliseconds: 200),
 
                   animatedTexts: [

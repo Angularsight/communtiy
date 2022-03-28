@@ -62,6 +62,9 @@ dependencies:
   dotted_line: ^3.1.0
   accordion: ^2.2.3
 
+  #Inner shadow plugin
+  flutter_inset_box_shadow: ^1.0.7
+
 
   #For search and autocomplete
   flutter_typeahead: ^3.2.4
@@ -82,7 +85,7 @@ dependencies:
 
 
 
-  #Splash screen and onboarding
+  #Splash screen and onBoarding
   animated_text_kit: ^4.2.1
 
 
@@ -90,13 +93,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.9.2"
+  flutter_lints: ^1.0.0
+
+flutter_icons:
+    android: "launcher_icon"
+    ios: true
+    image_path: "assets/images/Logo 3.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

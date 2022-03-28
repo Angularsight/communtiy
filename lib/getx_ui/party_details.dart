@@ -1,3 +1,5 @@
+import 'package:accordion/accordion.dart';
+import 'package:accordion/controllers.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/checkout_page.dart';
@@ -7,8 +9,12 @@ import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../models/party_details.dart';
 
 class PartyDetails2 extends StatelessWidget {
   final int? index;
@@ -27,38 +33,57 @@ class PartyDetails2 extends StatelessWidget {
     final h =  MediaQuery.of(context).size.height;
     final t = Theme.of(context);
     return Scaffold(
+
+      bottomNavigationBar: InkWell(
+        onTap: (){
+          Get.to(()=>CheckoutPage(party: controller.parties[index!], host: host[0],));
+        },
+        child: Container(
+          width: w,
+          height: h*0.06,
+          decoration: BoxDecoration(
+            color: t.primaryColor,
+          ),
+          child: Center(child:Text("Enter Fest",style: t.textTheme.headline2!.copyWith(
+              shadows: [
+                Shadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0,3),
+                  blurRadius: 4,
+                )
+              ],
+              color: Colors.black,
+              fontSize: 18
+          ),)),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
               children: [
+                SizedBox(
+                  height: h*0.6,
+                  width: w,
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context,thisIndex){
+                        return imageCard(context,thisIndex);
+                      },
+                      separatorBuilder: (context,index)=>const SizedBox(width: 0,),
+                      itemCount: controller.parties[index!].images!.length),
+                ),
+
                 Column(
                   mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
-                      child: SizedBox(
-                        height: h*0.3,
-                        width: w,
-                        child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context,thisIndex){
-                              return imageCard(context,thisIndex);
-                            },
-                            separatorBuilder: (context,index)=>const SizedBox(width: 10,),
-                            itemCount: controller.parties[index!].images!.length),
-                      ),
+                     SizedBox(
+                      height: h*0.5,
                     ),
-
-                    const SizedBox(
-                      height: 30,
-                    ),
-
                     Container(
-                        height: h*0.9,
+                        // height: h*1.2,
                         width: w,
                         decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
@@ -69,6 +94,7 @@ class PartyDetails2 extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 25.0),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Flexible(
@@ -125,7 +151,7 @@ class PartyDetails2 extends StatelessWidget {
                               ),
 
                               const SizedBox(height: 20,),
-                              buildStrokeText("Venue : ${controller.parties[index!].location}", t, Color(0xff5B5B5B), Colors.white,17),
+                              buildStrokeText("Venue : ${controller.parties[index!].location}", t, const Color(0xff5B5B5B), Colors.white,17),
 
                               const SizedBox(height: 15,),
                               Flexible(
@@ -193,7 +219,7 @@ class PartyDetails2 extends StatelessWidget {
                                 flex: 5,
                                 child: Row(
                                   children: [
-                                    buildStrokeText("Guest List", t, Color(0xff5B5B5B), Colors.white,17),
+                                    buildStrokeText("Guest List", t, const Color(0xff5B5B5B), Colors.white,17),
                                     Padding(
                                       padding: const EdgeInsets.only(right: 15.0),
                                       child: InkWell(
@@ -224,7 +250,7 @@ class PartyDetails2 extends StatelessWidget {
                                           itemBuilder: (context,thisIndex){
                                             return CircleAvatar(
                                               radius: 40,
-                                              backgroundColor: Color(0xff1BC100),
+                                              backgroundColor: const Color(0xff1BC100),
                                               child: CircleAvatar(
                                                 radius: 38,
                                                 child: ClipOval(
@@ -262,22 +288,28 @@ class PartyDetails2 extends StatelessWidget {
 
 
                               const SizedBox(height: 10,),
-                              buildStrokeText("Time to celebrate", t, Color(0xff5B5B5B), Colors.white,17),
+                              buildStrokeText("Time to celebrate", t, const Color(0xff5B5B5B), Colors.white,17),
                               const SizedBox(height: 10,),
                               Text("${controller.parties[index!].description} ",style: t.textTheme.headline3,),
-
+                              const SizedBox(height: 10,),
+                              buildStrokeText("Activities", t, const Color(0xff5B5B5B), Colors.white,17),
+                              buildActivitiesSection(context,controller.parties[index!]),
+                              const SizedBox(height: 10,),
+                              buildStrokeText("Special Appearances", t, const Color(0xff5B5B5B), Colors.white,17),
+                              buildSpecialAppearanceSection(context,controller.parties[index!]),
                             ],
                           ),
                         )
                     ),
+
                   ],
                 ),
 
                 Padding(
-                  padding: EdgeInsets.only(left: 0,top: h*0.34),
+                  padding: EdgeInsets.only(left: 0,top: h*0.44),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: Color(0xff1BC100),
+                    backgroundColor: const Color(0xff1BC100),
                     child: CircleAvatar(
                       radius: 48,
                       child: ClipOval(
@@ -335,10 +367,140 @@ class PartyDetails2 extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.15,
-          width: MediaQuery.of(context).size.width *0.8,
+          width: MediaQuery.of(context).size.width,
           child: Image.network(controller.parties[index!].images![thisIndex],fit: BoxFit.cover,),
         ),
       ),
     );
+  }
+
+  Widget buildActivitiesSection(BuildContext context, PartyDetails party) {
+    final activities = {};
+    for (String element in party.activities!) {
+      final split = element.toString().split(',');
+      activities[split[0]] = split[1];
+    }
+
+    final t = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(right: 15.0),
+      child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(
+            minHeight: 50,
+            maxHeight: 300
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color:t.scaffoldBackgroundColor),
+        ),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: activities.length,
+            itemBuilder: (context,index){
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    buildStrokeText(activities.keys.toList()[index], t, Colors.black87, Colors.white, 14),
+                    Text(activities[activities.keys.toList()[index]].toString(),style: t.textTheme.headline3),
+                    const SizedBox(height: 10,)
+                  ],
+                ),
+              );
+            }),
+      ),
+    );
+  }
+
+  Widget buildSpecialAppearanceSection(BuildContext context, PartyDetails party) {
+    final t = Theme.of(context);
+    if (party.specialAppearance!) {
+      return Padding(
+      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.05,top: 10,bottom: 25),
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width * 0.5,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(party.djPhoto!),
+                    fit: BoxFit.cover),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)
+                )
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)
+                ),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.8),
+                      offset: const Offset(0,4),
+                      blurRadius: 4,
+                      spreadRadius: 0
+                  )
+                ]
+            ),
+            child: Column(
+              children: [
+                Text(party.djName!,style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                ) ,),
+                Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal
+                ))
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(top: 8.0,right: 15,bottom: 25),
+        child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width * 0.5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color:t.scaffoldBackgroundColor),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:  [
+              Text("Not available for this event ",style: Theme.of(context).textTheme.headline3!.copyWith(
+                  color: Colors.black.withOpacity(0.5),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15
+              )),
+              Text("Keep looking in other parties",style: Theme.of(context).textTheme.headline2!.copyWith(
+                  color: const Color(0xff5B5B5B),
+                  fontSize: 18
+              ),)
+            ],
+          ),
+        ),
+    ),
+      );
+    }
   }
 }

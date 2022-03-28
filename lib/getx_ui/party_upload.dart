@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -23,27 +24,41 @@ class _PartyUploadState extends State<PartyUpload> {
   final TextEditingController entryFeeController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
-  final TextEditingController descriptionController  = TextEditingController();
-  final TextEditingController promotionController  = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController djNameController = TextEditingController();
+  final TextEditingController djPlaying = TextEditingController();
+  final TextEditingController activityNameController = TextEditingController();
+  final TextEditingController activityDescriptionController =
+      TextEditingController();
   final TextEditingController guestLimitController = TextEditingController();
 
-  late FocusNode partyTitleNode ;
-  late FocusNode entryFeeNode ;
-  late FocusNode locationNode ;
-  late FocusNode timeNode ;
-  late FocusNode descriptionNode ;
-  late FocusNode promotionNode ;
+  late FocusNode partyTitleNode;
+  late FocusNode entryFeeNode;
+  late FocusNode locationNode;
+  late FocusNode timeNode;
+  late FocusNode descriptionNode;
+  late FocusNode djNameNode;
   late FocusNode guestLimitNode;
+  late FocusNode djPlayingNode;
+  late FocusNode activityNameNode;
+  late FocusNode activityDescriptionNode;
 
   String partyName = '';
   String entryFee = '';
   String location = '';
   String time = '';
   String description = '';
-  String promotionBrand = '';
   String date = "";
   String guestLimit = '';
 
+  /// Special Appearance and activities
+  bool specialAppearance = false;
+  String djName = '';
+  List<String> playing = [];
+  List<File> djPhoto = [];
+  List<String> activities = [];
+  String activityName = '';
+  String activityDetail = '';
 
   @override
   void initState() {
@@ -54,8 +69,12 @@ class _PartyUploadState extends State<PartyUpload> {
     locationNode = FocusNode();
     timeNode = FocusNode();
     descriptionNode = FocusNode();
-    promotionNode = FocusNode();
+    djNameNode = FocusNode();
     guestLimitNode = FocusNode();
+    djNameNode = FocusNode();
+    djPlayingNode = FocusNode();
+    activityNameNode = FocusNode();
+    activityDescriptionNode = FocusNode();
   }
 
   @override
@@ -69,41 +88,70 @@ class _PartyUploadState extends State<PartyUpload> {
     descriptionNode.dispose();
   }
 
-
-
   File? pickedImage;
   bool pickedImageBool = false;
   List<File> imageList = [];
   int photoIndex = 0;
   final urlList = [];
-  final redundancyList =[];
-  void _pickImageFromGallery() async{
+  final djUrlList = [];
+  final activitiesList = [];
+  final redundancyList = [];
+  void _pickImageFromGallery() async {
     final imagePicker = ImagePicker();
-    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    final selectedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
 
     setState(() {
       pickedImageBool = true;
       pickedImage = pickedImageFile;
       imageList.add(pickedImageFile);
-      photoIndex = imageList.length-1;
+      photoIndex = imageList.length - 1;
     });
   }
 
-  void _uploadToFirebase() async{
-    int i=1;
-    for(int j=0;j<imageList.length;j++){
-      final ref = FirebaseStorage.instance.ref().child("parties").child(partyName).child(partyName+i.toString()+'.jpg');
-      await ref.putFile(imageList[j]).whenComplete(()async {
-        await ref.getDownloadURL().then((value) {
+  ///Activity and special Appearance
+  int activityCount = 0;
+  bool djPickedImageBool = false;
+  void _pickDJImage() async {
+    final imagePicker = ImagePicker();
+    final selectedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedImageFile = File(selectedImage!.path);
 
+    setState(() {
+      djPickedImageBool = true;
+      pickedImage = pickedImageFile;
+      djPhoto.add(pickedImageFile);
+    });
+  }
+
+  void _prepareDataForFirebase() async {
+    int i = 1;
+    for (int j = 0; j < imageList.length; j++) {
+      final ref = FirebaseStorage.instance.ref().child("parties").child(partyName).child(partyName + i.toString() + '.jpg');
+      await ref.putFile(imageList[j]).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
           urlList.add(value);
         });
       });
-      i+=1;
+      i += 1;
     }
 
     print(urlList);
+
+    final ref2 = FirebaseStorage.instance.ref().child('parties').child(partyName).child('DJ').child(djName+'.jpg');
+    await ref2.putFile(djPhoto[0]).whenComplete(() async {
+      await ref2.getDownloadURL().then((value) {
+        djUrlList.add(value);
+      });
+    });
+
+    print("djUrlListtttttttttttt :$djUrlList");
+    activitiesList.add(activityNameController.text+','+activityDescriptionController.text);
+    print('activitesList : $activitiesList');
+    _uploadDataToFirebase();
+
     // FirebaseFirestore.instance.collection('PartyDetails').doc().set({
     //   'partyName':partyName,
     //   'partyId':"#mvpis",
@@ -117,46 +165,65 @@ class _PartyUploadState extends State<PartyUpload> {
     //   'guests':[],
     //   'images':urlList
     // });
+  }
+
+  void _uploadDataToFirebase() {
+    FirebaseFirestore.instance.collection('PartyDetails').doc().set({
+        'partyName':partyName,
+        'partyId':"#mvpis",
+        "partyHostId": 'Blank',
+        'hostId':"#mvpis",
+        'entryFee':int.parse(entryFee),
+        'description':description,
+        'location':location,
+        'time':time,
+        'date':date,
+        'guests':[],
+        'images':urlList,
+        'specialAppearance':specialAppearance,
+        'djName':djName,
+        'playing':playing,
+        'djPhoto':djUrlList[0].toString(),
+        'activities':activitiesList
+    });
 
   }
 
-
-  Future _pickDateTime() async{
+  Future _pickDateTime() async {
     final datePicked = await _pickDate();
-    if(datePicked!=null){
+    if (datePicked != null) {
       setState(() {
         // date = "${datePicked.day}/${datePicked.month}/${datePicked.year}";
-        date = DateFormat('EEE, MMM d, ''yyy ').format(datePicked).toString();
+        date = DateFormat('EEE, MMM d, ' 'yyy ').format(datePicked).toString();
       });
     }
 
     final timePicked = await _pickTime();
-    if(timePicked!=null){
+    if (timePicked != null) {
       setState(() {
-        time = "${timePicked.hour}:${timePicked.minute}${timePicked.period.name}";
+        time =
+            "${timePicked.hour}:${timePicked.minute}${timePicked.period.name}";
       });
     }
     print("$date \n Time: $time");
     timeController.text = " $date  @$time";
   }
 
-
-  Future<DateTime?> _pickDate(){
+  Future<DateTime?> _pickDate() {
     return showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year+1)
-    );
+        lastDate: DateTime(DateTime.now().year + 1));
   }
 
-  Future<TimeOfDay?> _pickTime(){
+  Future<TimeOfDay?> _pickTime() {
     return showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
+      context: context,
+      initialTime:
+          TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +233,6 @@ class _PartyUploadState extends State<PartyUpload> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: buildAppBar(context),
-
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -175,37 +241,44 @@ class _PartyUploadState extends State<PartyUpload> {
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      pickedImageBool?afterImagePick():Container(
-                        width: w,
-                        height: h * 0.3,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-
-                        child: Center(
-                            child: InkWell(
-                              onTap: (){
-                                _pickImageFromGallery();
-                              },
-                              child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey.withOpacity(0.4)),
-                                  child:const Center(child: Text("+", style: TextStyle(fontSize: 35, color: Colors.white),),)
-                              ),
-                            )),
+                      pickedImageBool
+                          ? afterImagePick()
+                          : Container(
+                              width: w,
+                              height: h * 0.3,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                  child: InkWell(
+                                onTap: () {
+                                  _pickImageFromGallery();
+                                },
+                                child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.grey.withOpacity(0.4)),
+                                    child: const Center(
+                                      child: Text(
+                                        "+",
+                                        style: TextStyle(
+                                            fontSize: 35, color: Colors.white),
+                                      ),
+                                    )),
+                              )),
+                            ),
+                      const SizedBox(
+                        height: 20,
                       ),
-
-                      const SizedBox(height: 20,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: w*0.58,
+                            width: w * 0.58,
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: const Color(0xffFFF6F6),
@@ -214,85 +287,82 @@ class _PartyUploadState extends State<PartyUpload> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          style: BorderStyle.none
-                                      )
-                                  )
-                              ),
+                                          style: BorderStyle.none))),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
-
                               key: const ValueKey('party Name'),
                               controller: partyTitleController,
                               focusNode: partyTitleNode,
-                              onFieldSubmitted: (text){
+                              onFieldSubmitted: (text) {
                                 partyName = text;
-                                FocusScope.of(context).requestFocus(entryFeeNode);
+                                FocusScope.of(context)
+                                    .requestFocus(entryFeeNode);
                               },
                             ),
                           ),
                           SizedBox(
-                            width: w*0.3,
+                            width: w * 0.3,
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: const Color(0xffFFF6F6),
                                   filled: true,
+                                  prefixText: "Rs.",
                                   hintText: 'Entry Fee',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          style: BorderStyle.none
-                                      )
-                                  )
-                              ),
+                                          style: BorderStyle.none))),
                               textInputAction: TextInputAction.next,
-                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
 
                               key: const ValueKey('Entry Fee'),
                               controller: entryFeeController,
                               focusNode: entryFeeNode,
                               // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
-                              onFieldSubmitted: (text){
+                              onFieldSubmitted: (text) {
                                 entryFee = text;
-                                FocusScope.of(context).requestFocus(locationNode);
+                                FocusScope.of(context)
+                                    .requestFocus(locationNode);
                               },
                             ),
                           )
                         ],
                       ),
-
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: w*0.58,
+                            width: w * 0.58,
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: const Color(0xffFFF6F6),
-                                  suffixIcon: const Icon(Icons.location_on_outlined),
+                                  suffixIcon:
+                                      const Icon(Icons.location_on_outlined),
                                   filled: true,
                                   hintText: 'Location',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          style: BorderStyle.none
-                                      )
-                                  )
-                              ),
+                                          style: BorderStyle.none))),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
-
                               key: const ValueKey('Venue'),
                               controller: locationController,
                               focusNode: locationNode,
-                              onFieldSubmitted: (text){
+                              onFieldSubmitted: (text) {
                                 location = text;
-                                FocusScope.of(context).requestFocus(guestLimitNode);
+                                FocusScope.of(context)
+                                    .requestFocus(guestLimitNode);
                               },
                             ),
                           ),
                           SizedBox(
-                            width: w*0.3,
+                            width: w * 0.3,
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: const Color(0xffFFF6F6),
@@ -302,17 +372,15 @@ class _PartyUploadState extends State<PartyUpload> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          style: BorderStyle.none
-                                      )
-                                  )
-                              ),
+                                          style: BorderStyle.none))),
                               textInputAction: TextInputAction.next,
-                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
                               key: const ValueKey('Guest Limit'),
                               controller: guestLimitController,
                               focusNode: guestLimitNode,
-                              onFieldSubmitted: (text){
+                              onFieldSubmitted: (text) {
                                 guestLimit = text;
                                 FocusScope.of(context).requestFocus(timeNode);
                               },
@@ -320,36 +388,38 @@ class _PartyUploadState extends State<PartyUpload> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SizedBox(
                         width: w,
                         child: TextFormField(
                           decoration: InputDecoration(
                               fillColor: const Color(0xffFFF6F6),
-                              suffixIcon: const Icon(Icons.access_time_outlined),
+                              suffixIcon:
+                                  const Icon(Icons.access_time_outlined),
                               filled: true,
                               hintText: 'Date and Time',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                      style: BorderStyle.none
-                                  )
-                              )
-                          ),
+                                      style: BorderStyle.none))),
                           textInputAction: TextInputAction.next,
                           readOnly: true,
                           key: const ValueKey('Date and Time'),
                           controller: timeController,
                           focusNode: timeNode,
-                          onTap: (){
+                          onTap: () {
                             _pickDateTime();
                           },
                         ),
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       SizedBox(
                         width: w,
-                        height: h*0.25,
+                        height: h * 0.25,
                         child: TextFormField(
                           decoration: InputDecoration(
                               fillColor: const Color(0xffFFF6F6),
@@ -358,113 +428,241 @@ class _PartyUploadState extends State<PartyUpload> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
-                                      style: BorderStyle.none
-                                  )
-                              )
-                          ),
+                                      style: BorderStyle.none))),
                           maxLines: 10,
                           textCapitalization: TextCapitalization.sentences,
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.multiline,
-
                           key: const ValueKey('time'),
                           controller: descriptionController,
                           focusNode: descriptionNode,
-                          onFieldSubmitted: (text){
+                          onFieldSubmitted: (text) {
                             description = text;
-                            FocusScope.of(context).requestFocus(promotionNode);
+                            FocusScope.of(context).unfocus();
                           },
                         ),
                       ),
-                      const SizedBox(height: 10,),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         children: [
+                          Text(
+                            "Special Appearance and Activities",
+                            style: t.textTheme.headline1!.copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Checkbox(
+                            checkColor: Colors.black,
+                            fillColor: MaterialStateProperty.all(t.primaryColor),
+                              value: specialAppearance,
+                              onChanged: (value){
+                                setState(() {
+                                  specialAppearance = !specialAppearance;
+                                });
+                              })
+                        ],
+                      ),
+                      specialAppearance?Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(child: afterImagePick2()),
+                          Text(
+                            "DJ name",
+                            style: t.textTheme.headline1!
+                                .copyWith(fontSize: 18, color: Colors.white),
+                          ),
                           SizedBox(
-                            width: w*0.4,
+                            width: w * 0.4,
+                            height: w * 0.12,
                             child: TextFormField(
                               decoration: InputDecoration(
                                   fillColor: const Color(0xffFFF6F6),
                                   filled: true,
-                                  hintText: 'Promotion Brand',
+                                  hintText: 'Enter DJ Name',
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          style: BorderStyle.none
-                                      )
-                                  )
-                              ),
+                                          style: BorderStyle.none))),
+                              textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.name,
-
+                              key: const ValueKey('DJ Name'),
+                              controller: djNameController,
+                              focusNode: djNameNode,
+                              onFieldSubmitted: (text) {
+                                djName = text;
+                                FocusScope.of(context).requestFocus(djPlayingNode);
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Will be playing",
+                            style: t.textTheme.headline1!
+                                .copyWith(fontSize: 18, color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: w,
+                            height: h * 0.08,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  fillColor: const Color(0xffFFF6F6),
+                                  filled: true,
+                                  hintText: 'Enter with commas',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          style: BorderStyle.none))),
+                              textCapitalization: TextCapitalization.sentences,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.multiline,
+                              key: const ValueKey('DJ songs'),
+                              controller: djPlaying,
+                              focusNode: djPlayingNode,
+                              onEditingComplete: (){
+                                playing.add(djPlaying.text);
+                              },
+                              onFieldSubmitted: (text) {
+                                playing.add(text);
+                                FocusScope.of(context)
+                                    .requestFocus(activityNameNode);
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Activity",
+                            style: t.textTheme.headline1!.copyWith(
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: w,
+                            height: h * 0.08,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  fillColor: const Color(0xffFFF6F6),
+                                  filled: true,
+                                  hintText: 'Enter Activity Name',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          style: BorderStyle.none))),
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.name,
+                              key: const ValueKey('Activity Name'),
+                              controller: activityNameController,
+                              focusNode: activityNameNode,
+                              onFieldSubmitted: (text) {
+                                activityName = text;
+                                FocusScope.of(context)
+                                    .requestFocus(activityDescriptionNode);
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: w,
+                            height: h * 0.25,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  fillColor: const Color(0xffFFF6F6),
+                                  filled: true,
+                                  hintText: 'Enter activity description',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          style: BorderStyle.none))),
+                              maxLines: 10,
+                              textCapitalization: TextCapitalization.sentences,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.multiline,
                               key: const ValueKey('time'),
-                              controller: promotionController,
-                              focusNode: promotionNode,
-                              onFieldSubmitted: (text){
-                                promotionBrand = text;
+                              controller: activityDescriptionController,
+                              focusNode: activityDescriptionNode,
+                              onFieldSubmitted: (text) {
+                                activityDetail = text;
+                                FocusScope.of(context).unfocus();
                               },
                             ),
                           ),
                         ],
-                      ),
+                      ):Row(),
 
-                      const SizedBox(height: 20,),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           InkWell(
-                            onTap:(){
-                              print("$imageList");
-                              _uploadToFirebase();
-
+                            onTap: () {
+                              print("Images selected :$imageList");
+                              print(
+                                  // 'partyName : $partyName \n Entry Fee : $entryFee \n Location:$location \n Party limit : $guestLimit \n Date and Time: $date $time \n Description : $description '
+                                      '\n specialAppearance:$specialAppearance \n djName: $djName djPhoto:$djPhoto \n djSongs:$playing \n Activity name:$activityName \n activity detail:$activityDetail');
+                              _prepareDataForFirebase();
                             },
                             child: Container(
-                              width: w*0.3,
-                              height: h*0.05,
+                              width: w * 0.3,
+                              height: h * 0.05,
                               decoration: BoxDecoration(
                                   color: t.primaryColor,
                                   borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)
-                                  )
-                              ),
-                              child: Center(child:Text("Next",style: t.textTheme.headline1!.copyWith(
-                                  color: Colors.black
-                              ),)),
+                                      topRight: Radius.circular(10))),
+                              child: Center(
+                                  child: Text(
+                                "Next",
+                                style: t.textTheme.headline1!
+                                    .copyWith(color: Colors.black),
+                              )),
                             ),
                           ),
                           InkWell(
-                            onTap:(){
+                            onTap: () {
                               partyTitleController.clear();
                               entryFeeController.clear();
                               locationController.clear();
                               timeController.clear();
                               descriptionController.clear();
-                              promotionController.clear();
+                              djNameController.clear();
+                              djPlaying.clear();
+                              activityDescriptionController.clear();
+                              activityNameController.clear();
                               imageList.clear();
                               setState(() {
                                 pickedImageBool = false;
+                                djPickedImageBool = false;
                                 urlList.clear();
                               });
                             },
                             child: Container(
-                              width: w*0.3,
-                              height: h*0.05,
+                              width: w * 0.3,
+                              height: h * 0.05,
                               decoration: const BoxDecoration(
                                   color: Colors.redAccent,
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10)
-                                  )
-                              ),
-                              child: Center(child:Text("Clear all",style: t.textTheme.headline1!.copyWith(
-                                  color: Colors.black
-                              ),)),
+                                      topRight: Radius.circular(10))),
+                              child: Center(
+                                  child: Text(
+                                "Clear all",
+                                style: t.textTheme.headline1!
+                                    .copyWith(color: Colors.black),
+                              )),
                             ),
                           ),
                         ],
                       ),
-
-
                     ],
                   ),
                 )),
@@ -480,49 +678,64 @@ class _PartyUploadState extends State<PartyUpload> {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
       children: [
         SizedBox(
-          width: w*0.6,
-          height: h*0.3,
+          width: w * 0.6,
+          height: h * 0.3,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.file(imageList[photoIndex],fit: BoxFit.cover,),
+            child: Image.file(
+              imageList[photoIndex],
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Column(
           children: [
             InkWell(
-              onTap: (){
+              onTap: () {
                 _pickImageFromGallery();
               },
               child: Container(
-                height: h*0.06,
-                width: h*0.15,
+                height: h * 0.06,
+                width: h * 0.15,
                 decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(5)
-                ),
-                child: const Center(child:Icon(Icons.add,size: 25,color: Colors.white,)),
+                    borderRadius: BorderRadius.circular(5)),
+                child: const Center(
+                    child: Icon(
+                  Icons.add,
+                  size: 25,
+                  color: Colors.white,
+                )),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             SizedBox(
-              width: w*0.3,
-              height: h*0.3,
+              width: w * 0.3,
+              height: h * 0.3,
               child: ListView.builder(
                   itemCount: imageList.length,
-                  itemBuilder: (context,index){
+                  itemBuilder: (context, index) {
                     return InkWell(
-                        onTap: (){
+                        onTap: () {
                           setState(() {
                             photoIndex = index;
                           });
                         },
                         child: Column(
                           children: [
-                            ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.file(imageList[index],fit: BoxFit.cover,)),
-                            const SizedBox(height: 10,)
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.file(
+                                  imageList[index],
+                                  fit: BoxFit.cover,
+                                )),
+                            const SizedBox(
+                              height: 10,
+                            )
                           ],
                         ));
                   }),
@@ -531,6 +744,49 @@ class _PartyUploadState extends State<PartyUpload> {
         )
       ],
     );
+  }
+
+  Widget afterImagePick2() {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+
+    return djPickedImageBool
+        ? SizedBox(
+            width: w * 0.5,
+            height: w * 0.5,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.file(
+                djPhoto[0],
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        : Container(
+            width: w * 0.5,
+            height: w * 0.5,
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(10)),
+            child: Center(
+                child: InkWell(
+              onTap: () {
+                _pickDJImage();
+              },
+              child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.withOpacity(0.4)),
+                  child: const Center(
+                    child: Text(
+                      "+",
+                      style: TextStyle(fontSize: 35, color: Colors.white),
+                    ),
+                  )),
+            )),
+          );
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -611,4 +867,6 @@ class _PartyUploadState extends State<PartyUpload> {
       ],
     );
   }
+
+
 }

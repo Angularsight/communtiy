@@ -4,8 +4,6 @@ import 'package:communtiy/getx_ui/login_screen.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/getx_ui/splash_screen.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/providers/firebase_provider.dart';
-import 'package:communtiy/ui/home_page.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,28 +49,3 @@ class MyApp2 extends StatelessWidget {
 
 
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_)=>FirebaseProvider()),
-        ChangeNotifierProvider(create: (_)=>PartyDetails())
-      ],
-
-      builder: (context,child){
-        return MaterialApp(
-          title: 'Project Community',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: const HomePage(),
-        );
-      },
-    );
-  }
-}
