@@ -150,7 +150,9 @@ class _PartyUploadState extends State<PartyUpload> {
     print("djUrlListtttttttttttt :$djUrlList");
     activitiesList.add(activityNameController.text+','+activityDescriptionController.text);
     print('activitesList : $activitiesList');
-    _uploadDataToFirebase();
+    final playingSongs = playing[0].split(',');
+    print('playingSongsssssssssssss $playingSongs');
+    _uploadDataToFirebase(playingSongs);
 
     // FirebaseFirestore.instance.collection('PartyDetails').doc().set({
     //   'partyName':partyName,
@@ -167,7 +169,8 @@ class _PartyUploadState extends State<PartyUpload> {
     // });
   }
 
-  void _uploadDataToFirebase() {
+  void _uploadDataToFirebase(List<String> playingSongs) {
+
     FirebaseFirestore.instance.collection('PartyDetails').doc().set({
         'partyName':partyName,
         'partyId':"#mvpis",
@@ -182,7 +185,7 @@ class _PartyUploadState extends State<PartyUpload> {
         'images':urlList,
         'specialAppearance':specialAppearance,
         'djName':djName,
-        'playing':playing,
+        'playing':playingSongs,
         'djPhoto':djUrlList[0].toString(),
         'activities':activitiesList
     });
@@ -232,7 +235,7 @@ class _PartyUploadState extends State<PartyUpload> {
     final t = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context),
+      // appBar: buildAppBar(context),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -638,11 +641,16 @@ class _PartyUploadState extends State<PartyUpload> {
                               djPlaying.clear();
                               activityDescriptionController.clear();
                               activityNameController.clear();
+                              guestLimitController.clear();
                               imageList.clear();
+
                               setState(() {
                                 pickedImageBool = false;
                                 djPickedImageBool = false;
                                 urlList.clear();
+                                activities.clear();
+                                djUrlList.clear();
+                                djPhoto.clear();
                               });
                             },
                             child: Container(

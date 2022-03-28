@@ -22,6 +22,7 @@ class MatchedScreen extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: buildAppBar(context),
       body: Stack(

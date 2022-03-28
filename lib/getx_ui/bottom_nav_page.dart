@@ -4,6 +4,7 @@ import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/party_upload.dart';
+import 'package:communtiy/getx_ui/upload_tab.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class BottomNavigationPage extends StatelessWidget {
             children:  [
               MainScreen(),
               MatchedScreen(),
-              PartyUpload()
+              UploadTab()
             ],
           ),
           bottomNavigationBar: BottomAppBar(

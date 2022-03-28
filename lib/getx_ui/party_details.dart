@@ -162,7 +162,7 @@ class PartyDetails2 extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Date : ${controller.parties[index!].date}",style: t.textTheme.headline3,),
-                                      Text("Time : ${controller.parties[index!].time} pm",style: t.textTheme.headline3,),
+                                      Text("Time : ${controller.parties[index!].time}",style: t.textTheme.headline3,),
                                     ],
                                   ),
                                 ),
@@ -462,11 +462,16 @@ class PartyDetails2 extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold
                 ) ,),
-                Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
+                Text("Playing : ${party.playing![0]} ",style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: Colors.white,
                     fontWeight: FontWeight.normal
                 ))
+                // Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
+                //     fontSize: 12,
+                //     color: Colors.white,
+                //     fontWeight: FontWeight.normal
+                // ))
               ],
             ),
           )

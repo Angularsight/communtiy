@@ -494,7 +494,7 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 500),
-        padding: EdgeInsets.only(top: paddingTop,right: 30),
+        padding: EdgeInsets.only(top: paddingTop,right: 20),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Stack(
