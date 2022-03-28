@@ -154,19 +154,6 @@ class _PartyUploadState extends State<PartyUpload> {
     print('playingSongsssssssssssss $playingSongs');
     _uploadDataToFirebase(playingSongs);
 
-    // FirebaseFirestore.instance.collection('PartyDetails').doc().set({
-    //   'partyName':partyName,
-    //   'partyId':"#mvpis",
-    //   "partyHostId": 'Blank',
-    //   'hostId':"#mvpis",
-    //   'entryFee':int.parse(entryFee),
-    //   'description':description,
-    //   'location':location,
-    //   'time':time,
-    //   'date':date,
-    //   'guests':[],
-    //   'images':urlList
-    // });
   }
 
   void _uploadDataToFirebase(List<String> playingSongs) {

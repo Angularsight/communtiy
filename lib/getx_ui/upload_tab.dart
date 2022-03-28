@@ -34,7 +34,7 @@ class _UploadTabState extends State<UploadTab> with TickerProviderStateMixin{
           controller: _tabController,
           children: [
             PartyUpload(),
-            const UserUpload(),
+            UserUpload(),
           ]),
     );
   }
