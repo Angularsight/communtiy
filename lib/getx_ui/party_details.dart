@@ -381,6 +381,10 @@ class PartyDetails2 extends StatelessWidget {
       activities[split[0]] = split[1];
     }
 
+    if(activities.isEmpty){
+      activities['Null'] = 1;
+    }
+
     final t = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(right: 15.0),
@@ -400,7 +404,8 @@ class PartyDetails2 extends StatelessWidget {
             shrinkWrap: true,
             itemCount: activities.length,
             itemBuilder: (context,index){
-              return Padding(
+            print("activities Length :${activities.length}");
+              return !activities.keys.contains("Null")?Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment:
@@ -411,6 +416,13 @@ class PartyDetails2 extends StatelessWidget {
                     const SizedBox(height: 10,)
                   ],
                 ),
+              ):Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Center(child: Text("No activities in this event as of yet",style: Theme.of(context).textTheme.headline3!.copyWith(
+                    color: Colors.black.withOpacity(0.5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15
+                )),)
               );
             }),
       ),
@@ -456,22 +468,44 @@ class PartyDetails2 extends StatelessWidget {
                 ]
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(party.djName!,style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.white,
                     fontWeight: FontWeight.bold
                 ) ,),
-                Text("Playing : ${party.playing![0]} ",style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal
-                ))
-                // Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
-                //     fontSize: 12,
-                //     color: Colors.white,
-                //     fontWeight: FontWeight.normal
-                // ))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 25,
+                      child: Text("Playing : ",style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal
+                      ),),
+                    ),
+                    SizedBox(
+                      height: 25,
+                      child: ListView.separated(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                          itemBuilder: (context,index)=>index!=party.playing!.length-1?Text("${party.playing![index]},",style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal
+                          )):Text("${party.playing![index]}",style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal
+                          )),
+                          separatorBuilder: (context,index)=>const SizedBox(width: 2,),
+                          itemCount: party.playing!.length)
+                    ),
+                  ],
+                )
               ],
             ),
           )

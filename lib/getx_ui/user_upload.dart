@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/getx_ui/interest_upload.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -41,6 +43,7 @@ class _UserUploadState extends State<UserUpload> {
   String password = '';
   String phoneNumber = "";
 
+  final OnBoardingController onBoardingController = Get.put(OnBoardingController());
 
   @override
   void initState() {
@@ -128,11 +131,10 @@ class _UserUploadState extends State<UserUpload> {
     });
 
     print("Profile pic url :$userProfilePicUrlList");
-
-
+    _uploadDataToFirebase();
   }
 
-  void _uploadDataToFirebase(List<String> playingSongs) {
+  void _uploadDataToFirebase() {
     FirebaseFirestore.instance.collection('UserDetails').doc().set({
       'userId':'something',
       'userName':username,
@@ -158,6 +160,7 @@ class _UserUploadState extends State<UserUpload> {
       body: Stack(
         children: [
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Form(
                 key: _formKey,
                 child: Padding(
@@ -295,7 +298,7 @@ class _UserUploadState extends State<UserUpload> {
                               textInputAction: TextInputAction.next,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                      decimal: true),
+                                      decimal: false),
                               key: const ValueKey('Xp'),
                               controller: xpController,
                               focusNode: xpNode,
@@ -344,7 +347,7 @@ class _UserUploadState extends State<UserUpload> {
                               fillColor: const Color(0xffFFF6F6),
                               filled: true,
                               hintText: "Password",
-                              suffixIcon: Icon(Icons.password),
+                              suffixIcon: const Icon(Icons.password),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -375,8 +378,11 @@ class _UserUploadState extends State<UserUpload> {
                       const SizedBox(
                         height: 20,
                       ),
+
+
+                      // InterestsUpload(listName: "Anime",interestList: onBoardingController.animeList,),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           InkWell(
                             onTap: () {
@@ -393,10 +399,30 @@ class _UserUploadState extends State<UserUpload> {
                                       topRight: Radius.circular(10))),
                               child: Center(
                                   child: Text(
-                                "Next",
+                                "Upload",
                                 style: t.textTheme.headline1!
                                     .copyWith(color: Colors.black),
                               )),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.to(()=>InterestsUpload());
+                            },
+                            child: Container(
+                              width: w * 0.3,
+                              height: h * 0.05,
+                              decoration: const BoxDecoration(
+                                  color: Color(0xffefd151),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10))),
+                              child: Center(
+                                  child: Text(
+                                    "Next",
+                                    style: t.textTheme.headline1!
+                                        .copyWith(color: Colors.black),
+                                  )),
                             ),
                           ),
                           InkWell(
@@ -410,7 +436,7 @@ class _UserUploadState extends State<UserUpload> {
                               urlList2.clear();
                               userProfilePic.clear();
                               userProfilePicUrlList.clear();
-
+                              passwordController.clear();
                               setState(() {
                                 pickedImageBool2 = false;
                                 userImagePickedBool = false;
@@ -519,7 +545,7 @@ class _UserUploadState extends State<UserUpload> {
 
   Widget afterImagePick2() {
     final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
 
     if (userImagePickedBool) {
       return SizedBox(

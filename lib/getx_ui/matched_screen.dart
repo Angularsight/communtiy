@@ -156,7 +156,7 @@ class MatchedScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (context, index) => SizedBox(width: 2,),
-                            itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images!.length),
+                            itemCount: controller.parties.length),
                       ),
                     ],
                   ),

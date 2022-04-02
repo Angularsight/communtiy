@@ -37,8 +37,9 @@ dependencies:
   intl:
 
 
-  #firebase
+  #firebase and google sign in
   firebase_auth: ^3.1.0
+  google_sign_in: ^5.2.2
   firebase_core: ^1.6.0
   cloud_firestore:
   firebase_storage: ^10.2.9
@@ -61,6 +62,7 @@ dependencies:
   image_picker: ^0.8.4
   dotted_line: ^3.1.0
   accordion: ^2.2.3
+  expandable: ^5.0.1
 
   #Inner shadow plugin
   flutter_inset_box_shadow: ^1.0.7
@@ -82,7 +84,6 @@ dependencies:
   #Save screenshot to gallery and share
   screenshot: ^1.2.3
   image_gallery_saver: ^1.7.1
-
 
 
   #Splash screen and onBoarding

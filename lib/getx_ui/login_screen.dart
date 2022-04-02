@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class LoginScreen extends StatelessWidget {
 
   String email ='';
   String password = '';
+
+  final GoogleSignInController googleSignInController = Get.put(GoogleSignInController());
 
   @override
   Widget build(BuildContext context) {
@@ -216,36 +219,41 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: h*0.01,),
                   Center(
-                    child: Container(
-                      width: w*0.75,
-                      height: h*0.055,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color(0xff1E1E1E),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.8),
-                                offset: const Offset(0,4),
-                                blurRadius: 4,
-                                spreadRadius: 0
-                            )
-                          ]
-                      ),
-                      child: Padding(
-                        padding:  const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("Continue with Google",style:TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold
-                            ) ,),
-                            CircleAvatar(
-                              radius:25,
-                                backgroundColor: Colors.white,
-                                child: ClipOval(child: Image.asset('assets/images/google logo.png',fit: BoxFit.contain)))
-                          ],
+                    child: InkWell(
+                      onTap: (){
+                        // googleSignInController.googleLogin();
+                      },
+                      child: Container(
+                        width: w*0.75,
+                        height: h*0.055,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: const Color(0xff1E1E1E),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.8),
+                                  offset: const Offset(0,4),
+                                  blurRadius: 4,
+                                  spreadRadius: 0
+                              )
+                            ]
+                        ),
+                        child: Padding(
+                          padding:  const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("Continue with Google",style:TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                              ) ,),
+                              CircleAvatar(
+                                radius:25,
+                                  backgroundColor: Colors.white,
+                                  child: ClipOval(child: Image.asset('assets/images/google logo.png',fit: BoxFit.contain)))
+                            ],
+                          ),
                         ),
                       ),
                     ),

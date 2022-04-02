@@ -58,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     return Scaffold(
         body: GestureDetector(
           onTap: (){
@@ -74,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
                         Padding(
                             padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06,vertical: Get.height * 0.03),
                             child: SizedBox(
-                              height: 50,
+                              height: h*0.06,
                               child: TypeAheadField<PartyDetails?>(
                                 textFieldConfiguration: TextFieldConfiguration(
                                   controller: searchController,
@@ -100,7 +101,12 @@ class _MainScreenState extends State<MainScreen> {
                                     ),
                                   )
                                 ),
-
+                                  suggestionsBoxDecoration:  const SuggestionsBoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)
+                                    ),
+                                  ),
                                   suggestionsCallback: partyController.partyQuerySuggestions,
                                   itemBuilder: (context,PartyDetails? suggestions){
                                     return ListTile(
@@ -169,7 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                           builder: (FirebaseController partyController) {
                             return SizedBox(
                               width: double.infinity,
-                              height: 400,
+                              height: h*0.55,
                               child: PageView.builder(
                                   controller: pageController,
                                   physics: const BouncingScrollPhysics(),
@@ -177,7 +183,7 @@ class _MainScreenState extends State<MainScreen> {
                                   itemBuilder: (context,index){
                                     bool isActive = (index==currentPage);
                                     try{
-                                      return pageViewCard(index, isActive);
+                                      return pageViewCard(index, isActive,h);
                                     }catch(e){
                                       return ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
@@ -484,7 +490,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-  Widget pageViewCard(int index, bool isActive) {
+  Widget pageViewCard(int index, bool isActive, double h) {
     double paddingTop = isActive?0:40;
     // double containerHeight = isActive?150:100;
     return InkWell(
@@ -500,14 +506,14 @@ class _MainScreenState extends State<MainScreen> {
           child: Stack(
             children: [
               SizedBox(
-                height: 400,
+                height: h*0.55,
                 // duration: const Duration(milliseconds: 400),
                 child: Image.network(partyController.parties[index].images![0].toString(),fit: BoxFit.cover,),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 300),
+                padding: EdgeInsets.only(top: h*0.43),
                 child: Container(
-                  height: 100,
+                  height: h*0.12,
                   decoration: BoxDecoration(
                       gradient: Themes.softBlackGradient
                   ),

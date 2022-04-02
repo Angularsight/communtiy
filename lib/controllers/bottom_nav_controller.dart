@@ -18,4 +18,5 @@ class BottomNavController extends GetxController{
 
 
 
+
 }
