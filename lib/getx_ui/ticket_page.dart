@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
@@ -25,6 +26,27 @@ class TicketPage extends StatelessWidget {
    final RazorPayController razorPayController = Get.find();
    final screenshotController = ScreenshotController();
 
+
+
+   void uploadGuestToParty(PartyDetails party)async{
+
+     /// Getting the documentId using partyId which is unique to each party
+     var v = await FirebaseFirestore.instance.collection("PartyDetails").where('partyId',isEqualTo: party.partyId).get();
+     var docId = v.docs[0].id;
+     print("DocumentId :$docId");
+
+     /// Uncomment the below part to add current user to the guest List.
+     // /// Updating guestList of the particular party using docId
+     // List<dynamic> newGuestList = party.guests!;
+     // newGuestList.add('NEW GUEST GOES HERE');
+
+     // FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
+     //   'guests': newGuestList
+     // });
+     //
+     // print("UPLOADED NEW GUEST TO FIREBASE");
+   }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -32,6 +54,8 @@ class TicketPage extends StatelessWidget {
     final t = Theme.of(context);
     final party = razorPayController.partyDetails;
     final host = razorPayController.host;
+
+    uploadGuestToParty(party!);
 
     return Screenshot(
       controller: screenshotController,
@@ -44,7 +68,7 @@ class TicketPage extends StatelessWidget {
               height: h,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(party!.images![0]),
+                    image: NetworkImage(party.images![0]),
                     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.1),BlendMode.dstATop),
                     fit: BoxFit.cover)
               ),

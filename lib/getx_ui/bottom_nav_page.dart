@@ -5,6 +5,7 @@ import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/party_upload.dart';
 import 'package:communtiy/getx_ui/upload_tab.dart';
+import 'package:communtiy/getx_ui/user_profile_screen.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,8 @@ class BottomNavigationPage extends StatelessWidget {
             children:  [
               MainScreen(),
               MatchedScreen(),
-              UploadTab()
+              UploadTab(),
+              UserProfileScreen(),
             ],
           ),
           bottomNavigationBar: BottomAppBar(
@@ -58,6 +60,9 @@ class BottomNavigationPage extends StatelessWidget {
                 BottomNavigationBarItem(
                     label: 'Boss',
                     icon: Icon(Icons.add_box_outlined)),
+                BottomNavigationBarItem(
+                    label: 'Profile',
+                    icon: Icon(Icons.account_circle_outlined)),
               ],
             ),
           )

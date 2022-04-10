@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/models/user_details/interests.dart';
@@ -7,6 +8,8 @@ import 'package:get/get.dart';
 
 class FirebaseController extends GetxController {
 
+  ///Getting instance of OnboardingController
+  final OnBoardingController onBoardingController = Get.put(OnBoardingController());
 
   final _parties = [PartyDetails()].obs;
   List<PartyDetails> get parties => _parties.value;
@@ -14,6 +17,9 @@ class FirebaseController extends GetxController {
   final _userDetail = [UserDetailsModel()].obs;
   List<UserDetailsModel> get userDetails => _userDetail.value;
 
+
+  // final _userProfile = UserDetailsModel().obs;
+  // UserDetailsModel get userProfile => _userProfile.value;
 
   final _hostDetails = [HostModel()].obs;
   List<HostModel> get hostDetails => _hostDetails.value;
@@ -38,6 +44,7 @@ class FirebaseController extends GetxController {
 
   }
 
+  /// Fetches all parties
   Stream<List<PartyDetails>> fetchPartyFromFirebase() {
     return FirebaseFirestore.instance
         .collection('PartyDetails')
@@ -124,7 +131,21 @@ class FirebaseController extends GetxController {
       final inputQuery = query.toLowerCase();
       return partyName.contains(inputQuery);
     }).toList();
+  }
 
+
+
+
+  /// Connecting the user to the account he has created
+  Stream<UserDetailsModel> connectUserToApp(String phoneNumber){
+    var res = FirebaseFirestore.instance.collection('UserDetails')
+        .where('phoneNumber',isEqualTo: phoneNumber)
+        .snapshots()
+        .map((query) {
+          var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList()[0];
+          return user;
+        });
+    return res;
   }
 
 

@@ -146,6 +146,9 @@ class _UserUploadState extends State<UserUpload> {
       'xp':int.parse(xp),
       'images':urlList2
     });
+
+    /// Connecting the user to the account he has created
+    onBoardingController.userProfile.bindStream(onBoardingController.connectUserToApp(int.parse(phoneNumber)));
   }
 
 
@@ -387,6 +390,7 @@ class _UserUploadState extends State<UserUpload> {
                           InkWell(
                             onTap: () {
                               print('User name:$username , age:$age , Location :$location , Xp:$xp, phoneNumber:$phoneNumber , password:$password');
+                              onBoardingController.phoneNumber.value = int.parse(phoneNumber);
                               _prepareDataForFirebase();
                             },
                             child: Container(

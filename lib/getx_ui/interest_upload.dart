@@ -82,17 +82,6 @@ class InterestsUpload extends StatelessWidget {
                 ],
               )
 
-
-              // Accordion(
-              //   maxOpenSections: 1,
-              //     disableScrolling: true,
-              //     children: [
-              //       buildAccordionSection(context, h, w, "Anime", animeNode, animeEditingController, interestController.animeList),
-              //       buildAccordionSection(context, h, w, "Series", seriesNode, seriesEditingController, interestController.series),
-              //       buildAccordionSection(context, h, w, "Movies", movieNode, movieEditingController, interestController.movies),
-              //       buildAccordionSection(context, h, w, "Drama", dramaNode, dramaEditingController, interestController.dramaList),
-              //       buildAccordionSection(context, h, w, "Sports", sportsNode, sportsEditingController, interestController.sports),
-              // ]),
             ],
           ),
         ),
@@ -119,9 +108,12 @@ class InterestsUpload extends StatelessWidget {
           child: Container(
             height: h*0.06,
             width: w*0.5,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(10)
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                )
             ),
             child: Center(child:Text("Clear",style: Theme.of(context).textTheme.headline1!.copyWith(
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -146,7 +138,10 @@ class InterestsUpload extends StatelessWidget {
             width: w*0.5,
             decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+              )
             ),
             child: Center(child:Text("Upload",style: Theme.of(context).textTheme.headline1!.copyWith(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -186,7 +181,7 @@ class InterestsUpload extends StatelessWidget {
               controller: editingController,
               focusNode: node,
               onFieldSubmitted: (text) {
-                editingController.clear();
+                editingController.text = text;
               },
             ),
           ),
@@ -337,93 +332,6 @@ class InterestsUpload extends StatelessWidget {
 
   }
 
-  AccordionSection buildAccordionSection(
-      BuildContext context,
-      double h,
-      double w,
-      String hint,
-      FocusNode node,
-      TextEditingController controller,
-      RxList interestList) {
-    return AccordionSection(
-        contentBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        headerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        contentBorderColor: Colors.transparent,
-        headerBackgroundColorOpened: Theme.of(context).primaryColor,
-        header: Text(
-          hint,
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                fontSize: 20,
-                color: Theme.of(context).primaryColor,
-              ),
-        ),
-        content: GestureDetector(
-          onTap: () {
-            node.unfocus();
-          },
-          child: Container(
-            height: h * 0.2,
-            width: w,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                Container(
-                  height: h * 0.06,
-                  width: w,
-                  constraints: const BoxConstraints(maxHeight: double.infinity),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        fillColor: const Color(0xffFFF6F6),
-                        filled: true,
-                        hintText: "Add tag",
-                        suffixIcon: const Icon(
-                          Icons.add_circle,
-                          size: 30,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(style: BorderStyle.none))),
-                    textCapitalization: TextCapitalization.sentences,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.visiblePassword,
-                    controller: controller,
-                    focusNode: node,
-                    onFieldSubmitted: (text) {
-                      interestList.add(text);
-                      controller.clear();
-                    },
-                  ),
-                ),
-                Obx(() {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Wrap(
-                        children: interestList
-                            .map((element) => Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Chip(
-                                    label: Text(element),
-                                    deleteIcon: const Icon(
-                                      Icons.clear_rounded,
-                                      size: 15,
-                                    ),
-                                    onDeleted: () {
-                                      interestList.remove(element);
-                                    },
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ],
-                  );
-                })
-              ],
-            ),
-          ),
-        ));
-  }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(

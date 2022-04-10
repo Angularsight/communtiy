@@ -1,5 +1,6 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/ticket_page.dart';
 import 'package:communtiy/models/host/host.dart';
@@ -31,6 +32,7 @@ class RazorPayController extends GetxController{
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     paymentId = response.paymentId;
     // Get.snackbar("Payment Succesful", "Order Id :${response.orderId} \n Payment Id :${response.paymentId} \n Signature : ${response.signature}");
+
     Get.to(TicketPage());
   }
 

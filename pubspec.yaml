@@ -43,6 +43,8 @@ dependencies:
   firebase_core: ^1.6.0
   cloud_firestore:
   firebase_storage: ^10.2.9
+  pinput: ^2.2.7
+  fluttertoast: ^8.0.9
 
   #state management
   provider: ^6.0.0
@@ -89,6 +91,9 @@ dependencies:
 
   #Splash screen and onBoarding
   animated_text_kit: ^4.2.1
+
+  #Profile screen chart
+  syncfusion_flutter_charts: ^19.4.56
 
 
 
