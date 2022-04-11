@@ -87,37 +87,15 @@ class _OTPScreenState extends State<OTPScreen> {
                 fontWeight: FontWeight.normal,
             ),)),
             const SizedBox(height: 25,),
+
             Pinput(
               closeKeyboardWhenCompleted: false,
               length: 6,
               keyboardType: TextInputType.number,
               showCursor: false,
               focusNode: _pinNode,
-              textInputAction: TextInputAction.send,
+              textInputAction: TextInputAction.none,
               controller: _pinPutController,
-              // onSubmitted: (String pin)async{
-              //   try{
-              //     await FirebaseAuth.instance
-              //         .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
-              //         .then((value) async{
-              //       if(value.user!=null){
-              //         print('User Logged in Successfully');
-              //         Get.to(()=>BottomNavigationPage());
-              //       }
-              //     });
-              //   }catch(e){
-              //     FocusScope.of(context).unfocus();
-              //     Fluttertoast.showToast(
-              //         msg: 'Invalid OTP Entered',
-              //         toastLength: Toast.LENGTH_SHORT,
-              //         gravity: ToastGravity.SNACKBAR,
-              //         timeInSecForIosWeb: 1,
-              //         backgroundColor: Colors.red,
-              //         textColor: Colors.white,
-              //         fontSize: 16.0
-              //     );
-              //   }
-              // },
               onCompleted: (String pin)async{
                 try{
                   await FirebaseAuth.instance
@@ -145,6 +123,8 @@ class _OTPScreenState extends State<OTPScreen> {
               defaultPinTheme: defaultPinTheme,
               focusedPinTheme: focusedPinTheme,
             ),
+
+
             const SizedBox(height: 25,),
             Center(child:Text("Didn't receive any code?",style:GoogleFonts.roboto(
               fontSize: 15,

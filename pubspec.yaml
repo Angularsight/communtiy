@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore:
   firebase_storage: ^10.2.9
   pinput: ^2.2.7
+  pin_code_fields: ^7.4.0
   fluttertoast: ^8.0.9
 
   #state management

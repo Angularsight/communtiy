@@ -2,6 +2,7 @@
 
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -190,91 +191,68 @@ class UserProfileScreen extends StatelessWidget {
   Widget buildProfileListTile(double w, BuildContext context, String heading, String subHeading, IconData icon) {
     return Padding(
       padding:EdgeInsets.only(bottom: w*0.05),
-      child: Container(
-                    width: w,
-                    height: 70,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(50)
-                        ),
-                        border: Border.all(color: Colors.transparent),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              offset: const Offset(0,4),
-                              blurRadius: 4,
-                              spreadRadius: 0
-                          )
-                        ]
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: w*0.02,),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(heading,style: Theme.of(context).textTheme.headline1!.copyWith(
-                                fontSize: 24,
-                                color: Colors.white
-                              ),),
-                              Text(subHeading,style: Theme.of(context).textTheme.headline1!.copyWith(
-                                fontSize: 12,
-                                color: const Color(0xff707070)
-                              ),)
-                            ],
+      child: InkWell(
+        onTap: (){
+          if(heading=="Switch Account"){
+            logoutOfAccount();
+          }
+        },
+        child: Container(
+                      width: w,
+                      height: 70,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(50)
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(w*0.03),
-                            child: Icon(icon,color: Theme.of(context).primaryColor,size: 30,),
-                          )
-                        ],
+                          border: Border.all(color: Colors.transparent),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                offset: const Offset(0,4),
+                                blurRadius: 4,
+                                spreadRadius: 0
+                            )
+                          ]
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: w*0.02,),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(heading,style: Theme.of(context).textTheme.headline1!.copyWith(
+                                  fontSize: 24,
+                                  color: Colors.white
+                                ),),
+                                Text(subHeading,style: Theme.of(context).textTheme.headline1!.copyWith(
+                                  fontSize: 12,
+                                  color: const Color(0xff707070)
+                                ),)
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(w*0.03),
+                              child: Icon(icon,color: Theme.of(context).primaryColor,size: 30,),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+      ),
     );
   }
+  logoutOfAccount(){
+    FirebaseAuth.instance.signOut();
+  }
 }
 
 
 
-class RPSCustomPainter extends CustomPainter{
-
-  @override
-  void paint(Canvas canvas, Size size) {
-
-
-
-    Paint paint0 = Paint()
-      ..color = const Color.fromARGB(255, 243, 240, 33)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-
-    Path path0 = Path();
-    path0.moveTo(0,0);
-    path0.lineTo(size.width,0);
-    path0.lineTo(size.width,size.height);
-    path0.quadraticBezierTo(size.width*0.7584667,size.height*0.9921429,size.width*0.6176083,size.height*0.9847714);
-    path0.cubicTo(size.width*0.4702333,size.height*0.9689143,size.width*0.2566750,size.height*0.9631857,size.width*0.1279750,size.height*0.7682857);
-    path0.quadraticBezierTo(size.width*0.0099917,size.height*0.5853000,0,0);
-    path0.close();
-
-    canvas.drawPath(path0, paint0);
-
-
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-
-}
 
 
 

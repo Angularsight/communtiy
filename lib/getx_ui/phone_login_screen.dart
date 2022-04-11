@@ -212,7 +212,7 @@ class PhoneLoginScreen extends StatelessWidget {
                   Center(
                     child: InkWell(
                       onTap: (){
-                        // googleSignInController.googleLogin();
+                        googleSignInController.googleLogin();
                       },
                       child: Container(
                         width: w*0.75,
