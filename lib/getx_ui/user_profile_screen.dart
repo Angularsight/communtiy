@@ -41,139 +41,145 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       body:SafeArea(
         child: SingleChildScrollView(
-          child: Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: w*0.02,top: w*0.05),
-                    child: Container(
-                      width: w*0.42,
-                      child: Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
-                          fontSize: 30,
-                          color: Colors.white
-                      ),),
-                    ),
-                  ),
-                  const SizedBox(height: 20,),
-                  SizedBox(
-                    width: w*0.45,
-                    height: h*0.2,
-                    child: SfCartesianChart(
-                        enableSideBySideSeriesPlacement: true,
-                        plotAreaBorderWidth: 0,
-                        margin: EdgeInsets.zero,
-                        primaryXAxis: CategoryAxis(
-                            majorTickLines: const MajorTickLines(size: 0,width: 0),
-                            labelPosition: ChartDataLabelPosition.outside,
-                            labelPlacement: LabelPlacement.betweenTicks,
-                            labelAlignment: LabelAlignment.center,
-                            borderColor: Colors.grey,
-                            labelRotation: 0,
-                            placeLabelsNearAxisLine: true,
-                            tickPosition: TickPosition.inside,
-                            majorGridLines: const MajorGridLines(width: 0),
-                            axisLine: const AxisLine(width: 1,color: Colors.black87),
-                          isVisible: false
-                        ),
-
-                        primaryYAxis: NumericAxis(
-                            majorTickLines: const MajorTickLines(size: 0,width: 0),
-                            isVisible: false,
-                            majorGridLines: const MajorGridLines(width: 0),
-                            axisLine: const AxisLine(width: 1,color: Colors.black87)
-                        ),
-                        tooltipBehavior: _tooltipBehavior,
-                        series: <ChartSeries>[
-                          BarSeries<ChartData, double>(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20)
-                            ),
-                              dataSource: chartData,
-                              enableTooltip: true,
-
-                              xValueMapper: (ChartData data, _) => data.label,
-                              yValueMapper: (ChartData data, _) => data.qty,
-                              pointColorMapper: (ChartData c,_)=>c.color,
-                              // Width of the bars
-                              width: 0.5,
-                              // Spacing between the bars
-                              spacing: 0.3
-                          )
-                        ]
-                    ),
-                  ),
-                  const SizedBox(height: 20,),
-
-                  Padding(
-                    padding: EdgeInsets.only(left: w*0.02),
-                    child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
-                      fontSize: 24,
-                      color: Colors.white
-                    ),),
-                  ),
-                  Container(
-                    width: w*0.7,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: t.scaffoldBackgroundColor,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          offset: const Offset(0,4),
-                          blurRadius: 4,
-                          spreadRadius: 0
-                        )
-                      ]
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: w*0.02),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Balance: 50 coins",style: t.textTheme.headline1!.copyWith(
-                            color: t.primaryColor,
-                            fontSize: 20,
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: w*0.02,top: w*0.05),
+                        child: SizedBox(
+                          width: w*0.42,
+                          child: Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
+                              fontSize: 30,
+                              color: Colors.white
                           ),),
-                          Text('Refill',style: t.textTheme.headline1!.copyWith(
-                            color: const Color(0xff417ACF),
-                            fontSize: 14,
-                            decoration: TextDecoration.underline,
-                            decorationThickness: 2,
-                          ),)
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 25,),
+                      const SizedBox(height: 20,),
+                      SizedBox(
+                        width: w*0.45,
+                        height: h*0.2,
+                        child: SfCartesianChart(
+                            enableSideBySideSeriesPlacement: true,
+                            plotAreaBorderWidth: 0,
+                            margin: EdgeInsets.zero,
+                            primaryXAxis: CategoryAxis(
+                                majorTickLines: const MajorTickLines(size: 0,width: 0),
+                                labelPosition: ChartDataLabelPosition.outside,
+                                labelPlacement: LabelPlacement.betweenTicks,
+                                labelAlignment: LabelAlignment.center,
+                                borderColor: Colors.grey,
+                                labelRotation: 0,
+                                placeLabelsNearAxisLine: true,
+                                tickPosition: TickPosition.inside,
+                                majorGridLines: const MajorGridLines(width: 0),
+                                axisLine: const AxisLine(width: 1,color: Colors.black87),
+                                isVisible: false
+                            ),
 
-                  buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
-                  buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
-                  buildProfileListTile(w, context, 'Invite and earn', 'Each invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
-                  buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
-                  buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
+                            primaryYAxis: NumericAxis(
+                                majorTickLines: const MajorTickLines(size: 0,width: 0),
+                                isVisible: false,
+                                majorGridLines: const MajorGridLines(width: 0),
+                                axisLine: const AxisLine(width: 1,color: Colors.black87)
+                            ),
+                            tooltipBehavior: _tooltipBehavior,
+                            series: <ChartSeries>[
+                              BarSeries<ChartData, double>(
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20)
+                                  ),
+                                  dataSource: chartData,
+                                  enableTooltip: true,
+
+                                  xValueMapper: (ChartData data, _) => data.label,
+                                  yValueMapper: (ChartData data, _) => data.qty,
+                                  pointColorMapper: (ChartData c,_)=>c.color,
+                                  // Width of the bars
+                                  width: 0.5,
+                                  // Spacing between the bars
+                                  spacing: 0.3
+                              )
+                            ]
+                        ),
+                      ),
+                    ],
+                  ),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(200),
+                    ),
+                    child: Container(
+                      width: w*0.55,
+                      height: h*0.35,
+                      decoration: const BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
+                    ),
+                  )
 
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: w*0.55,
-                    height: h*0.35,
-                    child: CustomPaint(
-                      size: Size(w*0.85,(h*0.7*0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                      painter: RPSCustomPainter(),
-                    ),
+              const SizedBox(height: 20,),
+
+              Padding(
+                padding: EdgeInsets.only(left: w*0.02),
+                child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
+                  fontSize: 24,
+                  color: Colors.white
+                ),),
+              ),
+              Container(
+                width: w*0.7,
+                height: 35,
+                decoration: BoxDecoration(
+                  color: t.scaffoldBackgroundColor,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10)
                   ),
-                ],
-              )
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      offset: const Offset(0,4),
+                      blurRadius: 4,
+                      spreadRadius: 0
+                    )
+                  ]
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: w*0.02),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Balance: 50 coins",style: t.textTheme.headline1!.copyWith(
+                        color: t.primaryColor,
+                        fontSize: 20,
+                      ),),
+                      Text('Refill',style: t.textTheme.headline1!.copyWith(
+                        color: const Color(0xff417ACF),
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 2,
+                      ),)
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25,),
+
+              buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
+              buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
+              buildProfileListTile(w, context, 'Invite and earn', 'Each invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
+              buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
+              buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
+
             ],
           ),
         ),

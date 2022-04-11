@@ -93,8 +93,32 @@ class _OTPScreenState extends State<OTPScreen> {
               keyboardType: TextInputType.number,
               showCursor: false,
               focusNode: _pinNode,
+              textInputAction: TextInputAction.send,
               controller: _pinPutController,
-              onSubmitted: (String pin)async{
+              // onSubmitted: (String pin)async{
+              //   try{
+              //     await FirebaseAuth.instance
+              //         .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
+              //         .then((value) async{
+              //       if(value.user!=null){
+              //         print('User Logged in Successfully');
+              //         Get.to(()=>BottomNavigationPage());
+              //       }
+              //     });
+              //   }catch(e){
+              //     FocusScope.of(context).unfocus();
+              //     Fluttertoast.showToast(
+              //         msg: 'Invalid OTP Entered',
+              //         toastLength: Toast.LENGTH_SHORT,
+              //         gravity: ToastGravity.SNACKBAR,
+              //         timeInSecForIosWeb: 1,
+              //         backgroundColor: Colors.red,
+              //         textColor: Colors.white,
+              //         fontSize: 16.0
+              //     );
+              //   }
+              // },
+              onCompleted: (String pin)async{
                 try{
                   await FirebaseAuth.instance
                       .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
@@ -116,7 +140,6 @@ class _OTPScreenState extends State<OTPScreen> {
                       fontSize: 16.0
                   );
                 }
-
               },
               submittedPinTheme: submittedPinTheme,
               defaultPinTheme: defaultPinTheme,
@@ -129,11 +152,16 @@ class _OTPScreenState extends State<OTPScreen> {
               fontWeight: FontWeight.normal,
             ) ,)),
             const SizedBox(height: 10,),
-            Center(child:Text("Resend OTP",style:GoogleFonts.roboto(
-              fontSize: 20,
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.normal,
-            ) ,)),
+            Center(child:InkWell(
+              onTap: (){
+                _verifyPhone();
+              },
+              child: Text("Resend OTP",style:GoogleFonts.roboto(
+                fontSize: 20,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.normal,
+              ) ,),
+            )),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.all(25.0),
