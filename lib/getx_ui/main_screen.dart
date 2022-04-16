@@ -428,7 +428,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         title:Padding(
-          padding: EdgeInsets.only(left: Get.width * 0.15),
+          padding: EdgeInsets.only(left: Get.width * 0.35),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -437,18 +437,21 @@ class _MainScreenState extends State<MainScreen> {
                 child: Stack(
                   children: [
                     Text(
-                      "Community",
+                      "Leagues",
                       style: Theme.of(context).textTheme.caption!.copyWith(
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 4
-                            ..color = Colors.black
+                            ..color = Colors.black,
+                          letterSpacing: 2
                       ),
                     ),
                     Text(
-                      "Community",
+                      "Leagues",
                       style: Theme.of(context).textTheme.caption!.copyWith(
-                          color: Theme.of(context).primaryColor
+                          color: Theme.of(context).primaryColor,
+                        letterSpacing: 2
+
                       ),
                     ),
                   ],
@@ -457,35 +460,36 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
         ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0,top: 10),
-              child: IconButton(
-                icon: Icon(
-                  CustomIcons.hamburger,
-                  size: 30,
-                ),
-                onPressed: () {
-                  return Scaffold.of(context).openDrawer();
-                },
-              ),
-            );
-          },
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, right: 10),
-            child: InkWell(
-              splashColor: Colors.red,
-              onTap: () {},
-              child: const Icon(
-                Icons.account_circle,
-                size: 30,
-              ),
-            ),
-          ),
-        ]
+        automaticallyImplyLeading: false,
+        // leading: Builder(
+        //   builder: (BuildContext context) {
+        //     return Padding(
+        //       padding: const EdgeInsets.only(bottom: 20.0,top: 10),
+        //       child: IconButton(
+        //         icon: Icon(
+        //           CustomIcons.hamburger,
+        //           size: 30,
+        //         ),
+        //         onPressed: () {
+        //           return Scaffold.of(context).openDrawer();
+        //         },
+        //       ),
+        //     );
+        //   },
+        // ),
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(top: 10.0, right: 10),
+        //     child: InkWell(
+        //       splashColor: Colors.red,
+        //       onTap: () {},
+        //       child: const Icon(
+        //         Icons.account_circle,
+        //         size: 30,
+        //       ),
+        //     ),
+        //   ),
+        // ],
     );
   }
 

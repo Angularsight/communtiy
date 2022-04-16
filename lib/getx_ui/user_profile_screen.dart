@@ -24,13 +24,14 @@ class UserProfileScreen extends StatelessWidget {
   final OnBoardingController userController = Get.find();
 
   final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true,tooltipPosition: TooltipPosition.pointer,duration: 2,activationMode: ActivationMode.singleTap);
+  final loginUser = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
     var user = userController.userProfile.value;
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
-
+    // print("FirebaseAuth user:${loginUser.displayName},${loginUser.email},${loginUser.photoURL}");
 
     List<ChartData> chartData = [];
 
@@ -237,7 +238,7 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.all(w*0.03),
-                              child: Icon(icon,color: Theme.of(context).primaryColor,size: 30,),
+                              child: Icon(icon,color: Theme.of(context).primaryColor,size: 25,),
                             )
                           ],
                         ),
