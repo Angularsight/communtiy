@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/interest_upload.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,7 @@ class _UserUploadState extends State<UserUpload> {
   String phoneNumber = "";
 
   final OnBoardingController onBoardingController = Get.put(OnBoardingController());
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
@@ -55,6 +58,7 @@ class _UserUploadState extends State<UserUpload> {
     xpNode = FocusNode();
     phoneNumberNode = FocusNode();
     passwordNode = FocusNode();
+    // onBoardingController.loginType.value = 'Phone';
 
   }
 
@@ -135,20 +139,35 @@ class _UserUploadState extends State<UserUpload> {
   }
 
   void _uploadDataToFirebase() {
-    FirebaseFirestore.instance.collection('UserDetails').doc().set({
-      'userId':'something',
-      'userName':username,
-      'password':password,
-      'userProfilePic':userProfilePicUrlList[0],
-      'phoneNumber':int.parse(phoneNumber),
-      'location':location,
-      'age':int.parse(age),
-      'xp':int.parse(xp),
-      'images':urlList2
-    });
+    if(currentUser.phoneNumber!.isNotEmpty){
+      FirebaseFirestore.instance.collection('UserDetails').doc().set({
+        'userId':'something',
+        'userName':username,
+        'password':password,
+        'userProfilePic':userProfilePicUrlList[0],
+        'phoneNumber':int.parse(phoneNumber),
+        'location':location,
+        'age':int.parse(age),
+        'xp':int.parse(xp),
+        'images':urlList2
+      });
+    }else{
+      FirebaseFirestore.instance.collection('UserDetails').doc().set({
+        'userId':currentUser.uid,
+        'userName':username,
+        'password':password,
+        'userProfilePic':userProfilePicUrlList[0],
+        'phoneNumber':int.parse(phoneNumber),
+        'location':location,
+        'age':int.parse(age),
+        'xp':int.parse(xp),
+        'images':urlList2
+      });
+    }
+
 
     /// Connecting the user to the account he has created
-    onBoardingController.userProfile.bindStream(onBoardingController.connectUserToApp(int.parse(phoneNumber)));
+    // onBoardingController.userProfile.bindStream(onBoardingController.connectUserToApp(int.parse(phoneNumber)));
   }
 
 

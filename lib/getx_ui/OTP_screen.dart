@@ -2,8 +2,10 @@
 
 
 
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/phone_login_screen.dart';
+import 'package:communtiy/getx_ui/user_upload.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinNode = FocusNode();
+  final OnBoardingController _onBoardingController = Get.find();
 
   ///For phone verificaiton
   String _verificationCode = '';
@@ -103,7 +106,8 @@ class _OTPScreenState extends State<OTPScreen> {
                       .then((value) async{
                     if(value.user!=null){
                       print('User Logged in Successfully');
-                      Get.to(()=>BottomNavigationPage());
+                      // _onBoardingController.loginType.value = 'Phone';
+                      Get.to(()=>UserUpload());
                     }
                   });
                 }catch(e){
@@ -178,6 +182,7 @@ class _OTPScreenState extends State<OTPScreen> {
         verificationCompleted: (PhoneAuthCredential credential)async{
           await FirebaseAuth.instance.signInWithCredential(credential).then((value) async{
             if(value.user!=null){
+              // _onBoardingController.loginType.value = 'Phone';
               print("User logged in successfully");
               Get.to(()=>BottomNavigationPage());
             }else{

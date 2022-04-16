@@ -26,8 +26,13 @@ class UserProfileScreen extends StatelessWidget {
   final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true,tooltipPosition: TooltipPosition.pointer,duration: 2,activationMode: ActivationMode.singleTap);
   final loginUser = FirebaseAuth.instance.currentUser!;
 
+  void bindStreamToUser(){
+    userController.userProfile.bindStream(userController.connectUserToApp());
+  }
+
   @override
   Widget build(BuildContext context) {
+    bindStreamToUser();
     var user = userController.userProfile.value;
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
@@ -56,7 +61,7 @@ class UserProfileScreen extends StatelessWidget {
                         child: SizedBox(
                           width: w*0.42,
                           child: Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
-                              fontSize: 30,
+                              fontSize: 24,
                               color: Colors.white
                           ),),
                         ),
@@ -122,7 +127,8 @@ class UserProfileScreen extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: Colors.transparent,
                       ),
-                      child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
+                      child: Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,),
+                      // child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
                     ),
                   )
 
@@ -133,7 +139,7 @@ class UserProfileScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: w*0.02),
                 child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
-                  fontSize: 24,
+                  fontSize: 20,
                   color: Colors.white
                 ),),
               ),
@@ -227,7 +233,7 @@ class UserProfileScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(heading,style: Theme.of(context).textTheme.headline1!.copyWith(
-                                  fontSize: 24,
+                                  fontSize: 20,
                                   color: Colors.white
                                 ),),
                                 Text(subHeading,style: Theme.of(context).textTheme.headline1!.copyWith(

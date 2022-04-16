@@ -2,6 +2,7 @@ import 'package:accordion/accordion.dart';
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,6 +52,8 @@ class InterestsUpload extends StatelessWidget {
       'currentRelationshipStatus':relationshipController.text,
       'height':heightController.text,
       'pet':petController.text
+    }).then((value) {
+      Get.to(()=>BottomNavigationPage());
     });
   }
 
@@ -143,7 +146,7 @@ class InterestsUpload extends StatelessWidget {
                 bottomLeft: Radius.circular(10),
               )
             ),
-            child: Center(child:Text("Upload",style: Theme.of(context).textTheme.headline1!.copyWith(
+            child: Center(child:Text("Get Started",style: Theme.of(context).textTheme.headline1!.copyWith(
               color: Theme.of(context).scaffoldBackgroundColor,
               fontSize: 18,
               fontWeight: FontWeight.w400
@@ -276,6 +279,7 @@ class InterestsUpload extends StatelessWidget {
                       constraints:
                           const BoxConstraints(maxHeight: double.infinity),
                       child: TextFormField(
+                        autocorrect: true,
                         decoration: InputDecoration(
                             fillColor: const Color(0xffFFF6F6),
                             filled: true,

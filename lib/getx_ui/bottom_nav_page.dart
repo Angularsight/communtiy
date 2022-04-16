@@ -31,7 +31,7 @@ class BottomNavigationPage extends StatelessWidget {
             children:  [
               MainScreen(),
               MatchedScreen(),
-              UploadTab(),
+              // UploadTab(),
               UserProfileScreen(),
             ],
           ),
@@ -57,9 +57,9 @@ class BottomNavigationPage extends StatelessWidget {
                 BottomNavigationBarItem(
                     label: 'Matched',
                     icon: Icon(Icons.image)),
-                BottomNavigationBarItem(
-                    label: 'Boss',
-                    icon: Icon(Icons.add_box_outlined)),
+                // BottomNavigationBarItem(
+                //     label: 'Boss',
+                //     icon: Icon(Icons.add_box_outlined)),
                 BottomNavigationBarItem(
                     label: 'Profile',
                     icon: Icon(Icons.account_circle_outlined)),
