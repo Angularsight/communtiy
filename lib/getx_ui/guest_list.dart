@@ -17,7 +17,6 @@ class GuestList2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    final t = Theme.of(context);
     return Scaffold(body: GetX<FirebaseController>(builder: (controller) {
       return Column(
         children: [
@@ -27,7 +26,7 @@ class GuestList2 extends StatelessWidget {
             child: ListView.builder(
                 itemCount: controller.guests.length,
                 itemBuilder: (context, index) {
-                  return GuestListTile(context, index, controller);
+                  return guestListTile(context, index, controller);
                 }),
           )
         ],
@@ -35,8 +34,7 @@ class GuestList2 extends StatelessWidget {
     }));
   }
 
-  void openDialogBox(
-      BuildContext context, UserDetailsModel guest, Interests interests) {
+  void openDialogBox(BuildContext context, UserDetailsModel guest, Interests interests) {
     var t = Theme.of(context);
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
@@ -85,12 +83,7 @@ class GuestList2 extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(10),
-                      //   child: SizedBox(
-                      //       width: 200,
-                      //       child: Image.network(guest.images![index],fit: BoxFit.cover,)),
-                      // )
+
                       SizedBox(height: h*0.01),
                       Padding(
                         padding: EdgeInsets.only(left: h*0.01),
@@ -120,7 +113,7 @@ class GuestList2 extends StatelessWidget {
                             Text("Favorites", style: t.textTheme.headline3!.copyWith(
                                 color: const Color(0xffC0C0C0)),
                             ),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                             Row(
                               children: [
                                 Text("Movie : ", style: t.textTheme.headline3!.copyWith(
@@ -204,12 +197,10 @@ class GuestList2 extends StatelessWidget {
     }
   }
 
-  Widget GuestListTile(
-      BuildContext context, int index, FirebaseController controller) {
+  Widget guestListTile(BuildContext context, int index, FirebaseController controller) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
-    final W = h * 1.2;
     return GestureDetector(
       onTap: () {
         openDialogBox(context, guests![index], interests![index]);

@@ -1,6 +1,5 @@
 
 
-import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../utils/theme.dart';
 
 class ChartData {
   final double label;
@@ -263,8 +261,8 @@ class UserProfileScreen extends StatelessWidget {
       ),
     );
   }
-  logoutOfAccount(){
-    FirebaseAuth.instance.signOut();
+  logoutOfAccount()async{
+    await FirebaseAuth.instance.signOut();
   }
 }
 

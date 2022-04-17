@@ -3,10 +3,8 @@
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
-import 'package:communtiy/getx_ui/party_upload.dart';
 import 'package:communtiy/getx_ui/upload_tab.dart';
 import 'package:communtiy/getx_ui/user_profile_screen.dart';
-import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +39,6 @@ class BottomNavigationPage extends StatelessWidget {
             elevation: 0,
             child: BottomNavigationBar(
               onTap: (int index){
-                print('index:$index');
                 controller.changeIndex(index);
               },
 
@@ -57,7 +54,7 @@ class BottomNavigationPage extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                     label: 'Matched',
-                    icon: Icon(Icons.image)),
+                    icon: Icon(Icons.watch)),
                 BottomNavigationBarItem(
                     label: 'Boss',
                     icon: Icon(Icons.add_box_outlined)),

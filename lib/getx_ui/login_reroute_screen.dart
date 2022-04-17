@@ -16,8 +16,8 @@ class LoginReRouteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
+      body: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.userChanges(),
           builder: (context,snapshot){
             if(snapshot.connectionState==ConnectionState.waiting){
               return Center(child:CircularProgressIndicator(color: Theme.of(context).primaryColor,));

@@ -1,14 +1,11 @@
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/guest_list.dart';
-import 'package:communtiy/getx_ui/login_screen.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/getx_ui/splash_screen.dart';
-import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 
 import 'getx_ui/main_screen.dart';

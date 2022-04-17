@@ -1,12 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
-import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MatchedScreen extends StatelessWidget {
@@ -21,6 +19,7 @@ class MatchedScreen extends StatelessWidget {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
+    const defaultImageString = 'http://www.lyon-ortho-clinic.com/files/cto_layout/img/placeholder/book.jpg';
     return Scaffold(
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
@@ -35,7 +34,7 @@ class MatchedScreen extends StatelessWidget {
               child: GetX<FirebaseController>(
                   builder: (ctr) {
                     return CarouselSlider.builder(
-                        itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images!.length,
+                        itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
                         itemBuilder: (context,index,realIndex){
                           return GestureDetector(
                             onTap: (){
@@ -74,7 +73,7 @@ class MatchedScreen extends StatelessWidget {
                   child: GetX<FirebaseController>(
                       builder: (ctr) {
                         return AnimatedSmoothIndicator(
-                          count: ctr.parties[controller.partyIndexForMatchedPage.value].images!.length,
+                          count: ctr.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
                           activeIndex: ctr.pageIndicatorIndex.value,
                           effect: WormEffect(
                               radius: 10,
@@ -129,7 +128,7 @@ class MatchedScreen extends StatelessWidget {
                                             ),
                                             child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10),
-                                                child: Image.network(controller.parties[index].images![0].toString(),fit: BoxFit.cover,)),
+                                                child: Image.network(controller.parties[index].images?[0].toString()?? defaultImageString,fit: BoxFit.cover,)),
                                           );
                                         }
                                     ),
@@ -155,7 +154,7 @@ class MatchedScreen extends StatelessWidget {
                                 ],
                               );
                             },
-                            separatorBuilder: (context, index) => SizedBox(width: 2,),
+                            separatorBuilder: (context, index) => const SizedBox(width: 2,),
                             itemCount: controller.parties.length),
                       ),
                     ],

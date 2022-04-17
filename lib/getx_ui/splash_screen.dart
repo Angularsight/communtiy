@@ -1,14 +1,10 @@
 import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/login_reroute_screen.dart';
-import 'package:communtiy/getx_ui/phone_login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:get/get.dart';
 
-import 'login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
+
     final t = Theme.of(context);
     Timer(const Duration(seconds: 5), (){
       Get.to(()=>LoginReRouteScreen());

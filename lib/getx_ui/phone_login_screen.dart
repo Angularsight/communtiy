@@ -1,13 +1,8 @@
 
-import 'dart:async';
 
 import 'package:communtiy/controllers/google_sign_in_controller.dart';
-import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/OTP_screen.dart';
-import 'package:communtiy/getx_ui/bottom_nav_page.dart';
-import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';

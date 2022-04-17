@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:accordion/accordion.dart';
-import 'package:accordion/controllers.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
@@ -10,10 +8,8 @@ import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 
@@ -124,7 +120,6 @@ class _MainScreenState extends State<MainScreen> {
                                   noItemsFoundBuilder: (context)=>Center(child:Text("Nothing found yet",style: Theme.of(context).textTheme.headline1,)),
                                   onSuggestionSelected: (PartyDetails? suggested){
                                   final partyIndex = partyController.parties.indexWhere((element) => element.partyName==suggested!.partyName);
-                                  print(partyIndex);
                                     Get.to(()=>PartyDetails2(index: partyIndex,));
                                   }),
                               // child: TextField(
@@ -345,13 +340,12 @@ class _MainScreenState extends State<MainScreen> {
 
 
   Widget pageViewCard(int index, bool isActive, double h) {
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     double paddingTop = isActive?0:h*0.045;
     // double containerHeight = isActive?150:100;
     return InkWell(
       onTap: (){
-        print('currentPageIndex:$currentPage');
         Get.to(() =>  PartyDetails2(index:currentPage));
       },
       child: AnimatedPadding(

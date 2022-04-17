@@ -1,5 +1,4 @@
-import 'package:accordion/accordion.dart';
-import 'package:accordion/controllers.dart';
+
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/checkout_page.dart';
@@ -32,6 +31,7 @@ class PartyDetails2 extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h =  MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    const defaultImageString = 'http://www.lyon-ortho-clinic.com/files/cto_layout/img/placeholder/book.jpg';
     return Scaffold(
 
       bottomNavigationBar: InkWell(
@@ -327,7 +327,7 @@ class PartyDetails2 extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: NetworkImage(controller.hostDetails[0].profilePic.toString()),
+                                      image:controller.hostDetails.isNotEmpty? NetworkImage(controller.hostDetails[0].profilePic.toString()):const NetworkImage(defaultImageString),
                                       fit: BoxFit.cover
                                   )
                               ),
@@ -418,7 +418,6 @@ class PartyDetails2 extends StatelessWidget {
             shrinkWrap: true,
             itemCount: activities.length,
             itemBuilder: (context,index){
-            print("activities Length :${activities.length}");
               return !activities.keys.contains("Null")?Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -742,8 +740,6 @@ class _PartyUploadState extends State<PartyUpload> {
 
   Widget afterImagePick2() {
     final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
-
     return djPickedImageBool
         ? SizedBox(
             width: w * 0.5,
