@@ -1,5 +1,6 @@
 
 
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';

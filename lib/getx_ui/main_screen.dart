@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
@@ -48,6 +49,7 @@ class _MainScreenState extends State<MainScreen> {
         });
       }
     });
+
   }
 
 
@@ -383,7 +385,7 @@ class _MainScreenState extends State<MainScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("${partyController.parties[index].time.toString()} pm",style: Theme.of(context).textTheme.headline3!.copyWith(
+                          Text("${partyController.parties[index].time.toString()}",style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
                           Text(partyController.parties[index].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),

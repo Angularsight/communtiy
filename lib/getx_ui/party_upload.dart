@@ -189,7 +189,7 @@ class _PartyUploadState extends State<PartyUpload> {
     final timePicked = await _pickTime();
     if (timePicked != null) {
       setState(() {
-        time = "${timePicked.hour}:${timePicked.minute}${timePicked.period.name}";
+        time = "${timePicked.hour}:${timePicked.minute} ${timePicked.period.name}";
       });
     }
     print("$date \n Time: $time");

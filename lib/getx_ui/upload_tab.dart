@@ -41,6 +41,7 @@ class _UploadTabState extends State<UploadTab> with TickerProviderStateMixin{
 
   AppBar buildAppBar(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     return AppBar(
       backgroundColor: Colors.transparent,
       flexibleSpace: Container(
@@ -58,7 +59,7 @@ class _UploadTabState extends State<UploadTab> with TickerProviderStateMixin{
             ]),
       ),
       title: Padding(
-        padding: EdgeInsets.only(left: Get.width * 0.15),
+        padding: EdgeInsets.only(left: w * 0.2),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -67,19 +68,24 @@ class _UploadTabState extends State<UploadTab> with TickerProviderStateMixin{
               child: Stack(
                 children: [
                   Text(
-                    "Community",
+                    "Leagues",
                     style: Theme.of(context).textTheme.caption!.copyWith(
                         foreground: Paint()
                           ..style = PaintingStyle.stroke
                           ..strokeWidth = 4
-                          ..color = Colors.black),
+                          ..color = Colors.black,
+                        letterSpacing: 1,
+                        fontSize: 30
+                    ),
                   ),
                   Text(
-                    "Community",
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(color: Theme.of(context).primaryColor),
+                    "Leagues",
+                    style: Theme.of(context).textTheme.caption!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        letterSpacing: 1,
+                        fontSize: 30
+
+                    ),
                   ),
                 ],
               ),
@@ -90,7 +96,7 @@ class _UploadTabState extends State<UploadTab> with TickerProviderStateMixin{
       leading: Builder(
         builder: (BuildContext context) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 20.0, top: 10),
+            padding: const EdgeInsets.only(bottom: 20.0, top: 5),
             child: IconButton(
               icon: Icon(
                 CustomIcons.hamburger,
