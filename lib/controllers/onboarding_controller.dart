@@ -28,15 +28,16 @@ class OnBoardingController extends GetxController{
 
   Stream<UserDetailsModel> connectUserToApp(){
     if(currentUser.phoneNumber!.isNotEmpty){
-      print('OnBoarding Phone No:${currentUser.phoneNumber}');
-      String formattedPhoneNo = currentUser.phoneNumber!.substring(3);
-      print('Formatted Phone No:$formattedPhoneNo');
+      // print('OnBoarding Phone No:${currentUser.phoneNumber}');
+      // String formattedPhoneNo = currentUser.phoneNumber!.substring(3);
+      // print('Formatted Phone No:$formattedPhoneNo');
+      // print("currentId:${currentUser.uid}");
       var res = FirebaseFirestore.instance.collection('UserDetails')
-          .where('phoneNumber',isEqualTo: int.parse(formattedPhoneNo))
+          .where('userId',isEqualTo: currentUser.uid)
           .snapshots()
           .map((query) {
         var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
-        print('connectUserToApp error :$user');
+        // print('connectUserToApp error :$user');
         return user[0];
       });
       return res;

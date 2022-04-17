@@ -92,7 +92,7 @@ class PartyDetails2 extends StatelessWidget {
                             gradient: Themes.partyDetailsGradient
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 25.0),
+                          padding: EdgeInsets.only(left: h*0.025),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +136,7 @@ class PartyDetails2 extends StatelessWidget {
                                 ),
                               ),
 
-                              const SizedBox(height: 25,),
+                              SizedBox(height: h*0.025,),
                               Flexible(
                                 flex:5,
                                 child: Container(
@@ -150,14 +150,14 @@ class PartyDetails2 extends StatelessWidget {
                                 ),
                               ),
 
-                              const SizedBox(height: 20,),
+                              SizedBox(height: h*0.02,),
                               buildStrokeText("Venue : ${controller.parties[index!].location}", t, const Color(0xff5B5B5B), Colors.white,17),
 
-                              const SizedBox(height: 15,),
+                              SizedBox(height: h*0.015,),
                               Flexible(
                                 flex: 5,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right: 40.0),
+                                  padding: EdgeInsets.only(right: h*0.04),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
@@ -167,46 +167,51 @@ class PartyDetails2 extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 10,),
+
+                              SizedBox(height: h*0.01,),
                               Flexible(
                                 flex: 5,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right: 50.0),
+                                  padding: EdgeInsets.only(right: h*0.050),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(child: Text("Ratio : Will be updated ",style: t.textTheme.headline3,)),
                                       // Text("Host : ${controller.parties[index!].hostId}",style: t.textTheme.headline3,),
-                                      FutureBuilder(
-                                        builder: (context,AsyncSnapshot<List<HostModel>>snapshot){
-                                          try{
-                                            host = snapshot.data!;
-                                            if(snapshot.hasData) {
-                                              return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
-                                            } else {
-                                              return const CircularProgressIndicator();
-                                            }
-                                          }catch(e){
-                                            return ClipRRect(
-                                              borderRadius: BorderRadius.circular(5),
-                                              child: Shimmer.fromColors(
-                                                baseColor: const Color(0xffd5d7d5),
-                                                highlightColor: const Color(0xfff3f3f3),
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 15,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(5)
+                                      GetX<FirebaseController>(
+                                        builder: (controller) {
+                                          return FutureBuilder(
+                                            builder: (context,AsyncSnapshot<List<HostModel>>snapshot){
+                                              try{
+                                                host = snapshot.data!;
+                                                if(snapshot.hasData) {
+                                                  return Text("Host : ${host[0].hostName}",style: t.textTheme.headline3,);
+                                                } else {
+                                                  return const CircularProgressIndicator();
+                                                }
+                                              }catch(e){
+                                                return ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: const Color(0xffd5d7d5),
+                                                    highlightColor: const Color(0xfff3f3f3),
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 15,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(5)
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            );
-                                          }
+                                                );
+                                              }
 
-                                        },
-                                        future: controller.fetchHostDetailsFuture(controller.parties[index!].hostId.toString()),
+                                            },
+                                            future: controller.fetchHostDetailsFuture(controller.parties[index!].hostId.toString()),
 
+                                          );
+                                        }
                                       )
                                     ],
                                   ),
@@ -214,7 +219,7 @@ class PartyDetails2 extends StatelessWidget {
                               ),
 
 
-                              const SizedBox(height: 20,),
+                              SizedBox(height: h*0.02,),
                               Flexible(
                                 flex: 5,
                                 child: Row(
@@ -236,65 +241,69 @@ class PartyDetails2 extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 ),
                               ),
-                              const SizedBox(height: 10,),
+                              SizedBox(height: h*0.01,),
 
-                              FutureBuilder(builder: (context,AsyncSnapshot<List<UserDetailsModel>> snapshot){
-                                try{
-                                  guests = snapshot.data!;
-                                  if(snapshot.hasData) {
-                                    return SizedBox(
-                                      width: w,
-                                      height: h*0.1,
-                                      child: ListView.separated(
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context,thisIndex){
-                                            return CircleAvatar(
-                                              radius: 40,
-                                              backgroundColor: const Color(0xff1BC100),
-                                              child: CircleAvatar(
-                                                radius: 38,
-                                                child: ClipOval(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(controller.guests[thisIndex].userProfilePic.toString()),
-                                                            fit: BoxFit.cover
-                                                        )
+                              GetX<FirebaseController>(
+                                builder: (controller) {
+                                  return FutureBuilder(builder: (context,AsyncSnapshot<List<UserDetailsModel>> snapshot){
+                                    try{
+                                      guests = snapshot.data!;
+                                      if(snapshot.hasData) {
+                                        return SizedBox(
+                                          width: w,
+                                          height: h*0.1,
+                                          child: ListView.separated(
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context,thisIndex){
+                                                return CircleAvatar(
+                                                  radius: 40,
+                                                  backgroundColor: const Color(0xff1BC100),
+                                                  child: CircleAvatar(
+                                                    radius: 38,
+                                                    child: ClipOval(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(controller.guests[thisIndex].userProfilePic.toString()),
+                                                                fit: BoxFit.cover
+                                                            )
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          separatorBuilder: (context,index)=>const SizedBox(width: 12,),
-                                          itemCount: controller.parties[index!].guests!.length),
-                                    );
-                                  } else {
-                                    return const CircularProgressIndicator();
-                                  }
-                                }catch(e){
-                                  return Shimmer.fromColors(
-                                    baseColor: const Color(0xffd5d7d5),
-                                    highlightColor: const Color(0xfff3f3f3),
-                                    child: const CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: Colors.white,
-                                    ),);
-                                }
+                                                );
+                                              },
+                                              separatorBuilder: (context,index)=>const SizedBox(width: 12,),
+                                              itemCount: controller.parties[index!].guests!.length),
+                                        );
+                                      } else {
+                                        return const CircularProgressIndicator();
+                                      }
+                                    }catch(e){
+                                      return Shimmer.fromColors(
+                                        baseColor: const Color(0xffd5d7d5),
+                                        highlightColor: const Color(0xfff3f3f3),
+                                        child: const CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.white,
+                                        ),);
+                                    }
 
-                              },
-                                future: controller.fetchGuests(controller.parties[index!].guests!),
+                                  },
+                                    future: controller.fetchGuests(controller.parties[index!].guests!),
+                                  );
+                                }
                               ),
 
 
-                              const SizedBox(height: 10,),
+                              SizedBox(height: h*0.01,),
                               buildStrokeText("Time to celebrate", t, const Color(0xff5B5B5B), Colors.white,17),
-                              const SizedBox(height: 10,),
+                              SizedBox(height: h*0.01,),
                               Text("${controller.parties[index!].description} ",style: t.textTheme.headline3,),
-                              const SizedBox(height: 10,),
+                              SizedBox(height: h*0.01,),
                               buildStrokeText("Activities", t, const Color(0xff5B5B5B), Colors.white,17),
                               buildActivitiesSection(context,controller.parties[index!]),
-                              const SizedBox(height: 10,),
+                              SizedBox(height: h*0.01,),
                               buildStrokeText("Special Appearances", t, const Color(0xff5B5B5B), Colors.white,17),
                               buildSpecialAppearanceSection(context,controller.parties[index!]),
                             ],
@@ -305,25 +314,29 @@ class PartyDetails2 extends StatelessWidget {
                   ],
                 ),
 
-                Padding(
-                  padding: EdgeInsets.only(left: 0,top: h*0.44),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: const Color(0xff1BC100),
-                    child: CircleAvatar(
-                      radius: 48,
-                      child: ClipOval(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(controller.hostDetails[0].profilePic.toString()),
-                                  fit: BoxFit.cover
-                              )
+                GetX<FirebaseController>(
+                  builder: (controller) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 0,top: h*0.44),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: const Color(0xff1BC100),
+                        child: CircleAvatar(
+                          radius: 48,
+                          child: ClipOval(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(controller.hostDetails[0].profilePic.toString()),
+                                      fit: BoxFit.cover
+                                  )
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 )
               ],
             )
@@ -386,13 +399,14 @@ class PartyDetails2 extends StatelessWidget {
     }
 
     final t = Theme.of(context);
+    final h = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(right: 15.0),
       child: Container(
         width: double.infinity,
-        constraints: const BoxConstraints(
-            minHeight: 50,
-            maxHeight: 300
+        constraints: BoxConstraints(
+            minHeight: h*0.05,
+            maxHeight: h*0.3
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -413,7 +427,7 @@ class PartyDetails2 extends StatelessWidget {
                   children: [
                     buildStrokeText(activities.keys.toList()[index], t, Colors.black87, Colors.white, 14),
                     Text(activities[activities.keys.toList()[index]].toString(),style: t.textTheme.headline3),
-                    const SizedBox(height: 10,)
+                    SizedBox(height: h*0.01,)
                   ],
                 ),
               ):Padding(
@@ -431,9 +445,10 @@ class PartyDetails2 extends StatelessWidget {
 
   Widget buildSpecialAppearanceSection(BuildContext context, PartyDetails party) {
     final t = Theme.of(context);
+    final h = MediaQuery.of(context).size.height;
     if (party.specialAppearance!) {
       return Padding(
-      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.05,top: 10,bottom: 25),
+      padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.05,top: 10,bottom: h*0.025),
       child: Column(
         children: [
           Container(
@@ -479,7 +494,7 @@ class PartyDetails2 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 25,
+                      height: h*0.03,
                       child: Text("Playing : ",style: GoogleFonts.poppins(
                           fontSize: 12,
                           color: Colors.white,
@@ -487,7 +502,7 @@ class PartyDetails2 extends StatelessWidget {
                       ),),
                     ),
                     SizedBox(
-                      height: 25,
+                      height: h*0.03,
                       child: ListView.separated(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
@@ -514,7 +529,7 @@ class PartyDetails2 extends StatelessWidget {
     );
     } else {
       return Padding(
-        padding: const EdgeInsets.only(top: 8.0,right: 15,bottom: 25),
+        padding: EdgeInsets.only(top: h*0.01,right: h*0.015,bottom: h*0.025),
         child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width * 0.5,

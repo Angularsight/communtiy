@@ -29,6 +29,7 @@ class GoogleSignInController extends GetxController{
     final credentials = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken,idToken: googleAuth.idToken);
     await FirebaseAuth.instance.signInWithCredential(credentials);
     update();
+    signedInBool.value = false;
     Get.to(()=>UserUpload());
 
   }

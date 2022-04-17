@@ -1,13 +1,17 @@
 
 
+import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'phone_login_screen.dart';
 
 class LoginReRouteScreen extends StatelessWidget {
-  const LoginReRouteScreen({Key? key}) : super(key: key);
+  LoginReRouteScreen({Key? key}) : super(key: key);
+
+  final GoogleSignInController googleSignInController = Get.put(GoogleSignInController());
 
   @override
   Widget build(BuildContext context) {

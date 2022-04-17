@@ -47,7 +47,7 @@ class GuestList2 extends StatelessWidget {
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 10,
-            backgroundColor: Color(0xff292929),
+            backgroundColor: const Color(0xff292929),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
@@ -58,26 +58,26 @@ class GuestList2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: h * 0.01,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: Get.width * 0.7 ,
-                            height: Get.width * 0.6,
+                            width: w * 0.7 ,
+                            height: w * 0.6,
                             child: PageView.builder(
                                 controller: pageController,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: guest.images!.length,
                                 itemBuilder: (context,index){
                                   return Padding(
-                                    padding: const EdgeInsets.only(right: 25),
+                                    padding: EdgeInsets.only(right: h*0.025),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: SizedBox(
-                                          width: Get.width * 0.4,
+                                          width: w * 0.4,
                                           child: Image.network(guest.images![index],fit: BoxFit.cover,)),
                                     ),
                                   );
@@ -91,40 +91,40 @@ class GuestList2 extends StatelessWidget {
                       //       width: 200,
                       //       child: Image.network(guest.images![index],fit: BoxFit.cover,)),
                       // )
-                      const SizedBox(height: 10),
+                      SizedBox(height: h*0.01),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                        padding: EdgeInsets.only(left: h*0.01),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Does\'nt matter if you win by an inch or a mile winning is winning', style: t.textTheme.headline1!.copyWith(
                                 color: Colors.white, fontSize: 16),
                             ),
-                            const SizedBox(height: 8),
-                            Text("Bio", style: t.textTheme.headline3!.copyWith(color: Color(0xffC0C0C0)),
+                            SizedBox(height: h*0.008),
+                            Text("Bio", style: t.textTheme.headline3!.copyWith(color: const Color(0xffC0C0C0)),
                             ),
                             Row(
                               children: [
                                 Text("Height : ${interests.height}", style: t.textTheme.headline3!.copyWith(
-                                    color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 13),
                                 ),
-                                const SizedBox(
-                                  width: 20,
+                                SizedBox(
+                                  width: h*0.008,
                                 ),
                                 Text("Weight : 60kgs", style: t.textTheme.headline3!.copyWith(
-                                    color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 13),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: h*0.008),
                             Text("Favorites", style: t.textTheme.headline3!.copyWith(
-                                color: Color(0xffC0C0C0)),
+                                color: const Color(0xffC0C0C0)),
                             ),
-                            const SizedBox(height: 5,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Text("Movie : ", style: t.textTheme.headline3!.copyWith(
-                                    color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 13),
                                 ),
                                 buildInterestAttributeList(h, w, interests.movies, t, false)
                               ],
@@ -135,7 +135,7 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Anime : ", style: t.textTheme.headline3!.copyWith(
-                                    color: Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 13),
                                 ),
                                 buildInterestAttributeList(h, w, interests.anime, t, false)
                               ],
@@ -146,17 +146,17 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Sports : ", style: t.textTheme.headline3!.copyWith(
-                                    color: Color(0xffA4A4A4), fontSize: 13),),
+                                    color: const Color(0xffA4A4A4), fontSize: 13),),
                                 buildInterestAttributeList(h, w, interests.sport, t, false)
                               ],
                             ),
                             const SizedBox(height: 5,),
                             Text("Pet : ${interests.pet}", style: t.textTheme.headline3!.copyWith(
-                                color: Color(0xffA4A4A4), fontSize: 13),),
+                                color: const Color(0xffA4A4A4), fontSize: 13),),
 
                             const SizedBox(height: 20,),
                             Text("Hobbies and Likes", style: t.textTheme.headline3!.copyWith(
-                                color: Color(0xffC0C0C0)),
+                                color: const Color(0xffC0C0C0)),
                             ),
                             const SizedBox(height: 5,),
                             buildInterestAttributeList(h, w, interests.series, t, true)
@@ -175,13 +175,13 @@ class GuestList2 extends StatelessWidget {
   SizedBox buildInterestAttributeList(double h, double w, var list, ThemeData t, bool hobbies) {
     if (hobbies) {
       return SizedBox(
-        height: 20,
+        height: h*0.02,
         width: w,
         child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                  color: Color(0xffA4A4A4), fontSize: 13),
+                  color: const Color(0xffA4A4A4), fontSize: 13),
               );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 10,),
@@ -189,13 +189,13 @@ class GuestList2 extends StatelessWidget {
       );
     } else {
       return SizedBox(
-        height: 20,
+        height: h*0.02,
         width: w * 0.5,
         child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                  color: Color(0xffA4A4A4), fontSize: 13),
+                  color: const Color(0xffA4A4A4), fontSize: 13),
               );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 10,),
@@ -263,7 +263,7 @@ class GuestList2 extends StatelessWidget {
                       Text(
                         "#Party#Fun#Yes#No#Host#Invited",
                         style: t.textTheme.headline1!
-                            .copyWith(color: Color(0xff696969), fontSize: 12),
+                            .copyWith(color: const Color(0xff696969), fontSize: 12),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -288,10 +288,10 @@ class GuestList2 extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: CircleAvatar(
-                radius: 60,
-                backgroundColor: Color(0xff1BC100),
+                radius: h*0.07,
+                backgroundColor: const Color(0xff1BC100),
                 child: CircleAvatar(
-                  radius: 58,
+                  radius: h*0.068,
                   child: ClipOval(
                     child: Container(
                       decoration: BoxDecoration(

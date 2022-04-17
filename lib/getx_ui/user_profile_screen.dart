@@ -2,6 +2,7 @@
 
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_icons/flutter_icons.dart';
@@ -127,7 +128,7 @@ class UserProfileScreen extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: Colors.transparent,
                       ),
-                      child: Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,),
+                      child: fetchProfileImage(user),
                       // child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
                     ),
                   )
@@ -193,6 +194,15 @@ class UserProfileScreen extends StatelessWidget {
         ),
       )
     );
+  }
+
+  Image fetchProfileImage(UserDetailsModel user) {
+    try{
+      return Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,);
+    }catch(e){
+      return Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,);
+    }
+
   }
 
   Widget buildProfileListTile(double w, BuildContext context, String heading, String subHeading, IconData icon) {

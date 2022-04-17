@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,12 +43,12 @@ class InterestsUpload extends StatelessWidget {
     var sport = interestController.sports.value;
 
     FirebaseFirestore.instance.collection('Interests').doc().set({
-      'userId':"#something",
+      'userId':FirebaseAuth.instance.currentUser!.uid,
       'anime': anime,
       'drama':drama,
       'movies':movies,
       'series':series,
-      'sport':sport,
+      'sports':sport,
       'occupation':occupationController.text,
       'currentRelationshipStatus':relationshipController.text,
       'height':heightController.text,
@@ -284,9 +285,15 @@ class InterestsUpload extends StatelessWidget {
                             fillColor: const Color(0xffFFF6F6),
                             filled: true,
                             hintText: "Add tag",
-                            suffixIcon: const Icon(
-                              Icons.add_circle,
-                              size: 30,
+                            suffixIcon:  InkWell(
+                              onTap: (){
+                                interestList.add(editingController.text);
+                                editingController.clear();
+                              },
+                              child: const Icon(
+                                Icons.add_circle,
+                                size: 30,
+                              ),
                             ),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),

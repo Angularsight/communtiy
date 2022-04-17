@@ -134,7 +134,7 @@ class MatchedScreen extends StatelessWidget {
                                         }
                                     ),
                                   ),
-                                  const SizedBox(height: 10,),
+                                  SizedBox(height: h*0.01,),
 
                                   Text(controller.parties[index].partyName.toString(),style: t.textTheme.headline3!.copyWith(
                                       color: Colors.white,
@@ -197,6 +197,8 @@ class MatchedScreen extends StatelessWidget {
   }
 
   AppBar buildAppBar(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     return AppBar(
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
@@ -208,13 +210,13 @@ class MatchedScreen extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.5),
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                     blurRadius: 4,
                     spreadRadius: 0)
               ]),
         ),
         title: Padding(
-          padding: EdgeInsets.only(left: Get.width * 0.15),
+          padding: EdgeInsets.only(left: w * 0.2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -223,19 +225,24 @@ class MatchedScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Text(
-                      "Community",
+                      "Leagues",
                       style: Theme.of(context).textTheme.caption!.copyWith(
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 4
-                            ..color = Colors.black),
+                            ..color = Colors.black,
+                          letterSpacing: 1,
+                          fontSize: 30
+                      ),
                     ),
                     Text(
-                      "Community",
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption!
-                          .copyWith(color: Theme.of(context).primaryColor),
+                      "Leagues",
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          letterSpacing: 1,
+                          fontSize: 30
+
+                      ),
                     ),
                   ],
                 ),
@@ -246,7 +253,7 @@ class MatchedScreen extends StatelessWidget {
         leading: Builder(
           builder: (BuildContext context) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0, top: 10),
+              padding:EdgeInsets.only(bottom: h*0.02, top: h*0.01),
               child: IconButton(
                 icon: Icon(
                   CustomIcons.hamburger,
@@ -261,7 +268,7 @@ class MatchedScreen extends StatelessWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, right: 10),
+            padding: EdgeInsets.only(top: h*0.01, right: h*0.015),
             child: InkWell(
               splashColor: Colors.red,
               onTap: () {},

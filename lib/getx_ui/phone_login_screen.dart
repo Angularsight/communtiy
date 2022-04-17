@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:communtiy/controllers/google_sign_in_controller.dart';
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/OTP_screen.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
@@ -22,7 +23,7 @@ class PhoneLoginScreen extends StatelessWidget {
   String email ='';
   String password = '';
 
-  final GoogleSignInController googleSignInController = Get.put(GoogleSignInController());
+  final GoogleSignInController googleSignInController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +213,7 @@ class PhoneLoginScreen extends StatelessWidget {
                   Center(
                     child: InkWell(
                       onTap: (){
-                        googleSignInController.googleLogin();
+                        // googleSignInController.googleLogin();
                       },
                       child: Container(
                         width: w*0.75,

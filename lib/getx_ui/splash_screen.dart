@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
     Timer(const Duration(seconds: 5), (){
-      Get.to(()=>const LoginReRouteScreen());
+      Get.to(()=>LoginReRouteScreen());
     });
     return Scaffold(
       extendBodyBehindAppBar: true,

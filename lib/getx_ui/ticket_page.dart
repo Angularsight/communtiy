@@ -12,6 +12,7 @@ import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,15 +37,15 @@ class TicketPage extends StatelessWidget {
      print("DocumentId :$docId");
 
      /// Uncomment the below part to add current user to the guest List.
-     // /// Updating guestList of the particular party using docId
-     // List<dynamic> newGuestList = party.guests!;
-     // newGuestList.add('NEW GUEST GOES HERE');
+     /// Updating guestList of the particular party using docId
+     List<dynamic> newGuestList = party.guests!;
+     newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
 
-     // FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
-     //   'guests': newGuestList
-     // });
-     //
-     // print("UPLOADED NEW GUEST TO FIREBASE");
+     FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
+       'guests': newGuestList
+     });
+
+     print("UPLOADED NEW GUEST TO FIREBASE");
    }
 
   @override

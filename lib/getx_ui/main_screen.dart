@@ -60,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: GestureDetector(
           onTap: (){
             searchFocusNode.unfocus();
@@ -73,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: Column(
                       children:  [
                         Padding(
-                            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06,vertical: Get.height * 0.03),
+                            padding: EdgeInsets.symmetric(horizontal: w * 0.06,vertical: h * 0.03),
                             child: SizedBox(
                               height: h*0.06,
                               child: TypeAheadField<PartyDetails?>(
@@ -111,8 +112,8 @@ class _MainScreenState extends State<MainScreen> {
                                   itemBuilder: (context,PartyDetails? suggestions){
                                     return ListTile(
                                       leading: Container(
-                                        height: 40,
-                                        width:40,
+                                        height: w*0.1,
+                                        width:w*0.1,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           image: DecorationImage(image: NetworkImage(suggestions!.images![0].toString()),fit: BoxFit.cover)
@@ -188,7 +189,7 @@ class _MainScreenState extends State<MainScreen> {
                                       return ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
-                                          height: 400,
+                                          height: h*0.45,
                                           width: w*0.9,
                                           color: const Color(0xff414141),
                                           child: Shimmer.fromColors(
@@ -199,20 +200,20 @@ class _MainScreenState extends State<MainScreen> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(top: 300.0,left: 8,right: 8),
                                                   child: Container(
-                                                    width: MediaQuery.of(context).size.width * 0.4,
-                                                    height: 25,
+                                                    width: w * 0.4,
+                                                    height: h*0.03,
                                                     decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius: BorderRadius.circular(10)
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(height: 20,),
+                                                SizedBox(height: h*0.025,),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0),
                                                   child: Container(
                                                     width: double.infinity,
-                                                    height: 20,
+                                                    height: h*0.03,
                                                     decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius: BorderRadius.circular(10)
@@ -250,164 +251,11 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Accordion buildActivitiesAndSpecialAppearance(BuildContext context, PartyDetails party) {
-    try{
-      final activities = {};
-      for (String element in party.activities!) {
-        final split = element.toString().split(',');
-        activities[split[0]] = split[1];
-      }
-      return Accordion(
-          scrollIntoViewOfItems: ScrollIntoViewOfItems.slow,
-          maxOpenSections: 2,
-          headerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          rightIcon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
-          contentBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          children: [
-            AccordionSection(
-                contentVerticalPadding: 0,
-                header: Text("Activities",style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 16,
-                    color: Colors.white
-                ),),
-                content:Container(
-                  width: double.infinity,
-                  constraints: const BoxConstraints(
-                      minHeight: 100,
-                      maxHeight: 300
-                  ),
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: activities.length,
-                      itemBuilder: (context,index){
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(activities.keys.toList()[index],style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold
-                            )),
-                            Text(activities[activities.keys.toList()[index]].toString(),style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal
-                            )),
-                            const SizedBox(height: 10,)
-                          ],
-                        );
-                      }),
-                )
-
-            ),
-            AccordionSection(
-                contentVerticalPadding:MediaQuery.of(context).size.width * 0.05 ,
-                header: Text("Special Appearance",style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 16,
-                    color: Colors.white
-                ),),
-                content: party.specialAppearance!?Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(party.djPhoto!),
-                              fit: BoxFit.cover),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10)
-                          )
-                      ),
-
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10)
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.8),
-                                offset: const Offset(0,4),
-                                blurRadius: 4,
-                                spreadRadius: 0
-                            )
-                          ]
-                      ),
-                      child: Column(
-                        children: [
-                          Text(party.djName!,style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ) ,),
-                          Text("Playing : ${party.playing![0]}, ${party.playing![1]}, ${party.playing![2]} ",style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal
-                          ))
-                        ],
-                      ),
-                    )
-                  ],
-                ) :
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width * 0.5,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:  [
-                        Text("Not available for this event ",style: Theme.of(context).textTheme.headline2!.copyWith(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 15
-                        )),
-                        Text("Keep looking in other parties",style: Theme.of(context).textTheme.headline2!.copyWith(
-                            color: Colors.white,
-                            fontSize: 18
-                        ),)
-                      ],
-                    ),
-                  ),
-                )
-
-            ),
-          ]);
-    }catch(e){
-      return Accordion(
-          scrollIntoViewOfItems: ScrollIntoViewOfItems.slow,
-          maxOpenSections: 2,
-          headerBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          rightIcon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
-          contentBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          children: [
-            AccordionSection(
-                header: Text("Activities",style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 16,
-                    color: Colors.white
-                ),),
-                content: const Text("")),
-            AccordionSection(
-                header: Text("Special Appearance",style: Theme.of(context).textTheme.headline2!.copyWith(
-                    fontSize: 16,
-                    color: Colors.white
-                ),),
-                content: const Text(""))
-
-          ]);
-    }
-
-  }
 
 
   buildAppBar(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     return SliverAppBar(
         backgroundColor: Colors.transparent,
         expandedHeight: 50,
@@ -428,7 +276,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         title:Padding(
-          padding: EdgeInsets.only(left: Get.width * 0.35),
+          padding: EdgeInsets.only(left: w * 0.2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -443,14 +291,16 @@ class _MainScreenState extends State<MainScreen> {
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 4
                             ..color = Colors.black,
-                          letterSpacing: 2
+                          letterSpacing: 1,
+                        fontSize: 30
                       ),
                     ),
                     Text(
                       "Leagues",
                       style: Theme.of(context).textTheme.caption!.copyWith(
                           color: Theme.of(context).primaryColor,
-                        letterSpacing: 2
+                        letterSpacing: 1,
+                          fontSize: 30
 
                       ),
                     ),
@@ -461,41 +311,43 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         automaticallyImplyLeading: false,
-        // leading: Builder(
-        //   builder: (BuildContext context) {
-        //     return Padding(
-        //       padding: const EdgeInsets.only(bottom: 20.0,top: 10),
-        //       child: IconButton(
-        //         icon: Icon(
-        //           CustomIcons.hamburger,
-        //           size: 30,
-        //         ),
-        //         onPressed: () {
-        //           return Scaffold.of(context).openDrawer();
-        //         },
-        //       ),
-        //     );
-        //   },
-        // ),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(top: 10.0, right: 10),
-        //     child: InkWell(
-        //       splashColor: Colors.red,
-        //       onTap: () {},
-        //       child: const Icon(
-        //         Icons.account_circle,
-        //         size: 30,
-        //       ),
-        //     ),
-        //   ),
-        // ],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: h*0.025,top: h*0.01),
+              child: IconButton(
+                icon: Icon(
+                  CustomIcons.hamburger,
+                  size: 30,
+                ),
+                onPressed: () {
+                  return Scaffold.of(context).openDrawer();
+                },
+              ),
+            );
+          },
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(top: h*0.01, right: h*0.01),
+            child: InkWell(
+              splashColor: Colors.red,
+              onTap: () {},
+              child: const Icon(
+                Icons.account_circle,
+                size: 30,
+              ),
+            ),
+          ),
+        ],
     );
   }
 
 
   Widget pageViewCard(int index, bool isActive, double h) {
-    double paddingTop = isActive?0:40;
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+    double paddingTop = isActive?0:h*0.045;
     // double containerHeight = isActive?150:100;
     return InkWell(
       onTap: (){
@@ -504,7 +356,7 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 500),
-        padding: EdgeInsets.only(top: paddingTop,right: 20),
+        padding: EdgeInsets.only(top: paddingTop,right: h*0.02),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Stack(
@@ -530,7 +382,7 @@ class _MainScreenState extends State<MainScreen> {
                           Text(partyController.parties[index].partyName.toString(),style: Theme.of(context).textTheme.headline2!.copyWith(
                               color: Colors.white
                           ),),
-                          const SizedBox(width: 10,),
+                          SizedBox(width: h*0.015,),
                           Icon(CustomIcons.bookmark,color: Theme.of(context).canvasColor,)
                         ],
                       ),

@@ -54,7 +54,9 @@ class Themes {
           caption: GoogleFonts.rancho(fontWeight: FontWeight.normal, fontSize: 30),
           headline1: GoogleFonts.reemKufi(fontSize: 18),
           headline2: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
-          headline3: GoogleFonts.ptSerif(fontSize: 16, fontWeight: FontWeight.normal)),
+          headline3: GoogleFonts.ptSerif(fontSize: 16, fontWeight: FontWeight.normal),
+          // subtitle1: GoogleFonts.satisfy(fontSize: 30,fontWeight: FontWeight.normal)
+      ),
     );
   }
 }

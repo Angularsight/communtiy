@@ -25,7 +25,6 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinNode = FocusNode();
-  final OnBoardingController _onBoardingController = Get.find();
 
   ///For phone verificaiton
   String _verificationCode = '';

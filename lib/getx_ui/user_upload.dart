@@ -141,7 +141,7 @@ class _UserUploadState extends State<UserUpload> {
   void _uploadDataToFirebase() {
     if(currentUser.phoneNumber!.isNotEmpty){
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
-        'userId':'something',
+        'userId':currentUser.uid,
         'userName':username,
         'password':password,
         'userProfilePic':userProfilePicUrlList[0],
