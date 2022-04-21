@@ -20,10 +20,10 @@ class ChartData {
 
 class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key? key}) : super(key: key);
-  final OnBoardingController userController = Get.find();
+  final OnBoardingController userController = Get.put(OnBoardingController());
 
   final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true,tooltipPosition: TooltipPosition.pointer,duration: 2,activationMode: ActivationMode.singleTap);
-  final loginUser = FirebaseAuth.instance.currentUser!;
+  // final loginUser = FirebaseAuth.instance.currentUser!;
 
   void bindStreamToUser(){
     userController.userProfile.bindStream(userController.connectUserToApp());
@@ -47,6 +47,7 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       body:SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -1,6 +1,7 @@
 
 
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
+import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/phone_login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,7 @@ class AuthController extends GetxController{
       Get.offAll(()=>PhoneLoginScreen());
     }else{
       print('Already logged in');
-      Get.offAll(()=>BottomNavigationPage());
+      Get.off(()=>BottomNavigationPage());
     }
   }
 

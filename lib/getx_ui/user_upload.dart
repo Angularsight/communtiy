@@ -43,6 +43,7 @@ class _UserUploadState extends State<UserUpload> {
 
   final OnBoardingController onBoardingController = Get.put(OnBoardingController());
   final currentUser = FirebaseAuth.instance.currentUser!;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -136,6 +137,9 @@ class _UserUploadState extends State<UserUpload> {
 
   void _uploadDataToFirebase() {
     if(currentUser.phoneNumber!.isNotEmpty){
+      setState(() {
+        _isLoading = true;
+      });
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
         'userName':username,
@@ -146,6 +150,9 @@ class _UserUploadState extends State<UserUpload> {
         'age':int.parse(age),
         'xp':int.parse(xp),
         'images':urlList2
+      });
+      setState(() {
+        _isLoading = false;
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -175,316 +182,339 @@ class _UserUploadState extends State<UserUpload> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Let's get to know more about you",style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.white,
-                      fontSize: 22
-                    ),),
-                    SizedBox(height: h*0.01,),
-                    pickedImageBool2
-                        ? afterImagePick()
-                        : Container(
-                            width: w,
-                            height: h * 0.3,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(
-                                child: InkWell(
-                              onTap: () {
-                                _pickImageFromGallery();
-                              },
-                              child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey.withOpacity(0.4)),
-                                  child: const Center(
-                                    child: Text(
-                                      "+",
-                                      style: TextStyle(
-                                          fontSize: 35, color: Colors.white),
-                                    ),
-                                  )),
-                            )),
-                          ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: w * 0.58,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: const Color(0xffFFF6F6),
-                                filled: true,
-                                hintText: 'Your name',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        style: BorderStyle.none))),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.name,
-                            key: const ValueKey('username'),
-                            controller: userNameController,
-                            focusNode: userNameNode,
-                            onFieldSubmitted: (text) {
-                              username = text;
-                              FocusScope.of(context).requestFocus(ageNode);
-                            },
-                          ),
+                        Text("Let's get to know more about you",style: Theme.of(context).textTheme.headline1!.copyWith(
+                          color: Colors.white,
+                          fontSize: 22
+                        ),),
+                        SizedBox(height: h*0.01,),
+                        pickedImageBool2
+                            ? afterImagePick()
+                            : Container(
+                                width: w,
+                                height: h * 0.3,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                    child: InkWell(
+                                  onTap: () {
+                                    _pickImageFromGallery();
+                                  },
+                                  child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Colors.grey.withOpacity(0.4)),
+                                      child: const Center(
+                                        child: Text(
+                                          "+",
+                                          style: TextStyle(
+                                              fontSize: 35, color: Colors.white),
+                                        ),
+                                      )),
+                                )),
+                              ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: w * 0.58,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    fillColor: const Color(0xffFFF6F6),
+                                    filled: true,
+                                    hintText: 'Your name',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            style: BorderStyle.none))),
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                                key: const ValueKey('username'),
+                                controller: userNameController,
+                                focusNode: userNameNode,
+                                onFieldSubmitted: (text) {
+                                  username = text;
+                                  FocusScope.of(context).requestFocus(ageNode);
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: w * 0.3,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    fillColor: const Color(0xffFFF6F6),
+                                    filled: true,
+                                    hintText: 'Age',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            style: BorderStyle.none))),
+                                textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true),
+
+                                key: const ValueKey('Age'),
+                                controller: ageController,
+                                focusNode: ageNode,
+                                // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
+                                onFieldSubmitted: (text) {
+                                  age = text;
+                                  FocusScope.of(context)
+                                      .requestFocus(locationNode);
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: w * 0.58,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    fillColor: const Color(0xffFFF6F6),
+                                    suffixIcon:
+                                        const Icon(Icons.location_on_outlined),
+                                    filled: true,
+                                    hintText: 'Location',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            style: BorderStyle.none))),
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.name,
+                                key: const ValueKey('Location'),
+                                controller: locationController,
+                                focusNode: locationNode,
+                                onFieldSubmitted: (text) {
+                                  location = text;
+                                  FocusScope.of(context).requestFocus(xpNode);
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: w * 0.3,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    fillColor: const Color(0xffFFF6F6),
+                                    suffixIcon: const Icon(Icons.star_outline),
+                                    filled: true,
+                                    hintText: 'Xp',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            style: BorderStyle.none))),
+                                textInputAction: TextInputAction.next,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: false),
+                                key: const ValueKey('Xp'),
+                                controller: xpController,
+                                focusNode: xpNode,
+                                onFieldSubmitted: (text) {
+                                  xp = text;
+                                  FocusScope.of(context).requestFocus(phoneNumberNode);
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         SizedBox(
-                          width: w * 0.3,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: const Color(0xffFFF6F6),
-                                filled: true,
-                                hintText: 'Age',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        style: BorderStyle.none))),
-                            textInputAction: TextInputAction.next,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: true),
-
-                            key: const ValueKey('Age'),
-                            controller: ageController,
-                            focusNode: ageNode,
-                            // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
-                            onFieldSubmitted: (text) {
-                              age = text;
-                              FocusScope.of(context)
-                                  .requestFocus(locationNode);
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: w * 0.58,
+                          width: w,
                           child: TextFormField(
                             decoration: InputDecoration(
                                 fillColor: const Color(0xffFFF6F6),
                                 suffixIcon:
-                                    const Icon(Icons.location_on_outlined),
+                                    const Icon(Icons.phone_android_rounded),
                                 filled: true,
-                                hintText: 'Location',
+                                hintText: 'Phone Number',
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
                                         style: BorderStyle.none))),
                             textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.name,
-                            key: const ValueKey('Location'),
-                            controller: locationController,
-                            focusNode: locationNode,
-                            onFieldSubmitted: (text) {
-                              location = text;
-                              FocusScope.of(context).requestFocus(xpNode);
+                            keyboardType: TextInputType.phone,
+                            key: const ValueKey('phone number'),
+                            controller: phoneNumberController,
+                            focusNode: phoneNumberNode,
+                            onFieldSubmitted: (text){
+                              phoneNumber = text;
+                              FocusScope.of(context).requestFocus(passwordNode);
                             },
                           ),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         SizedBox(
-                          width: w * 0.3,
+                          width: w,
                           child: TextFormField(
                             decoration: InputDecoration(
                                 fillColor: const Color(0xffFFF6F6),
-                                suffixIcon: const Icon(Icons.star_outline),
                                 filled: true,
-                                hintText: 'Xp',
+                                hintText: "Password",
+                                suffixIcon: const Icon(Icons.password),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
                                         style: BorderStyle.none))),
+                            textCapitalization: TextCapitalization.sentences,
                             textInputAction: TextInputAction.next,
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: false),
-                            key: const ValueKey('Xp'),
-                            controller: xpController,
-                            focusNode: xpNode,
+                            keyboardType: TextInputType.visiblePassword,
+                            key: const ValueKey('password'),
+                            controller: passwordController,
+                            focusNode: passwordNode,
                             onFieldSubmitted: (text) {
-                              xp = text;
-                              FocusScope.of(context).requestFocus(phoneNumberNode);
+                              password = text;
+                              FocusScope.of(context).unfocus();
                             },
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: w,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            fillColor: const Color(0xffFFF6F6),
-                            suffixIcon:
-                                const Icon(Icons.phone_android_rounded),
-                            filled: true,
-                            hintText: 'Phone Number',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    style: BorderStyle.none))),
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.phone,
-                        key: const ValueKey('phone number'),
-                        controller: phoneNumberController,
-                        focusNode: phoneNumberNode,
-                        onFieldSubmitted: (text){
-                          phoneNumber = text;
-                          FocusScope.of(context).requestFocus(passwordNode);
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: w,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            fillColor: const Color(0xffFFF6F6),
-                            filled: true,
-                            hintText: "Password",
-                            suffixIcon: const Icon(Icons.password),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    style: BorderStyle.none))),
-                        textCapitalization: TextCapitalization.sentences,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.visiblePassword,
-                        key: const ValueKey('password'),
-                        controller: passwordController,
-                        focusNode: passwordNode,
-                        onFieldSubmitted: (text) {
-                          password = text;
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Pick profile pic",
-                      style: t.textTheme.headline1!.copyWith(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Center(child: afterImagePick2()),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-
-                    // InterestsUpload(listName: "Anime",interestList: onBoardingController.animeList,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            print('User name:$username , age:$age , Location :$location , Xp:$xp, phoneNumber:$phoneNumber , password:$password');
-                            onBoardingController.phoneNumber.value = int.parse(phoneNumber);
-                            _prepareDataForFirebase();
-                          },
-                          child: Container(
-                            width: w * 0.3,
-                            height: h * 0.05,
-                            decoration: BoxDecoration(
-                                color: t.primaryColor,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
-                            child: Center(
-                                child: Text(
-                              "Upload",
-                              style: t.textTheme.headline1!
-                                  .copyWith(color: Colors.black),
-                            )),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Pick profile pic",
+                          style: t.textTheme.headline1!.copyWith(
+                            fontSize: 20,
+                            color: Colors.white,
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(()=>InterestsUpload());
-                          },
-                          child: Container(
-                            width: w * 0.3,
-                            height: h * 0.05,
-                            decoration: const BoxDecoration(
-                                color: Color(0xffefd151),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
-                            child: Center(
-                                child: Text(
-                                  "Next",
+                        Center(child: afterImagePick2()),
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+
+                        // InterestsUpload(listName: "Anime",interestList: onBoardingController.animeList,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                print('User name:$username , age:$age , Location :$location , Xp:$xp, phoneNumber:$phoneNumber , password:$password');
+                                onBoardingController.phoneNumber.value = int.parse(phoneNumber);
+                                _prepareDataForFirebase();
+                              },
+                              child: Container(
+                                width: w * 0.3,
+                                height: h * 0.05,
+                                decoration: BoxDecoration(
+                                    color: t.primaryColor,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Center(
+                                    child: Text(
+                                  "Upload",
                                   style: t.textTheme.headline1!
                                       .copyWith(color: Colors.black),
                                 )),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            userNameController.clear();
-                            ageController.clear();
-                            locationController.clear();
-                            xpController.clear();
-                            phoneNumberController.clear();
-                            imageList2.clear();
-                            urlList2.clear();
-                            userProfilePic.clear();
-                            userProfilePicUrlList.clear();
-                            passwordController.clear();
-                            setState(() {
-                              pickedImageBool2 = false;
-                              userImagePickedBool = false;
-                            });
-                          },
-                          child: Container(
-                            width: w * 0.3,
-                            height: h * 0.05,
-                            decoration: const BoxDecoration(
-                                color: Colors.redAccent,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10))),
-                            child: Center(
-                                child: Text(
-                              "Clear all",
-                              style: t.textTheme.headline1!
-                                  .copyWith(color: Colors.black),
-                            )),
-                          ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.to(()=>InterestsUpload());
+                              },
+                              child: Container(
+                                width: w * 0.3,
+                                height: h * 0.05,
+                                decoration: const BoxDecoration(
+                                    color: Color(0xffefd151),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Center(
+                                    child: Text(
+                                      "Next",
+                                      style: t.textTheme.headline1!
+                                          .copyWith(color: Colors.black),
+                                    )),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                userNameController.clear();
+                                ageController.clear();
+                                locationController.clear();
+                                xpController.clear();
+                                phoneNumberController.clear();
+                                imageList2.clear();
+                                urlList2.clear();
+                                userProfilePic.clear();
+                                userProfilePicUrlList.clear();
+                                passwordController.clear();
+                                setState(() {
+                                  pickedImageBool2 = false;
+                                  userImagePickedBool = false;
+                                });
+                              },
+                              child: Container(
+                                width: w * 0.3,
+                                height: h * 0.05,
+                                decoration: const BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Center(
+                                    child: Text(
+                                  "Clear all",
+                                  style: t.textTheme.headline1!
+                                      .copyWith(color: Colors.black),
+                                )),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              )),
+                  )),
+            ),
+            Visibility(
+              visible: _isLoading,
+                child: Center(
+                    child:Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                          color:Colors.black.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              offset: const Offset(0,4),
+                              spreadRadius: 0,
+                              blurRadius: 4
+                            )
+                          ]
+                      ),
+                    )))
+          ],
         ),
       ),
     );

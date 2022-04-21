@@ -23,10 +23,10 @@ class OnBoardingController extends GetxController{
 
   final _userProfile = UserDetailsModel().obs;
   Rx<UserDetailsModel> get userProfile => _userProfile;
-
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   Stream<UserDetailsModel> connectUserToApp(){
+
     if(currentUser.phoneNumber!.isNotEmpty){
       // print('OnBoarding Phone No:${currentUser.phoneNumber}');
       // String formattedPhoneNo = currentUser.phoneNumber!.substring(3);
@@ -38,7 +38,7 @@ class OnBoardingController extends GetxController{
           .map((query) {
         var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
         // print('connectUserToApp error :$user');
-        return user[0];
+        return user[user.length-1];
       });
       return res;
     }else{

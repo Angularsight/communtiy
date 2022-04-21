@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class FirebaseController extends GetxController {
 
   ///Getting instance of OnboardingController
-  final OnBoardingController onBoardingController = Get.put(OnBoardingController());
+  // final OnBoardingController onBoardingController = Get.put(OnBoardingController());
 
   final _parties = [PartyDetails()].obs;
   List<PartyDetails> get parties => _parties.value;

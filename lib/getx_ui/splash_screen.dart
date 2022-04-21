@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
-import 'package:communtiy/getx_ui/login_reroute_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,9 +14,12 @@ class SplashScreen extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
 
     final t = Theme.of(context);
-    Timer(const Duration(seconds: 5), (){
-      Get.to(()=>BottomNavigationPage());
-    });
+
+    /// SHOULD NOT USE THIS TIMER SINCE THE ROUTING IS ALREADY BEING DONE IN main.dart via getX authentication (line : 20)
+    // Timer(const Duration(seconds: 5), (){
+    //   print("Went to Bottom nav via Splash Screen");
+    //   Get.to(()=>BottomNavigationPage());
+    // });
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Column(

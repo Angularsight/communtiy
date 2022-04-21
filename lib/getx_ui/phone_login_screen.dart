@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../controllers/onboarding_controller.dart';
 class PhoneLoginScreen extends StatelessWidget {
   PhoneLoginScreen({Key? key}) : super(key: key);
 
@@ -19,6 +21,7 @@ class PhoneLoginScreen extends StatelessWidget {
   String password = '';
 
   final GoogleSignInController googleSignInController = Get.find();
+  // final OnBoardingController onBoardingController = Get.put(OnBoardingController());
 
   @override
   Widget build(BuildContext context) {

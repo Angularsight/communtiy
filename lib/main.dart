@@ -1,4 +1,4 @@
-import 'package:communtiy/bindings/bindings.dart';
+
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
