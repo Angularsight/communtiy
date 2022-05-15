@@ -31,7 +31,7 @@ class BottomNavigationPage extends StatelessWidget {
             children:  [
               MainScreen(),
               MatchedScreen(),
-              UploadTab(),
+              // UploadTab(),
               UserProfileScreen(),
             ],
           ),
@@ -48,6 +48,7 @@ class BottomNavigationPage extends StatelessWidget {
               type: BottomNavigationBarType.fixed,
               selectedItemColor: Theme.of(context).primaryColor,
               currentIndex: controller.bottomIndex,
+              unselectedItemColor: const Color(0xff707070),
               items: const [
                 BottomNavigationBarItem(
                     label: 'Home',
@@ -56,15 +57,16 @@ class BottomNavigationPage extends StatelessWidget {
                 BottomNavigationBarItem(
                     label: 'Matched',
                     icon: Icon(Icons.watch)),
-                BottomNavigationBarItem(
-                    label: 'Boss',
-                    icon: Icon(Icons.add_box_outlined)),
+                // BottomNavigationBarItem(
+                //     label: 'Boss',
+                //     icon: Icon(Icons.add_box_outlined)),
                 BottomNavigationBarItem(
                     label: 'Profile',
                     icon: Icon(Icons.account_circle_outlined)),
               ],
             ),
-          )
+          ),
+        extendBody: true,
       );
     });
   }

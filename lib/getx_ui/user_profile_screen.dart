@@ -47,7 +47,7 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       body:SafeArea(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          // physics: const RangeMaintainingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

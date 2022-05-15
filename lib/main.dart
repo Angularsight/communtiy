@@ -31,7 +31,6 @@ class MyApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-
       /// InitialRoute always displays the first screen which appears after Hot Restart
       /// Irrespective of what is mentioned in home: field
       // initialRoute: '/bottomNav',

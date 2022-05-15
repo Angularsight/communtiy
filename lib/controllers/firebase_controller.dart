@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/models/user_details/interests.dart';
@@ -78,11 +77,6 @@ class FirebaseController extends GetxController {
     });
   }
 
-  Stream<List<HostModel>> fetchHostDetails(String hostId) {
-    return FirebaseFirestore.instance.collection('Host').where('hostId',isEqualTo: hostId).snapshots().map((query) {
-      return query.docs.map((e) => HostModel.fromDocument(e)).toList();
-    });
-  }
 
 
   /// Fetching interests whenever an element in the guestList is tapped
@@ -124,6 +118,8 @@ class FirebaseController extends GetxController {
   }
 
 
+
+  /// Suggestions loader in TypeAhead text field
   Future<List<PartyDetails>> partyQuerySuggestions(String query)async{
     var v = await FirebaseFirestore.instance.collection('PartyDetails').get();
     return v.docs.map((doc) => PartyDetails.fromDocument(doc)).where((party) {

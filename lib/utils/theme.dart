@@ -10,6 +10,11 @@ class Themes {
     const Color(0xff303030).withOpacity(0.47)
   ]);
 
+  static LinearGradient appBarGradient2 = LinearGradient(colors: [
+    Colors.black,
+    Colors.black.withOpacity(0.47)
+  ]);
+
   static LinearGradient transparentGradient = LinearGradient(colors: [
     const Color(0xffC4C4C4).withOpacity(0.25),
     const Color(0xffC4C4C4).withOpacity(0.35)
@@ -30,6 +35,14 @@ class Themes {
   );
 
   static LinearGradient partyDetailsGradient = const LinearGradient(colors: [
+    Color(0xffE3D170),
+    Color(0xffFFFFFF)
+  ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter
+  );
+
+  static LinearGradient partyDetailsGradient2 = const LinearGradient(colors: [
     Color(0xffE3D170),
     Color(0xffFFFFFF)
   ],

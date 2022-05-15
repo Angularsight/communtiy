@@ -379,13 +379,17 @@ class _MainScreenState extends State<MainScreen> {
                               color: Colors.white
                           ),),
                           SizedBox(width: h*0.015,),
-                          Icon(CustomIcons.bookmark,color: Theme.of(context).canvasColor,)
+                          InkWell(
+                              onTap: (){
+
+                              },
+                              child: Icon(CustomIcons.bookmark,color: Theme.of(context).canvasColor,))
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("${partyController.parties[index].time.toString()}",style: Theme.of(context).textTheme.headline3!.copyWith(
+                          Text(partyController.parties[index].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
                           Text(partyController.parties[index].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
