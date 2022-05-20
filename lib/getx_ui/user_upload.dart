@@ -137,9 +137,7 @@ class _UserUploadState extends State<UserUpload> {
 
   void _uploadDataToFirebase() {
     if(currentUser.phoneNumber!.isNotEmpty){
-      setState(() {
-        _isLoading = true;
-      });
+
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
         'userName':username,
@@ -150,9 +148,6 @@ class _UserUploadState extends State<UserUpload> {
         'age':int.parse(age),
         'xp':int.parse(xp),
         'images':urlList2
-      });
-      setState(() {
-        _isLoading = false;
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -384,7 +379,7 @@ class _UserUploadState extends State<UserUpload> {
                                         style: BorderStyle.none))),
                             textCapitalization: TextCapitalization.sentences,
                             textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.visiblePassword,
+                            keyboardType: TextInputType.name,
                             key: const ValueKey('password'),
                             controller: passwordController,
                             focusNode: passwordNode,

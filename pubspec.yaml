@@ -92,6 +92,7 @@ dependencies:
 
   #Splash screen and onBoarding
   animated_text_kit: ^4.2.1
+  liquid_swipe: ^2.1.1
 
   #Profile screen chart
   syncfusion_flutter_charts: ^19.4.56

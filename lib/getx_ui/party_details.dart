@@ -325,6 +325,7 @@ class PartyDetails2 extends StatelessWidget {
                 //
                 //   ],
                 // ),
+
                 Column(
                   mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,

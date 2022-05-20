@@ -181,7 +181,7 @@ class InterestsUpload extends StatelessWidget {
                       const BorderSide(style: BorderStyle.none))),
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.name,
               controller: editingController,
               focusNode: node,
               onFieldSubmitted: (text) {
@@ -301,7 +301,7 @@ class InterestsUpload extends StatelessWidget {
                                     const BorderSide(style: BorderStyle.none))),
                         textCapitalization: TextCapitalization.sentences,
                         textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.visiblePassword,
+                        keyboardType: TextInputType.name,
                         controller: editingController,
                         focusNode: node,
                         onFieldSubmitted: (text) {
