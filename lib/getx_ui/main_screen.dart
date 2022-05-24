@@ -350,7 +350,7 @@ class _MainScreenState extends State<MainScreen> {
     return InkWell(
       onTap: (){
         // Get.to(() =>  PartyDetails2(index:currentPage));
-        Get.to(()=>OnBoardingScreen());
+        Get.to(()=>const OnBoardingScreen());
       },
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 500),

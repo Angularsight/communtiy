@@ -107,7 +107,8 @@ class _OTPScreenState extends State<OTPScreen> {
                     if(value.user!=null){
                       print('User Logged in Successfully');
                       // Get.to(()=>UserUpload());
-                      Get.to(()=>const OnBoardingScreen());
+
+                      Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
                     }
                   });
                 }catch(e){

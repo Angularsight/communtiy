@@ -97,6 +97,8 @@ dependencies:
   group_radio_button: ^1.2.0
   chips_choice: ^2.0.1
 
+
+
   #Profile screen chart
   syncfusion_flutter_charts: ^19.4.56
 

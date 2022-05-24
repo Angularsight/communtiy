@@ -8,7 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
+  final String? phoneNumber;
+  const OnBoardingScreen({Key? key, this.phoneNumber}) : super(key: key);
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
@@ -317,7 +318,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),),),
                   ),
                   onTap: (){
-                    Get.to(()=>const NewUserUpload());
+                    Get.to(()=> NewUserUpload(phoneNumber: widget.phoneNumber,));
                   },
                 )
               ],

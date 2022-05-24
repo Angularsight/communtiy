@@ -1,5 +1,6 @@
 
 
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/getx_ui/OTP_screen.dart';
 import 'package:flutter/material.dart';
@@ -140,6 +141,7 @@ class PhoneLoginScreen extends StatelessWidget {
                                     fontSize: 16.0
                                 );
                               }else{
+
                                 Get.offAll(()=> OTPScreen(phoneNumber: _phoneNoController.text,));
                               }
                             },

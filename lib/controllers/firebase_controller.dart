@@ -145,6 +145,20 @@ class FirebaseController extends GetxController {
   }
 
 
+  ///Check if user already exists using phoneNumber
+  Future<bool> checkUserExistence(String phoneNumber)async{
+    bool isFieldValuePresent = false;
+    final QuerySnapshot res = await FirebaseFirestore.instance.collection("UserDetails")
+        .where("phoneNumber",isEqualTo: phoneNumber)
+        .limit(1)
+        .get();
+
+    final List<DocumentSnapshot> documents = res.docs;
+    // Assigning the bool to true if the respective document field,value pair exists
+    isFieldValuePresent = documents.length==1;
+    return isFieldValuePresent;
+  }
+
 
 
 

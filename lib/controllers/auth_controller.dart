@@ -12,6 +12,8 @@ class AuthController extends GetxController{
   late Rx<User?> _user;
   FirebaseAuth auth = FirebaseAuth.instance;
 
+  var userEnteredPhoneNumber = ''.obs;
+
   @override
   void onReady() {
     // TODO: implement onReady
