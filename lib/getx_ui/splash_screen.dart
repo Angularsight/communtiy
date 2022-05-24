@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
+import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,50 +21,56 @@ class SplashScreen extends StatelessWidget {
     //   print("Went to Bottom nav via Splash Screen");
     //   Get.to(()=>BottomNavigationPage());
     // });
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildLetters(w, t, "L"),
-              buildLetters(w, t, "E"),
-              buildLetters(w, t, "A"),
-              buildLetters(w, t, "G"),
-              buildLetters(w, t, "U"),
-              buildLetters(w, t, "E"),
-              buildLetters(w, t, "S"),
-              // buildLetters(w, t, "T"),
-              // buildLetters(w, t, "Y"),
-            ],
-          ),
-          const SizedBox(height: 10,),
-
-          SizedBox(
-            width: w,
-            height: 50,
-            child: DefaultTextStyle(
-              style: t.textTheme.headline3!.copyWith(
-                  fontSize: 18,
-                foreground: Paint()
-                  ..shader = LinearGradient(
-                                colors: [const Color(0xffC4C4C4),const Color(0xffC4C4C4).withOpacity(0.22)],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0))
-              ),
-              child: AnimatedTextKit(
-                repeatForever: false,
-                pause: const Duration(milliseconds: 200),
-
-                  animatedTexts: [
-                    RotateAnimatedText("Who|When|Where"),
-                    RotateAnimatedText("You|Here|Now"),
-                  ]),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: Themes.logoGradient
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildLetters(w, t, "L"),
+                buildLetters(w, t, "E"),
+                buildLetters(w, t, "A"),
+                buildLetters(w, t, "G"),
+                buildLetters(w, t, "U"),
+                buildLetters(w, t, "E"),
+                buildLetters(w, t, "S"),
+                // buildLetters(w, t, "T"),
+                // buildLetters(w, t, "Y"),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 10,),
+
+            SizedBox(
+              width: w,
+              height: 50,
+              child: DefaultTextStyle(
+                style: t.textTheme.headline3!.copyWith(
+                    fontSize: 18,
+                  foreground: Paint()
+                    ..shader = LinearGradient(
+                                  colors: [const Color(0xffC4C4C4),const Color(0xffC4C4C4).withOpacity(0.22)],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0))
+                ),
+                child: AnimatedTextKit(
+                  repeatForever: false,
+                  pause: const Duration(milliseconds: 200),
+
+                    animatedTexts: [
+                      RotateAnimatedText("Who|When|Where"),
+                      RotateAnimatedText("You|Here|Now"),
+                    ]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -4,7 +4,7 @@
 
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
-import 'package:communtiy/getx_ui/onboarding_screens.dart';
+import 'package:communtiy/getx_ui/new_ui/onboarding_screens.dart';
 import 'package:communtiy/getx_ui/phone_login_screen.dart';
 import 'package:communtiy/getx_ui/user_upload.dart';
 import 'package:firebase_auth/firebase_auth.dart';

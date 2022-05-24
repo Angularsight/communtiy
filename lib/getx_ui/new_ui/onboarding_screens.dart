@@ -1,5 +1,6 @@
 
 
+import 'package:communtiy/getx_ui/new_ui/new_user_upload.dart';
 import 'package:communtiy/getx_ui/user_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -316,7 +317,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),),),
                   ),
                   onTap: (){
-                    Get.to(()=>UserUpload());
+                    Get.to(()=>const NewUserUpload());
                   },
                 )
               ],
