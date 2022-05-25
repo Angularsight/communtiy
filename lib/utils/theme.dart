@@ -20,6 +20,13 @@ class Themes {
     const Color(0xffC4C4C4).withOpacity(0.35)
   ]);
 
+  static LinearGradient reverseLogoGradient = const LinearGradient(colors: [
+    Color(0xff000709),
+    Color(0xff001E28),
+    Color(0xff000709)
+  ],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
   static LinearGradient logoGradient = const LinearGradient(colors: [
     Color(0xff204D5B),
     Color(0xff001E28),

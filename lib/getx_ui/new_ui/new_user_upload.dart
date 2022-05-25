@@ -192,6 +192,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         series = ui.description;
       }
     }
+    print("Anime:$anime\nSport:$sport\nDrama:$drama\nMovies:$movies\nSeries:$series");
 
     FirebaseFirestore.instance.collection('Interests').doc().set({
       'userId':FirebaseAuth.instance.currentUser!.uid,
@@ -202,7 +203,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       'sports':sport,
       'occupation':occupationController.text,
       'currentRelationshipStatus':_radioValue.toString(),
-      'height':heightController.text,
+      'height':_pinPutController.text,
       'pet':petController.text
     }).then((value) {
       Get.offAll(()=>BottomNavigationPage());
@@ -261,28 +262,29 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 onTap: (){
                   setState(() {
                     if(selectedStep==0){
-                      // if(imageList2.isNotEmpty && username!='' && age!='' && userProfilePic.isNotEmpty){
-                      //   selectedStep = selectedStep+1;
-                      //   pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
-                      // }else{
-                      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      //     backgroundColor: Colors.redAccent,
-                      //     content: Text('Please enter all fields to move forward',),
-                      //   ));
-                      // }
-                      selectedStep = selectedStep+1;
-                      pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
-                    }else if(selectedStep==1|| selectedStep<2){
-                      // if(_radioValue!='' && occupation!='' && _pinPutController.text!='' && pet!=''){
-                      //   selectedStep = selectedStep+1;
-                      //   pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
-                      // }else{
-                      //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      //       backgroundColor: Colors.redAccent,
-                      //       content: Text('Please enter all fields to move forward',)));
-                      // }
-                      selectedStep = selectedStep+1;
-                      pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                      if(imageList2.isNotEmpty && username!='' && age!='' && userProfilePic.isNotEmpty){
+                        selectedStep = selectedStep+1;
+                        pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.redAccent,
+                          content: Text('Please enter all fields to move forward',),
+                        ));
+                      }
+                      // selectedStep = selectedStep+1;
+                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                    }else if(selectedStep==1){
+                      if(_radioValue!='' && occupation!='' && _pinPutController.text!='' && pet!=''){
+                        selectedStep = selectedStep+1;
+                        pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                      }else{
+                        print("Rel status:$_radioValue,occupation:$occupation,height:${_pinPutController.text},Pet:$pet");
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            backgroundColor: Colors.redAccent,
+                            content: Text('Please enter all fields to move forward',)));
+                      }
+                      // selectedStep = selectedStep+1;
+                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                     }else if(selectedStep==2){
                       showDialog(
                           context: context,
@@ -311,9 +313,9 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: InkWell(
                                         onTap: ()async{
-                                          // await _prepareDataForFirebase();
-                                          // _uploadInterestToFirebase();
-                                          Get.offAll(()=>BottomNavigationPage());
+                                          await _prepareDataForFirebase();
+                                          _uploadInterestToFirebase();
+                                          // Get.offAll(()=>BottomNavigationPage());
                                         },
                                         child: const Center(child: Text("Confirm",style: TextStyle(
                                             fontWeight: FontWeight.w500,
@@ -528,6 +530,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
                                     style: BorderStyle.none))),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
                         key: const ValueKey('username'),
@@ -560,10 +566,12 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
                                     style: BorderStyle.none))),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                         textInputAction: TextInputAction.next,
-                        keyboardType:
-                        const TextInputType.numberWithOptions(
-                            decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
 
                         key: const ValueKey('Age'),
                         controller: ageController,
@@ -597,6 +605,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
                             style: BorderStyle.none))),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
                 key: const ValueKey('Location'),
@@ -722,6 +734,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
                           style: BorderStyle.none))),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
               key: const ValueKey('Occupation'),
@@ -779,6 +795,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
                           style: BorderStyle.none))),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
               key: const ValueKey('Pet'),
@@ -1086,6 +1106,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 height: h * 0.23,
                 child: ListView.builder(
                     itemCount: imageList2.length,
+                    padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       return InkWell(
                         splashColor: Colors.transparent,

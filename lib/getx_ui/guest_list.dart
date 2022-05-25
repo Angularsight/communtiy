@@ -280,7 +280,8 @@ class GuestList2 extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: CircleAvatar(
                 radius: h*0.07,
-                backgroundColor: const Color(0xff1BC100),
+                // backgroundColor: const Color(0xff1BC100),
+                backgroundColor: Theme.of(context).primaryColor,
                 child: CircleAvatar(
                   radius: h*0.068,
                   child: ClipOval(
