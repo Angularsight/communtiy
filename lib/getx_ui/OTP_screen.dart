@@ -2,11 +2,10 @@
 
 
 
-import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/new_ui/onboarding_screens.dart';
 import 'package:communtiy/getx_ui/phone_login_screen.dart';
-import 'package:communtiy/getx_ui/user_upload.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
+
+import '../utils/theme.dart';
 
 class OTPScreen extends StatefulWidget {
   final String phoneNumber;
@@ -24,8 +25,10 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
+  final AuthController authController = Get.find();
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinNode = FocusNode();
+  // final AuthController authController = Get.find();
 
   ///For phone verificaiton
   String _verificationCode = '';
@@ -60,116 +63,130 @@ class _OTPScreenState extends State<OTPScreen> {
       ),
     );
     final w = MediaQuery.of(context).size.width;
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: GestureDetector(
-        onTap: (){
-          _pinNode.unfocus();
-        },
-        child: Column(
-          children: [
-             SizedBox(height: MediaQuery.of(context).size.height*0.1,),
-            Center(
-              child: Text("Verify your \n Phone number",textAlign: TextAlign.center,style:GoogleFonts.roboto(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    const Shadow(
-                        color: Colors.black,
-                        offset: Offset(0,4),
-                        blurRadius: 2
-                    )
-                  ]
-              )  ,),
-            ),
-            const SizedBox(height: 7,),
-            Center(child:Text("Enter your OTP code here",style: GoogleFonts.roboto(
+    return Container(
+      decoration: BoxDecoration(
+        gradient: Themes.logoGradient
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        body: GestureDetector(
+          onTap: (){
+            _pinNode.unfocus();
+          },
+          child: Column(
+            children: [
+               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+              Center(
+                child: Text("Verify your \n Phone number",textAlign: TextAlign.center,style:GoogleFonts.roboto(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      const Shadow(
+                          color: Colors.black,
+                          offset: Offset(0,4),
+                          blurRadius: 2
+                      )
+                    ]
+                )  ,),
+              ),
+              const SizedBox(height: 7,),
+              Center(child:Text("Enter your OTP code here",style: GoogleFonts.roboto(
+                  fontSize: 15,
+                  color: Colors.grey.withOpacity(0.5),
+                  fontWeight: FontWeight.normal,
+              ),)),
+              const SizedBox(height: 25,),
+
+
+              Pinput(
+                    closeKeyboardWhenCompleted: false,
+                    length: 6,
+                    keyboardType: TextInputType.number,
+                    showCursor: false,
+                    focusNode: _pinNode,
+                    textInputAction: TextInputAction.none,
+                    controller: _pinPutController,
+                    onCompleted: (String pin)async{
+                      try{
+                        await FirebaseAuth.instance
+                            .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
+                            .then((value) async{
+                          if(value.user!=null){
+                            print('User Logged in Successfully');
+
+                            ///Checking if the user(phoneNumber) already exists
+                            ///If yes: Then we direct the user to the home screen
+                            ///Else : We proceed to the on boarding section
+                            var userExists = await authController.checkUserExistence2(int.parse(widget.phoneNumber));
+                            if(userExists){
+                              Get.to(()=>BottomNavigationPage());
+                            }else{
+                              Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
+                            }
+                          }
+                        });
+                      }catch(e){
+                        FocusScope.of(context).unfocus();
+                        Fluttertoast.showToast(
+                            msg: 'Invalid OTP Entered',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
+                      }
+                    },
+                    submittedPinTheme: submittedPinTheme,
+                    defaultPinTheme: defaultPinTheme,
+                    focusedPinTheme: focusedPinTheme,
+                  ),
+
+
+              const SizedBox(height: 25,),
+              Center(child:Text("Didn't receive any code?",style:GoogleFonts.roboto(
                 fontSize: 15,
                 color: Colors.grey.withOpacity(0.5),
                 fontWeight: FontWeight.normal,
-            ),)),
-            const SizedBox(height: 25,),
-
-            Pinput(
-              closeKeyboardWhenCompleted: false,
-              length: 6,
-              keyboardType: TextInputType.number,
-              showCursor: false,
-              focusNode: _pinNode,
-              textInputAction: TextInputAction.none,
-              controller: _pinPutController,
-              onCompleted: (String pin)async{
-                try{
-                  await FirebaseAuth.instance
-                      .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
-                      .then((value) async{
-                    if(value.user!=null){
-                      print('User Logged in Successfully');
-                      // Get.to(()=>UserUpload());
-
-                      Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
-                    }
-                  });
-                }catch(e){
-                  FocusScope.of(context).unfocus();
-                  Fluttertoast.showToast(
-                      msg: 'Invalid OTP Entered',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.SNACKBAR,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  );
-                }
-              },
-              submittedPinTheme: submittedPinTheme,
-              defaultPinTheme: defaultPinTheme,
-              focusedPinTheme: focusedPinTheme,
-            ),
-
-
-            const SizedBox(height: 25,),
-            Center(child:Text("Didn't receive any code?",style:GoogleFonts.roboto(
-              fontSize: 15,
-              color: Colors.grey.withOpacity(0.5),
-              fontWeight: FontWeight.normal,
-            ) ,)),
-            const SizedBox(height: 10,),
-            Center(child:InkWell(
-              onTap: (){
-                _verifyPhone();
-              },
-              child: Text("Resend OTP",style:GoogleFonts.roboto(
-                fontSize: 20,
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.normal,
-              ) ,),
-            )),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: InkWell(
+              ) ,)),
+              const SizedBox(height: 10,),
+              Center(child:InkWell(
                 onTap: (){
-                  Get.offAll(()=>PhoneLoginScreen());
+                  _verifyPhone();
                 },
-                child: Container(
-                  width: w*0.5,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).canvasColor,
-                    borderRadius: BorderRadius.circular(10),
+                child: Text("Resend OTP",style:GoogleFonts.roboto(
+                  fontSize: 20,
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.normal,
+                ) ,),
+              )),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: InkWell(
+                  onTap: (){
+                    Get.offAll(()=>PhoneLoginScreen());
+                  },
+                  child: Container(
+                    width: w*0.5,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).canvasColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(child:Text("Change Number",style: GoogleFonts.roboto(
+                      color:Theme.of(context).scaffoldBackgroundColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),)),
                   ),
-                  child: Center(child:Text("Change Number",style: GoogleFonts.roboto(
-                    color:Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),)),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

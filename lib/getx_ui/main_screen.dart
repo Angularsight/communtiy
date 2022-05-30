@@ -25,6 +25,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final FirebaseController partyController = Get.find();
   final bottomNavController = Get.put(BottomNavController());
+  final AuthController authController = Get.find();
 
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
@@ -350,7 +351,7 @@ class _MainScreenState extends State<MainScreen> {
     return InkWell(
       onTap: (){
         Get.to(() =>  PartyDetails2(index:currentPage));
-        // Get.to(()=>const OnBoardingScreen());
+
       },
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 500),

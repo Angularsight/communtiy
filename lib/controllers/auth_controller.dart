@@ -1,10 +1,13 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/phone_login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+
+import '../models/user_details/user_detail.dart';
 
 class AuthController extends GetxController{
   static AuthController instance = Get.find();
@@ -36,6 +39,22 @@ class AuthController extends GetxController{
       print('Already logged in');
       Get.off(()=>BottomNavigationPage());
     }
+  }
+
+
+  Future<bool> checkUserExistence2(int phoneNumber)async{
+    final res = await FirebaseFirestore.instance
+        .collection("UserDetails")
+        .where("phoneNumber",isEqualTo: phoneNumber)
+        .get()
+        .then((query) {
+          var users = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+          return users;
+        });
+    print("result of checkUserExistence2:${res.length}");
+    bool existenceOfUser = res.length >=1;
+    return existenceOfUser;
+
   }
 
 }
