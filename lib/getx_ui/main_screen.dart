@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/getx_ui/new_ui/new_user_upload.dart';
 import 'package:communtiy/getx_ui/new_ui/onboarding_screens.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/models/party_details.dart';
@@ -351,7 +352,6 @@ class _MainScreenState extends State<MainScreen> {
     return InkWell(
       onTap: (){
         Get.to(() =>  PartyDetails2(index:currentPage));
-
       },
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 500),

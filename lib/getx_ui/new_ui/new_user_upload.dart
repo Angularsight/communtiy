@@ -313,6 +313,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: InkWell(
                                         onTap: ()async{
+                                          Navigator.pop(context);
+                                          Themes.showProgressDialogWithoutText(context);
                                           await _prepareDataForFirebase();
                                           _uploadInterestToFirebase();
                                           // Get.offAll(()=>BottomNavigationPage());
@@ -326,7 +328,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             );
                           });

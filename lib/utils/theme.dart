@@ -72,6 +72,17 @@ class Themes {
   );
 
 
+  static showProgressDialogWithoutText(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Center progressDialog = Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),);
+        return progressDialog;
+      },
+    );
+  }
+
   ThemeData themeData() {
     return ThemeData(
       scaffoldBackgroundColor: const Color(0xff292929),

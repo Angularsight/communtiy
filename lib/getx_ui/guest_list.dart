@@ -17,21 +17,23 @@ class GuestList2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    return Scaffold(body: GetX<FirebaseController>(builder: (controller) {
-      return Column(
-        children: [
-          SizedBox(
-            width: w,
-            height: h,
-            child: ListView.builder(
-                itemCount: controller.guests.length,
-                itemBuilder: (context, index) {
-                  return guestListTile(context, index, controller);
-                }),
-          )
-        ],
-      );
-    }));
+    return Scaffold(
+        body: GetX<FirebaseController>(
+            builder: (controller) {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: w,
+                    height: h,
+                    child: ListView.builder(
+                        itemCount: controller.guests.length,
+                        itemBuilder: (context, index) {
+                          return guestListTile(context, index, controller);
+                        }),
+                  )
+                ],
+              );
+            }));
   }
 
   void openDialogBox(BuildContext context, UserDetailsModel guest, Interests interests) {
@@ -203,7 +205,11 @@ class GuestList2 extends StatelessWidget {
     final t = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        openDialogBox(context, guests![index], interests![index]);
+        ///interestIndex is needed to fetch the index of this particular guest
+        ///If this is not used then guest and their interests will not be matched.
+        var interestIndex = interests!.indexWhere((element) => element.userId==guests![index].userId);
+        // print("Index of interest of this guest:$interestIndex");
+        openDialogBox(context, guests![index], interests![interestIndex]);
       },
       child: SizedBox(
         height: h * 0.2,
@@ -213,10 +219,7 @@ class GuestList2 extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
               child: CustomPaint(
-                size: Size(
-                    w,
-                    (w * 0.5833333333333334)
-                        .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                size: Size(w, (w * 0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                 painter: RPSCustomPainter(),
                 child: Padding(
                   padding: EdgeInsets.only(left: w * 0.37),
