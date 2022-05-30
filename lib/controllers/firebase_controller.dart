@@ -132,21 +132,6 @@ class FirebaseController extends GetxController {
 
 
 
-  /// Connecting the user to the account he has created
-  Stream<UserDetailsModel> connectUserToApp(String phoneNumber){
-    var res = FirebaseFirestore.instance.collection('UserDetails')
-        .where('phoneNumber',isEqualTo: phoneNumber)
-        .snapshots()
-        .map((query) {
-          var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList()[0];
-          return user;
-        });
-    return res;
-  }
-
-
-
-
 
 
 }

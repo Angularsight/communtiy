@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
+import '../utils/theme.dart';
+
 class CheckoutPage extends StatelessWidget {
   final PartyDetails party;
   final HostModel host;
@@ -20,212 +22,218 @@ class CheckoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10,top: 75),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 55,
-                    child: ClipOval(
-                        child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(party.images![0]),
-                                fit: BoxFit.cover
-                              )
-                            ),
-                        ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: Themes.logoGradient
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10,top: 75),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 55,
+                      child: ClipOval(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(party.images![0]),
+                                  fit: BoxFit.cover
+                                )
+                              ),
+                          ),
+                      )
                     )
-                  )
-                ],
-              ),
-              SizedBox(
-                child: CustomPaint(
-                  size: Size(100,(50*
-                      0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                  painter: RPSCustomPainter(),
+                  ],
                 ),
-              ),
-
-              Text(party.partyName!,style: t.textTheme.caption!.copyWith(
-                shadows: [
-                  const Shadow(
-                    color: Colors.black,
-                    offset: Offset(0,4),
-                    blurRadius: 2
+                SizedBox(
+                  child: CustomPaint(
+                    size: Size(100,(50*
+                        0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                    painter: RPSCustomPainter(),
                   ),
-                  const Shadow(
+                ),
+
+                Text(party.partyName!,style: t.textTheme.caption!.copyWith(
+                  shadows: [
+                    const Shadow(
                       color: Colors.black,
                       offset: Offset(0,4),
-                      blurRadius: 1
-                  )
-                ],
-                fontSize: 32,
-                color: Colors.white
-              ),),
-
-              const SizedBox(height: 15,),
-              buildPartyDetailRow(context, "Date", party.date!, "Time", party.time!),
-              const SizedBox(height: 10,),
-              buildPartyDetailRow(context, "Venue", party.location!, "Organiser", host.hostName!),
-
-              insertDottedLine(),
-              const SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text("Payment Details",style: t.textTheme.headline3!.copyWith(
-                      fontSize: 18,
-                      color: Colors.white,
-                      shadows: [
-                        const Shadow(
-                            color: Colors.black,
-                            offset: Offset(0,4),
-                            blurRadius: 2
-                        ),
-                        const Shadow(
-                            color: Colors.black,
-                            offset: Offset(0,4),
-                            blurRadius: 1
-                        )
-                      ]
-                    ),),
+                      blurRadius: 2
+                    ),
+                    const Shadow(
+                        color: Colors.black,
+                        offset: Offset(0,4),
+                        blurRadius: 1
+                    )
                   ],
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${party.entryFee}")),
+                  fontSize: 32,
+                  color: Colors.white
+                ),),
 
-              buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
-              buildPaymentDetailsRow(context, "Discount", "20%"),
-              Padding(
-                padding: const EdgeInsets.only(left: 18,top: 5 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                        width: w*0.3,
-                        height: 25,
-                        child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
-                            color: const Color(0xffFAFF00),
-                            fontSize: 18
-                        ),)),
-                    SizedBox(
-                        width: w*0.2,
-                        height: 25,
-                        child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",style: t.textTheme.headline3!.copyWith(
-                            color: const Color(0xffFAFF00),
-                            fontSize: 18
-                        ),))
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20,),
-              insertDottedLine(),
-              const SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text("Party Info",style: t.textTheme.headline3!.copyWith(
+                const SizedBox(height: 15,),
+                buildPartyDetailRow(context, "Date", party.date!, "Time", party.time!),
+                const SizedBox(height: 10,),
+                buildPartyDetailRow(context, "Venue", party.location!, "Organiser", host.hostName!),
+
+                insertDottedLine(),
+                const SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Payment Details",style: t.textTheme.headline3!.copyWith(
                         fontSize: 18,
                         color: Colors.white,
-                      shadows: [
-                        const Shadow(
-                            color: Colors.black,
-                            offset: Offset(0,4),
-                            blurRadius: 2
-                        ),
-                        const Shadow(
-                            color: Colors.black,
-                            offset: Offset(0,4),
-                            blurRadius: 1
-                        )
-                      ]
-                    ),),
-                  ],
-                ),
-              ),
-
-              buildPartyInfo(t),
-              const SizedBox(height: 25,),
-
-              Stack(
-                children: [
-                  Container(
-                    width: w*0.7,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: t.canvasColor
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",
-                      style: t.textTheme.headline3!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black
-                      ),
-                      ),
-                    ),
-
-                  ),
-                  Positioned(
-                    left: 80,
-                    child: Container(
-                      width: w*0.45,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: t.canvasColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            offset: const Offset(-4,4),
-                            blurRadius: 4,
-                            spreadRadius: 0
+                        shadows: [
+                          const Shadow(
+                              color: Colors.black,
+                              offset: Offset(0,4),
+                              blurRadius: 2
+                          ),
+                          const Shadow(
+                              color: Colors.black,
+                              offset: Offset(0,4),
+                              blurRadius: 1
                           )
                         ]
+                      ),),
+                    ],
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${party.entryFee}")),
+
+                buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
+                buildPaymentDetailsRow(context, "Discount", "20%"),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18,top: 5 ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                          width: w*0.3,
+                          height: 25,
+                          child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
+                              color: const Color(0xffFAFF00),
+                              fontSize: 18
+                          ),)),
+                      SizedBox(
+                          width: w*0.2,
+                          height: 25,
+                          child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",style: t.textTheme.headline3!.copyWith(
+                              color: const Color(0xffFAFF00),
+                              fontSize: 18
+                          ),))
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20,),
+                insertDottedLine(),
+                const SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Party Info",style: t.textTheme.headline3!.copyWith(
+                          fontSize: 18,
+                          color: Colors.white,
+                        shadows: [
+                          const Shadow(
+                              color: Colors.black,
+                              offset: Offset(0,4),
+                              blurRadius: 2
+                          ),
+                          const Shadow(
+                              color: Colors.black,
+                              offset: Offset(0,4),
+                              blurRadius: 1
+                          )
+                        ]
+                      ),),
+                    ],
+                  ),
+                ),
+
+                buildPartyInfo(t),
+                const SizedBox(height: 25,),
+
+                Stack(
+                  children: [
+                    Container(
+                      width: w*0.7,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: t.canvasColor
                       ),
-                      child: InkWell(
-                        onTap: (){
-                          razorPayController.updateTicketDetails(party,host);
-                          razorPayController.openCheckout(
-                              party.partyName!,
-                              party.entryFee!,
-                              "7411001185",
-                              "angularsight77@gmail.com",
-                              ["Gpay","paytm","PhonePe"],
-                              "9482397595");
-                        },
-                        child: Center(
-                          child: Text("Proceed to Payment",
-                            style: t.textTheme.headline3!.copyWith(
-                                fontSize: 16,
-                                color: Colors.black,
-                              fontWeight: FontWeight.normal
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",
+                        style: t.textTheme.headline3!.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black
+                        ),
+                        ),
+                      ),
+
+                    ),
+                    Positioned(
+                      left: 80,
+                      child: Container(
+                        width: w*0.45,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: t.canvasColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.25),
+                              offset: const Offset(-4,4),
+                              blurRadius: 4,
+                              spreadRadius: 0
+                            )
+                          ]
+                        ),
+                        child: InkWell(
+                          onTap: (){
+                            razorPayController.updateTicketDetails(party,host);
+                            razorPayController.openCheckout(
+                                party.partyName!,
+                                party.entryFee!,
+                                "7411001185",
+                                "angularsight77@gmail.com",
+                                ["Gpay","paytm","PhonePe"],
+                                "9482397595");
+                          },
+                          child: Center(
+                            child: Text("Proceed to Payment",
+                              style: t.textTheme.headline3!.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                fontWeight: FontWeight.normal
+                              ),
                             ),
                           ),
                         ),
+
                       ),
-
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -3,8 +3,11 @@
 import 'dart:io';
 
 import 'package:chips_choice/chips_choice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
@@ -12,8 +15,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pinput/pinput.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 
+
+class UserInterest{
+  final String heading;
+  final List<String> description;
+
+  UserInterest(this.heading, this.description);
+}
+
 class NewUserUpload extends StatefulWidget {
-  const NewUserUpload({Key? key}) : super(key: key);
+  final String? phoneNumber;
+  const NewUserUpload({Key? key, this.phoneNumber}) : super(key: key);
 
   @override
   _NewUserUploadState createState() => _NewUserUploadState();
@@ -47,9 +59,11 @@ class _NewUserUploadState extends State<NewUserUpload> {
   String _radioValue = 'Single';
 
   List<String> chipSelectList = [];
+  List<String> userInterestDescription = [];
   final TextEditingController interestEditingController = TextEditingController();
   final interestOptions = ['Anime','Sports','Drama','Movies','Series',];
   int interestOptionSelected  = 0;
+  List<UserInterest> userInterests = [];
 
   int selectedStep = 0;
   final pageController = PageController(keepPage: false);
@@ -88,6 +102,115 @@ class _NewUserUploadState extends State<NewUserUpload> {
     });
   }
 
+  Future<void> _prepareDataForFirebase() async {
+    int i = 1;
+    for (int j = 0; j < imageList2.length; j++) {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child("users")
+          .child(username)
+          .child(username + i.toString() + '.jpg');
+      await ref.putFile(imageList2[j]).whenComplete(() async {
+        await ref.getDownloadURL().then((value) {
+          urlList2.add(value);
+        });
+      });
+      i += 1;
+    }
+
+    print(urlList2);
+
+    final ref2 = FirebaseStorage.instance.ref().child('users').child(username).child('profile pic').child(username+'.jpg');
+    await ref2.putFile(userProfilePic[0]).whenComplete(() async {
+      await ref2.getDownloadURL().then((value) {
+        userProfilePicUrlList.add(value);
+      });
+    });
+
+    print("Profile pic url :$userProfilePicUrlList");
+    _uploadDataToFirebase();
+  }
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
+  void _uploadDataToFirebase() {
+    if(currentUser.phoneNumber!.isNotEmpty){
+
+      FirebaseFirestore.instance.collection('UserDetails').doc().set({
+        'userId':currentUser.uid,
+        'userName':username,
+        'password':"something useless",
+        'userProfilePic':userProfilePicUrlList[0],
+        'phoneNumber':int.parse(widget.phoneNumber!),
+        'location':location,
+        'age':int.parse(age),
+        'xp':int.parse('5'),
+        'images':urlList2
+      });
+    }else{
+      FirebaseFirestore.instance.collection('UserDetails').doc().set({
+        'userId':currentUser.uid,
+        'userName':username,
+        'password':"something useless",
+        'userProfilePic':userProfilePicUrlList[0],
+        'phoneNumber':int.parse(widget.phoneNumber!),
+        'location':location,
+        'age':int.parse(age),
+        'xp':int.parse('5'),
+        'images':urlList2
+      });
+    }
+
+
+    /// Connecting the user to the account he has created
+    // onBoardingController.userProfile.bindStream(onBoardingController.connectUserToApp(int.parse(phoneNumber)));
+  }
+
+  void _uploadInterestToFirebase() {
+    // var anime = interestController.animeList.value;
+    // var movies = interestController.movies.value;
+    // var series = interestController.series.value;
+    // var drama = interestController.dramaList.value;
+    // var sport = interestController.sports.value;
+
+    var anime = [];
+    var movies = [];
+    var series = [];
+    var drama = [];
+    var sport = [];
+
+    for (var ui in userInterests) {
+      if(ui.heading=="Anime"){
+        anime = ui.description;
+      }else if(ui.heading=="Sports"){
+        sport = ui.description;
+      }else if(ui.heading=='Drama'){
+        drama = ui.description;
+      }else if(ui.heading=="Movies"){
+        movies = ui.description;
+      }else if(ui.heading =="Series"){
+        series = ui.description;
+      }
+    }
+    print("Anime:$anime\nSport:$sport\nDrama:$drama\nMovies:$movies\nSeries:$series");
+
+    FirebaseFirestore.instance.collection('Interests').doc().set({
+      'userId':FirebaseAuth.instance.currentUser!.uid,
+      'anime': anime,
+      'drama':drama,
+      'movies':movies,
+      'series':series,
+      'sports':sport,
+      'occupation':occupationController.text,
+      'currentRelationshipStatus':_radioValue.toString(),
+      'height':_pinPutController.text,
+      'pet':petController.text
+    }).then((value) {
+      Get.offAll(()=>BottomNavigationPage());
+    });
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -115,7 +238,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        bottomNavigationBar: Container(
+        bottomNavigationBar: SizedBox(
           height: h*0.06,
           child: Row(
             children: [
@@ -138,11 +261,75 @@ class _NewUserUploadState extends State<NewUserUpload> {
               InkWell(
                 onTap: (){
                   setState(() {
-                    if(selectedStep<2){
-                      selectedStep = selectedStep+1;
-                      pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                    if(selectedStep==0){
+                      if(imageList2.isNotEmpty && username!='' && age!='' && userProfilePic.isNotEmpty){
+                        selectedStep = selectedStep+1;
+                        pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.redAccent,
+                          content: Text('Please enter all fields to move forward',),
+                        ));
+                      }
+                      // selectedStep = selectedStep+1;
+                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                    }else if(selectedStep==1){
+                      if(_radioValue!='' && occupation!='' && _pinPutController.text!='' && pet!=''){
+                        selectedStep = selectedStep+1;
+                        pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
+                      }else{
+                        print("Rel status:$_radioValue,occupation:$occupation,height:${_pinPutController.text},Pet:$pet");
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            backgroundColor: Colors.redAccent,
+                            content: Text('Please enter all fields to move forward',)));
+                      }
+                      // selectedStep = selectedStep+1;
+                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                     }else if(selectedStep==2){
-                      Get.offAll(()=>BottomNavigationPage());
+                      showDialog(
+                          context: context,
+                          builder: (context){
+                            return AlertDialog(
+                              title: const Text("Confirmation"),
+                              content: const Text("Are you sure you want to submit this form?"),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Center(child: Text("Cancel",style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.redAccent,
+                                            fontSize: 16
+                                        ),),),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: ()async{
+                                          await _prepareDataForFirebase();
+                                          _uploadInterestToFirebase();
+                                          // Get.offAll(()=>BottomNavigationPage());
+                                        },
+                                        child: const Center(child: Text("Confirm",style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff1A3841),
+                                            fontSize: 16
+                                        ),),),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+                            );
+                          });
                     }
                   });
                 },
@@ -343,6 +530,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
                                     style: BorderStyle.none))),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.name,
                         key: const ValueKey('username'),
@@ -375,10 +566,12 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: const BorderSide(
                                     style: BorderStyle.none))),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                         textInputAction: TextInputAction.next,
-                        keyboardType:
-                        const TextInputType.numberWithOptions(
-                            decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
 
                         key: const ValueKey('Age'),
                         controller: ageController,
@@ -412,6 +605,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
                             style: BorderStyle.none))),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
                 key: const ValueKey('Location'),
@@ -537,6 +734,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
                           style: BorderStyle.none))),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
               key: const ValueKey('Occupation'),
@@ -594,6 +795,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
                           style: BorderStyle.none))),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.name,
               key: const ValueKey('Pet'),
@@ -641,25 +846,53 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 borderRadius: BorderRadius.circular(10)
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 10),
+                padding: const EdgeInsets.only( top: 15.0,left: 10,right: 10,bottom: 8),
                 child: Column(
                   children: [
                     Container(
                       width: w*0.8,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xffCDC850)
+                        color:Theme.of(context).canvasColor
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text("Tell us about your favorite THING",style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
-                            ),),
+                           Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Your favorite ${interestOptions[interestOptionSelected]}",style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                                ),),
+
+                                InkWell(
+                                  onTap: (){
+                                    setState(() {
+                                      final userDescriptionList = userInterestDescription;
+                                      userInterests.insert(0,UserInterest(interestOptions[interestOptionSelected], userDescriptionList));
+                                    });
+                                  },
+                                  child: Container(
+                                    width: w*0.2,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff1A3841),
+                                      borderRadius: BorderRadius.circular(5)
+                                    ),
+                                    child: const Center(child: Text("Add",style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+
+                                    ),),),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 5,),
                           Container(
@@ -689,6 +922,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                             onTap: (){
                                               setState(() {
                                                 chipSelectList.add(interestEditingController.text);
+                                                userInterestDescription.add(interestEditingController.text);
                                                 interestEditingController.clear();
                                               });
                                             },
@@ -709,6 +943,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                       onFieldSubmitted: (text){
                                         setState(() {
                                           chipSelectList.add(text);
+                                          userInterestDescription.add(interestEditingController.text);
                                           interestEditingController.clear();
                                         });
                                       },
@@ -718,8 +953,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                     height: h * 0.01,
                                   ),
                                   Wrap(
-                                    children: chipSelectList
-                                        .map((element) => Padding(
+                                    children: chipSelectList.map((element) => Padding(
                                       padding: const EdgeInsets.all(2.0),
                                       child: Chip(
                                         label: Text(element),
@@ -735,8 +969,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
                                         },
                                       ),
-                                    ))
-                                        .toList(),
+                                    )).toList(),
                                   )
                                 ],
                               ),
@@ -754,6 +987,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       onChanged: (val) {
                         setState(() {
                           interestOptionSelected = val;
+                          chipSelectList.clear();
+                          userInterestDescription = [];
                         });
                       },
                       choiceItems: C2Choice.listFrom<int, String>(
@@ -771,7 +1006,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                               side: BorderSide(color: Theme.of(context).primaryColor))
 
                       ),
-                    //
+
                     //   choiceActiveStyle: C2ChoiceStyle(
                     //       brightness: Brightness.dark,
                     //       color: Theme.of(context).primaryColor,
@@ -806,10 +1041,12 @@ class _NewUserUploadState extends State<NewUserUpload> {
             const SizedBox(height: 5,),
             SizedBox(
               width: w,
-              height: h*0.2,
+              // height: h*0.2,
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
-                  itemCount: 1,
+                  shrinkWrap: true,
+                  itemCount: userInterests.length,
                   itemBuilder: (context,index){
                     return buildInterestListContainer(w,h,index);
                   }),
@@ -825,74 +1062,78 @@ class _NewUserUploadState extends State<NewUserUpload> {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: w * 0.6,
-          height: h * 0.3,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.file(
-              imageList2[photoIndex2],
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Column(
-          children: [
-            InkWell(
-              onTap: () {
-                _pickImageFromGallery();
-              },
-              child: Container(
-                height: h * 0.06,
-                width: h * 0.15,
-                decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(5)),
-                child: const Center(
-                    child: Icon(
-                      Icons.add,
-                      size: 25,
-                      color: Colors.white,
-                    )),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: w * 0.6,
+            height: h * 0.3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.file(
+                imageList2[photoIndex2],
+                fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: w * 0.3,
-              height: h * 0.23,
-              child: ListView.builder(
-                  itemCount: imageList2.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            photoIndex2 = index;
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.file(
-                                  imageList2[index],
-                                  fit: BoxFit.cover,
-                                )),
-                            const SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        ));
-                  }),
-            ),
-          ],
-        )
-      ],
+          ),
+          Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  _pickImageFromGallery();
+                },
+                child: Container(
+                  height: h * 0.06,
+                  width: h * 0.15,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Center(
+                      child: Icon(
+                        Icons.add,
+                        size: 25,
+                        color: Colors.white,
+                      )),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: w * 0.3,
+                height: h * 0.23,
+                child: ListView.builder(
+                    itemCount: imageList2.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        splashColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              photoIndex2 = index;
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    imageList2[index],
+                                    fit: BoxFit.cover,
+                                  )),
+                              const SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          ));
+                    }),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -943,31 +1184,48 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
   Widget buildInterestListContainer(double w, double h,int index) {
     var description = '';
-    for (var element in chipSelectList) {
+    for (var element in userInterests[index].description) {
       description+=element+', ';
     }
-    return Container(
-      width: w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        gradient: Themes.transparentGradient,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(interestOptions[interestOptionSelected],style: TextStyle(
-              color: Theme.of(context).canvasColor,
-              fontSize: 20,
-              fontWeight: FontWeight.w500
-            ),),
-            Text(description,style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w500
-            ),)
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        width: w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: Themes.transparentGradient,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(userInterests[index].heading,style: TextStyle(
+                    color: Theme.of(context).canvasColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500
+                  ),),
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        userInterests.removeAt(index);
+                      });
+                    },
+                    child: const Icon(Icons.remove_circle_outline,color: Colors.redAccent,size: 20,),
+                  )
+                ],
+              ),
+              const SizedBox(height: 5,),
+              Text(description,style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500
+              ),)
+            ],
+          ),
         ),
       ),
     );
