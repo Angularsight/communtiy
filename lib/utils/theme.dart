@@ -85,7 +85,8 @@ class Themes {
 
   ThemeData themeData() {
     return ThemeData(
-      scaffoldBackgroundColor: const Color(0xff292929),
+      // scaffoldBackgroundColor: const Color(0xff292929),
+      scaffoldBackgroundColor: const Color(0xff191919),
       primaryColor: const Color(0xffFAFF00),
       canvasColor: const Color(0xffE3D170),
       backgroundColor: Colors.white,

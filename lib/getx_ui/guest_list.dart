@@ -12,6 +12,8 @@ class GuestList2 extends StatelessWidget {
   GuestList2({Key? key, this.guests, this.interests}) : super(key: key);
 
   final PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
+  final TextEditingController searchController = TextEditingController();
+  final FocusNode searchNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,57 @@ class GuestList2 extends StatelessWidget {
     return Scaffold(
         body: GetX<FirebaseController>(
             builder: (controller) {
-              return Column(
-                children: [
-                  SizedBox(
-                    width: w,
-                    height: h,
-                    child: ListView.builder(
-                        itemCount: controller.guests.length,
-                        itemBuilder: (context, index) {
-                          return guestListTile(context, index, controller);
-                        }),
-                  )
-                ],
+              return GestureDetector(
+                onTap: (){
+                  searchNode.unfocus();
+                },
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 20),
+                        //   child: SizedBox(
+                        //     width: w ,
+                        //     child: TextFormField(
+                        //       decoration: InputDecoration(
+                        //         suffixIcon: const Icon(Icons.search,color: Color(0xff505050),),
+                        //           fillColor: const Color(0xff131313),
+                        //           filled: true,
+                        //           hintText: 'Search guests',
+                        //           hintStyle: TextStyle(
+                        //             color: Colors.white.withOpacity(0.4),
+                        //           ),
+                        //           border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(10),
+                        //               borderSide: const BorderSide(
+                        //                   style: BorderStyle.none))),
+                        //       style: Theme.of(context).textTheme.headline1!
+                        //           .copyWith(color: Colors.white, fontSize: 16),
+                        //       textInputAction: TextInputAction.next,
+                        //       keyboardType: TextInputType.name,
+                        //       key: const ValueKey('username'),
+                        //       controller: searchController,
+                        //       focusNode: searchNode,
+                        //       onChanged: (text) {
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          width: w,
+                          child: ListView.builder(
+                              itemCount: controller.guests.length,
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return guestListTile(context, index, controller);
+                              }),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               );
             }));
   }
@@ -47,7 +88,7 @@ class GuestList2 extends StatelessWidget {
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 10,
-            backgroundColor: const Color(0xff292929),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
@@ -220,7 +261,7 @@ class GuestList2 extends StatelessWidget {
               padding: const EdgeInsets.only(top: 30.0),
               child: CustomPaint(
                 size: Size(w, (w * 0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                painter: RPSCustomPainter(),
+                painter: RPSCustomPainter(context),
                 child: Padding(
                   padding: EdgeInsets.only(left: w * 0.37),
                   child: Column(
@@ -308,10 +349,13 @@ class GuestList2 extends StatelessWidget {
 }
 
 class RPSCustomPainter extends CustomPainter {
+  final BuildContext context;
+
+  RPSCustomPainter(this.context);
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint0 = Paint()
-      ..color = const Color(0xff292929)
+      ..color = Theme.of(context).scaffoldBackgroundColor
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 
@@ -325,7 +369,7 @@ class RPSCustomPainter extends CustomPainter {
     path0.lineTo(size.width * 0.2491667, size.height * 0.0014286);
     path0.close();
 
-    canvas.drawShadow(path0, Colors.black, 10.0, true);
+    canvas.drawShadow(path0, Colors.black, 3.5, false);
     canvas.drawPath(path0, paint0);
   }
 

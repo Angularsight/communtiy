@@ -114,7 +114,7 @@ class _OTPScreenState extends State<OTPScreen> {
                             .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
                             .then((value) async{
                           if(value.user!=null){
-                            print('User Logged in Successfully');
+                            print('User Logged in Successfully via pinPut');
 
                             ///Checking if the user(phoneNumber) already exists
                             ///If yes: Then we direct the user to the home screen
@@ -201,8 +201,13 @@ class _OTPScreenState extends State<OTPScreen> {
           await FirebaseAuth.instance.signInWithCredential(credential).then((value) async{
             if(value.user!=null){
               // _onBoardingController.loginType.value = 'Phone';
-              print("User logged in successfully");
-              Get.to(()=>BottomNavigationPage());
+              print("User logged in successfully via _verifyPhone");
+              var userExists = await authController.checkUserExistence2(int.parse(widget.phoneNumber));
+              if(userExists){
+                Get.to(()=>BottomNavigationPage());
+              }else{
+                Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
+              }
             }else{
               print('Failure in logging in process');
             }

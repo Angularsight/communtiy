@@ -290,6 +290,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                           context: context,
                           builder: (context){
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                              backgroundColor: Theme.of(context).canvasColor,
                               title: const Text("Confirmation"),
                               content: const Text("Are you sure you want to submit this form?"),
                               actions: [
