@@ -497,23 +497,18 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-                CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  radius: 18,
-                  child: ClipOval(
-                    child: CircleAvatar(
-                        radius: 16,
-                        child: profilePic!=null?Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(profilePic.toString()),
-                                  fit: BoxFit.cover
-                              )
-                          ),
-                        ):Image.asset("assets/images/default profile image.png",fit: BoxFit.cover,)
-                    ),
+                ClipOval(
+                  child: CircleAvatar(
+                      radius: 18,
+                      child: profilePic!=null?Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(profilePic.toString()),
+                                fit: BoxFit.cover
+                            )
+                        ),
+                      ):Image.asset("assets/images/default profile image.png",fit: BoxFit.cover,)
                   ),
-
                 )
               ],
             ),
@@ -524,3 +519,5 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 }
+
+

@@ -17,15 +17,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:screenshot/screenshot.dart';
 
 class TicketPage extends StatelessWidget {
    TicketPage({Key? key}) : super(key: key);
 
    final RazorPayController razorPayController = Get.find();
-   final screenshotController = ScreenshotController();
+
 
 
 
@@ -58,9 +56,7 @@ class TicketPage extends StatelessWidget {
 
     uploadGuestToParty(party!);
 
-    return Screenshot(
-      controller: screenshotController,
-      child: Scaffold(
+    return Scaffold(
         extendBodyBehindAppBar: true,
         body: Stack(
           children: [
@@ -256,8 +252,7 @@ class TicketPage extends StatelessWidget {
 
           ],
         ),
-      ),
-    );
+      );
   }
 
    Padding buildPartyDetailRow(BuildContext context,String head,String headText, String tail ,String tailText) {
@@ -325,33 +320,33 @@ class TicketPage extends StatelessWidget {
      );
    }
 
-  Future<String> saveImageToGallery(BuildContext context,Uint8List screenshot) async{
-
-    /// SAVING IMAGE PART
-    /// Requesting storage permission from the mobile to store the image in gallery
-    // await [Permission.storage].request();
-
-    final imageName = 'ticket_${DateTime.now().toIso8601String().replaceAll('.', "_").replaceAll(":", "_")}';
-
-    /// This saves the taken screenshot into the gallery and returns the path of the file
-    final result = await ImageGallerySaver.saveImage(screenshot,name: imageName);
-    Scaffold.of(context).showSnackBar(SnackBar(content: Container(
-      width: double.infinity,
-      height: 50,
-      child: Row(
-        children: [
-          Text("Screenshot saved to Gallery",style: Theme.of(context).textTheme.headline1!.copyWith(
-            fontSize: 18,
-            color: Colors.white
-          ),),
-          const SizedBox(width: 10,),
-          Icon(CustomIcons.check,color: Colors.green,)
-        ],
-      ),
-    )));
-    return result['filePath'];
-
-  }
+  // Future<String> saveImageToGallery(BuildContext context,Uint8List screenshot) async{
+  //
+  //   /// SAVING IMAGE PART
+  //   /// Requesting storage permission from the mobile to store the image in gallery
+  //   // await [Permission.storage].request();
+  //
+  //   final imageName = 'ticket_${DateTime.now().toIso8601String().replaceAll('.', "_").replaceAll(":", "_")}';
+  //
+  //   /// This saves the taken screenshot into the gallery and returns the path of the file
+  //   final result = await ImageGallerySaver.saveImage(screenshot,name: imageName);
+  //   Scaffold.of(context).showSnackBar(SnackBar(content: Container(
+  //     width: double.infinity,
+  //     height: 50,
+  //     child: Row(
+  //       children: [
+  //         Text("Screenshot saved to Gallery",style: Theme.of(context).textTheme.headline1!.copyWith(
+  //           fontSize: 18,
+  //           color: Colors.white
+  //         ),),
+  //         const SizedBox(width: 10,),
+  //         Icon(CustomIcons.check,color: Colors.green,)
+  //       ],
+  //     ),
+  //   )));
+  //   return result['filePath'];
+  //
+  // }
 
 
 }

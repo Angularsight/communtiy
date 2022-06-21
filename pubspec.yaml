@@ -44,32 +44,32 @@ dependencies:
   cloud_firestore:
   firebase_storage: ^10.2.9
   pinput: ^2.2.7
-  pin_code_fields: ^7.4.0
+#  pin_code_fields: ^7.4.0
   fluttertoast: ^8.0.9
 
   #state management
-  provider: ^6.0.0
-  shared_preferences: ^2.0.7
+#  provider: ^6.0.0
+#  shared_preferences: ^2.0.7
 
   #Getx
-  get: ^4.6.1
+  get: ^4.6.5
 
   #UI
   #Don't change google_fonts version coz it will throw error
   google_fonts: 2.2.0
   flutter_icons: ^1.1.0
-  carousel_pro: ^1.0.0
+#  carousel_pro: ^1.0.0
   carousel_slider: ^4.0.0
-  infinite_carousel: ^1.0.2
+#  infinite_carousel: ^1.0.2
   smooth_page_indicator:
   image_picker: ^0.8.4
   dotted_line: ^3.1.0
-  accordion: ^2.2.3
-  expandable: ^5.0.1
+#  accordion: ^2.2.3
+#  expandable: ^5.0.1
   animations: ^2.0.2
 
   #Inner shadow plugin
-  flutter_inset_box_shadow: ^1.0.7
+#  flutter_inset_box_shadow: ^1.0.7
 
 
   #For search and autocomplete
@@ -86,8 +86,8 @@ dependencies:
   qr_flutter: ^4.0.0
 
   #Save screenshot to gallery and share
-  screenshot: ^1.2.3
-  image_gallery_saver: ^1.7.1
+#  screenshot: ^1.2.3
+#  image_gallery_saver: ^1.7.1
 
 
   #Splash screen and onBoarding
