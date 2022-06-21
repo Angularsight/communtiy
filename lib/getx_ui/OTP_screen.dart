@@ -30,7 +30,7 @@ class _OTPScreenState extends State<OTPScreen> {
   final FocusNode _pinNode = FocusNode();
   // final AuthController authController = Get.find();
 
-  ///For phone verificaiton
+  ///For phone verification
   String _verificationCode = '';
 
   @override

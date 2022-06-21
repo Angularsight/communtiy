@@ -1,10 +1,7 @@
-import 'dart:ui';
 
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
-import 'package:communtiy/getx_ui/new_ui/new_user_upload.dart';
-import 'package:communtiy/getx_ui/new_ui/onboarding_screens.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
@@ -16,7 +13,6 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../controllers/onboarding_controller.dart';
-import 'bottom_nav_page.dart';
 
 
 class MainScreen extends StatefulWidget {

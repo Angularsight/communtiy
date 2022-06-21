@@ -1,12 +1,9 @@
 
 
-import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
-import 'package:communtiy/getx_ui/upload_tab.dart';
 import 'package:communtiy/getx_ui/user_profile_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
