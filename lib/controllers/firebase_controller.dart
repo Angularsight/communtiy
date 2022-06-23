@@ -3,6 +3,7 @@ import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class FirebaseController extends GetxController {
@@ -35,6 +36,8 @@ class FirebaseController extends GetxController {
   RxInt partyIndexForMatchedPage = 0.obs;
 
 
+
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -53,22 +56,6 @@ class FirebaseController extends GetxController {
     });
   }
 
-  Stream<List<UserDetailsModel>> fetchUserDetails(List users) {
-    for (var element in users) {
-      element = element.toString();
-    }
-    var res = FirebaseFirestore.instance
-        .collection('UserDetails')
-        .where("userId", whereIn: users)
-        .snapshots()
-        .map((query) {
-      var guests =
-      query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
-      return guests;
-    });
-    print('Result : $res');
-    return res;
-  }
 
   Future<List<HostModel>> fetchHostDetailsFuture(String hostId) async{
     return FirebaseFirestore.instance.collection('Host').where('hostId',isEqualTo: hostId).get().then((query) {

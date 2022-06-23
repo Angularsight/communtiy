@@ -3,10 +3,11 @@
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+
 
 
 class ChartData {
@@ -21,7 +22,6 @@ class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key? key}) : super(key: key);
   final OnBoardingController userController = Get.put(OnBoardingController());
 
-  final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true,tooltipPosition: TooltipPosition.pointer,duration: 2,activationMode: ActivationMode.singleTap);
   // final loginUser = FirebaseAuth.instance.currentUser!;
 
   void bindStreamToUser(){
@@ -66,54 +66,101 @@ class UserProfileScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20,),
-                      SizedBox(
-                        width: w*0.45,
-                        height: h*0.2,
-                        child: SfCartesianChart(
-                            enableSideBySideSeriesPlacement: true,
-                            plotAreaBorderWidth: 0,
-                            margin: EdgeInsets.zero,
-                            primaryXAxis: CategoryAxis(
-                                majorTickLines: const MajorTickLines(size: 0,width: 0),
-                                labelPosition: ChartDataLabelPosition.outside,
-                                labelPlacement: LabelPlacement.betweenTicks,
-                                labelAlignment: LabelAlignment.center,
-                                borderColor: Colors.grey,
-                                labelRotation: 0,
-                                placeLabelsNearAxisLine: true,
-                                tickPosition: TickPosition.inside,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                axisLine: const AxisLine(width: 1,color: Colors.black87),
-                                isVisible: false
+                      RotatedBox(
+                        quarterTurns: 1,
+                        child: SizedBox(
+                          width: w*0.45,
+                          height: h*0.2,
+                          child: BarChart(BarChartData(
+                            borderData: FlBorderData(
+                              show: false,
+                              border: const Border(
+                                top: BorderSide.none,
+                                right: BorderSide.none,
+                                left: BorderSide(width: 1),
+                                bottom: BorderSide(width: 1)
+                              ),
                             ),
-
-                            primaryYAxis: NumericAxis(
-                                majorTickLines: const MajorTickLines(size: 0,width: 0),
-                                isVisible: false,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                axisLine: const AxisLine(width: 1,color: Colors.black87)
-                            ),
-                            tooltipBehavior: _tooltipBehavior,
-                            series: <ChartSeries>[
-                              BarSeries<ChartData, double>(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20)
-                                  ),
-                                  dataSource: chartData,
-                                  enableTooltip: true,
-
-                                  xValueMapper: (ChartData data, _) => data.label,
-                                  yValueMapper: (ChartData data, _) => data.qty,
-                                  pointColorMapper: (ChartData c,_)=>c.color,
-                                  // Width of the bars
-                                  width: 0.5,
-                                  // Spacing between the bars
-                                  spacing: 0.3
-                              )
+                            titlesData: FlTitlesData(show: false),
+                            gridData: FlGridData(show: false),
+                            groupsSpace: 25,
+                            barGroups: [
+                              BarChartGroupData(x: 1,barRods: [
+                                BarChartRodData(toY: 10,
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(10)),
+                                    width: 15,
+                                    color: Colors.green)
+                              ]),
+                              BarChartGroupData(x: 2,barRods: [
+                                BarChartRodData(toY: 5,
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(10)),
+                                    width: 15,
+                                    color: Theme.of(context).canvasColor)
+                              ]),
+                              BarChartGroupData(x: 3,barRods: [
+                                BarChartRodData(toY: 7,
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(10)),
+                                    width: 15,
+                                    color: Color(0xff7E3299))
+                              ])
                             ]
+                          )),
                         ),
-                      ),
+                      )
+                      // SizedBox(
+                      //   width: w*0.45,
+                      //   height: h*0.2,
+                      //   child: SfCartesianChart(
+                      //       enableSideBySideSeriesPlacement: true,
+                      //       plotAreaBorderWidth: 0,
+                      //       margin: EdgeInsets.zero,
+                      //       primaryXAxis: CategoryAxis(
+                      //           majorTickLines: const MajorTickLines(size: 0,width: 0),
+                      //           labelPosition: ChartDataLabelPosition.outside,
+                      //           labelPlacement: LabelPlacement.betweenTicks,
+                      //           labelAlignment: LabelAlignment.center,
+                      //           borderColor: Colors.grey,
+                      //           labelRotation: 0,
+                      //           placeLabelsNearAxisLine: true,
+                      //           tickPosition: TickPosition.inside,
+                      //           majorGridLines: const MajorGridLines(width: 0),
+                      //           axisLine: const AxisLine(width: 1,color: Colors.black87),
+                      //           isVisible: false
+                      //       ),
+                      //
+                      //       primaryYAxis: NumericAxis(
+                      //           majorTickLines: const MajorTickLines(size: 0,width: 0),
+                      //           isVisible: false,
+                      //           majorGridLines: const MajorGridLines(width: 0),
+                      //           axisLine: const AxisLine(width: 1,color: Colors.black87)
+                      //       ),
+                      //       tooltipBehavior: _tooltipBehavior,
+                      //       series: <ChartSeries>[
+                      //         BarSeries<ChartData, double>(
+                      //             borderRadius: const BorderRadius.only(
+                      //                 topRight: Radius.circular(20),
+                      //                 bottomRight: Radius.circular(20)
+                      //             ),
+                      //             dataSource: chartData,
+                      //             enableTooltip: true,
+                      //
+                      //             xValueMapper: (ChartData data, _) => data.label,
+                      //             yValueMapper: (ChartData data, _) => data.qty,
+                      //             pointColorMapper: (ChartData c,_)=>c.color,
+                      //             // Width of the bars
+                      //             width: 0.5,
+                      //             // Spacing between the bars
+                      //             spacing: 0.3
+                      //         )
+                      //       ]
+                      //   ),
+                      // ),
                     ],
                   ),
                   ClipRRect(
@@ -181,7 +228,7 @@ class UserProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 25,),
 
-              buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
+              // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
               buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
               buildProfileListTile(w, context, 'Invite and earn', 'Each invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
               buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
@@ -209,7 +256,53 @@ class UserProfileScreen extends StatelessWidget {
       child: InkWell(
         onTap: (){
           if(heading=="Switch Account"){
-            logoutOfAccount();
+            // logoutOfAccount();
+            showDialog(
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    ),
+                    backgroundColor: Theme.of(context).canvasColor,
+                    title: const Text("Log Out"),
+                    content: const Text("Are you sure you want to log out of this account?"),
+                    actions: [
+                      Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: (){
+                                logoutOfAccount();
+                              },
+                              child: const Center(child: Text("Confirm",style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.redAccent,
+                                  fontSize: 16
+                              ),),),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: const Center(child: Text("Cancel",style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff1A3841),
+
+                                  fontSize: 16
+                              ),),),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                });
           }
         },
         child: Container(

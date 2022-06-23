@@ -156,9 +156,12 @@ class _PartyUploadState extends State<PartyUpload> {
 
   void _uploadDataToFirebase(List<String> playingSongs) {
 
+    /// Timestamp of upload is the partyId of all parties
+    final partyId = DateTime.now().millisecondsSinceEpoch.toString();
+
     FirebaseFirestore.instance.collection('PartyDetails').doc().set({
         'partyName':partyName,
-        'partyId':"#mvpis",
+        'partyId':partyId,
         "partyHostId": 'Blank',
         'hostId':"#mvpis",
         'entryFee':int.parse(entryFee),
@@ -189,7 +192,12 @@ class _PartyUploadState extends State<PartyUpload> {
     final timePicked = await _pickTime();
     if (timePicked != null) {
       setState(() {
-        time = "${timePicked.hour}:${timePicked.minute} ${timePicked.period.name}";
+        /// If else is to convert time from Railway timings to 12 hour format
+        if(timePicked.hour>12){
+          time = "${timePicked.hour-12}:${timePicked.minute} ${timePicked.period.name}";
+        }else{
+          time = "${timePicked.hour}:${timePicked.minute} ${timePicked.period.name}";
+        }
       });
     }
     print("$date \n Time: $time");

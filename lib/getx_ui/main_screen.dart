@@ -1,11 +1,8 @@
 
-import 'package:communtiy/controllers/auth_controller.dart';
-import 'package:communtiy/controllers/bottom_nav_controller.dart';
+
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/models/user_details/user_detail.dart';
-import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -24,25 +21,26 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final FirebaseController partyController = Get.find();
-  final bottomNavController = Get.put(BottomNavController());
+  // final bottomNavController = Get.put(BottomNavController());
   final OnBoardingController userController = Get.put(OnBoardingController());
-  final AuthController authController = Get.find();
 
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
   late PageController pageController;
   int currentPage = 0;
 
-  bool queryComplete = false;
-  List<UserDetailsModel> userQueryImages = [];
-  List<PartyDetails> partyQueryImages = [];
-  int imagesLength = 0;
 
+  // bool queryComplete = false;
+  // List<UserDetailsModel> userQueryImages = [];
+  // List<PartyDetails> partyQueryImages = [];
+  // int imagesLength = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
     pageController = PageController(initialPage: 0,viewportFraction: 0.8);
     pageController.addListener(() {
       int next = pageController.page!.round();
@@ -56,10 +54,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
+
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -336,6 +341,8 @@ class _MainScreenState extends State<MainScreen> {
     final h = MediaQuery.of(context).size.height;
     double paddingTop = isActive?0:h*0.045;
     // double containerHeight = isActive?150:100;
+
+
     return InkWell(
       onTap: (){
         Get.to(() =>  PartyDetails2(index:currentPage));
@@ -370,12 +377,6 @@ class _MainScreenState extends State<MainScreen> {
                           Text(partyController.parties[index].partyName.toString(),style: Theme.of(context).textTheme.headline2!.copyWith(
                               color: Colors.white
                           ),),
-                          SizedBox(width: h*0.015,),
-                          InkWell(
-                              onTap: (){
-
-                              },
-                              child: Icon(CustomIcons.bookmark,color: Theme.of(context).canvasColor,))
                         ],
                       ),
                       Row(
@@ -401,69 +402,13 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget buildHomeLocationBar(BuildContext context, double w,double h) {
-    userController.userProfile.bindStream(userController.connectUserToApp());
-    final profilePic = userController.userProfile.value.userProfilePic;
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: w * 0.06,vertical: h * 0.01),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(Icons.location_on_rounded,color: Theme.of(context).canvasColor,size: 30,),
-            const SizedBox(width: 5,),
-            Expanded(
-              child: InkWell(
-                onTap: (){},
-                child: Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.white,
-                      fontSize: 18
-                    ),),
-                    userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),style: Theme.of(context).textTheme.headline1!.copyWith(
-                        color: const Color(0xffB6B6B6),
-                        fontSize: 12
-                    ),):Text("Address",style: Theme.of(context).textTheme.headline1!.copyWith(
-                        color: const Color(0xffB6B6B6),
-                        fontSize: 12
-                    ),),
-                  ],
-                ),
-              ),
-            ),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              radius: 18,
-              child: ClipOval(
-                child: CircleAvatar(
-                  radius: 16,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(profilePic.toString()),
-                              fit: BoxFit.cover
-                          )
-                      ),
-                    )
-                ),
-              ),
-
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget buildHomeLocationBar2(BuildContext context, double w,double h) {
     // userController.userProfile.bindStream(userController.connectUserToApp());
     // final profilePic = userController.userProfile.value.userProfilePic;
 
+
     return GetX<OnBoardingController>(
-      init: Get.put(OnBoardingController()),
+      // init: Get.put(OnBoardingController()),
       builder: (userController) {
         userController.userProfile.bindStream(userController.connectUserToApp());
         final profilePic = userController.userProfile.value.userProfilePic;
@@ -517,6 +462,9 @@ class _MainScreenState extends State<MainScreen> {
       }
     );
   }
+
+
+
 
 }
 

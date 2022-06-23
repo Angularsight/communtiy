@@ -37,13 +37,19 @@ class TicketPage extends StatelessWidget {
      /// Uncomment the below part to add current user to the guest List.
      /// Updating guestList of the particular party using docId
      List<dynamic> newGuestList = party.guests!;
-     newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
+
+     ///If the user is already in the party then no need to add him again
+     if(!newGuestList.contains(FirebaseAuth.instance.currentUser!.uid)){
+       print("ADDED NEW GUEST TO FIREBASE");
+       newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
+     }
+
 
      FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
        'guests': newGuestList
      });
 
-     print("UPLOADED NEW GUEST TO FIREBASE");
+
    }
 
   @override

@@ -11,8 +11,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../controllers/onboarding_controller.dart';
 import '../models/party_details.dart';
 
 class PartyDetails2 extends StatelessWidget {
@@ -21,6 +24,7 @@ class PartyDetails2 extends StatelessWidget {
 
   final FirebaseController controller = Get.find();
   final RazorPayController razorPayController = Get.put(RazorPayController());
+  final OnBoardingController userController = Get.find();
   PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
 
   List<HostModel> host = [];
@@ -32,6 +36,11 @@ class PartyDetails2 extends StatelessWidget {
     final h =  MediaQuery.of(context).size.height;
     final t = Theme.of(context);
     const defaultImageString = 'http://www.lyon-ortho-clinic.com/files/cto_layout/img/placeholder/book.jpg';
+    List<String> imagesList = [];
+    for (var element in controller.parties[index!].images!) {
+      imagesList.add(element.toString());
+    }
+
     return Scaffold(
 
       bottomNavigationBar: InkWell(
@@ -57,6 +66,7 @@ class PartyDetails2 extends StatelessWidget {
           ),)),
         ),
       ),
+
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +79,11 @@ class PartyDetails2 extends StatelessWidget {
                   child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context,thisIndex){
-                        return imageCard(context,thisIndex);
+                        return InkWell(
+                            onTap: (){
+                              openFullImageView(index,imagesList);
+                            },
+                            child: imageCard(context,thisIndex));
                       },
                       separatorBuilder: (context,index)=>const SizedBox(width: 0,),
                       itemCount: controller.parties[index!].images!.length),
@@ -392,15 +406,21 @@ class PartyDetails2 extends StatelessWidget {
                               SizedBox(height: h*0.025,),
                               Flexible(
                                 flex:5,
-                                child: Container(
-                                  width: w*0.50,
-                                  height: h*0.07,
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      // border: Border.all(color: const Color(0xffEEE741),width: 1.5)
-                                    border: Border.all(color: const Color(0xffCBCBCB),width: 1.5)
-                                  ),
-                                  child: Center(child:buildStrokeText2(controller.parties[index!].partyName!, t,Colors.black,Colors.white,22)),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: w*0.50,
+                                      height: h*0.07,
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          // border: Border.all(color: const Color(0xffEEE741),width: 1.5)
+                                        border: Border.all(color: const Color(0xffCBCBCB),width: 1.5)
+                                      ),
+                                      child: Center(child:buildStrokeText2(controller.parties[index!].partyName!, t,Colors.black,Colors.white,22)),
+                                    ),
+                                    SizedBox(width: h*0.015,),
+
+                                  ],
                                 ),
                               ),
 
@@ -1030,5 +1050,35 @@ class PartyDetails2 extends StatelessWidget {
         ),
       );
     }
+  }
+
+  void openFullImageView(int? index, List<String> imagesList) {
+    Get.to(()=>FullImageView(imageList:imagesList));
+  }
+}
+
+class FullImageView extends StatefulWidget {
+  final List<String> imageList;
+  const FullImageView({Key? key,required this.imageList}) : super(key: key);
+
+  @override
+  _FullImageViewState createState() => _FullImageViewState();
+}
+
+class _FullImageViewState extends State<FullImageView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PhotoViewGallery.builder(
+          scrollPhysics: const BouncingScrollPhysics(),
+          itemCount: widget.imageList.length,
+          builder: (context,index){
+            return PhotoViewGalleryPageOptions(
+              imageProvider: NetworkImage(widget.imageList[index]),
+              minScale: PhotoViewComputedScale.contained,
+              maxScale: PhotoViewComputedScale.contained * 4
+            );
+          }),
+    );
   }
 }

@@ -64,8 +64,9 @@ class SplashScreen extends StatelessWidget {
                   pause: const Duration(milliseconds: 200),
 
                     animatedTexts: [
-                      RotateAnimatedText("Who|When|Where"),
-                      RotateAnimatedText("You|Here|Now"),
+                      RotateAnimatedText("A place where everyone is single")
+                      // RotateAnimatedText("Who|When|Where"),
+                      // RotateAnimatedText("You|Here|Now"),
                     ]),
               ),
             ),
