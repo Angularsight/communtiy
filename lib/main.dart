@@ -18,7 +18,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
     Future.delayed(const Duration(seconds: 5)).then((value) => Get.put(AuthController()));
-    Get.put(GoogleSignInController());
+    // Get.put(GoogleSignInController());
   });
   runApp(const MyApp2());
 }
