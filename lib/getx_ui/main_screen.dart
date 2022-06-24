@@ -55,19 +55,15 @@ class _MainScreenState extends State<MainScreen> {
 
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+
           body: GestureDetector(
             onTap: (){
               searchFocusNode.unfocus();
@@ -240,12 +236,6 @@ class _MainScreenState extends State<MainScreen> {
                           ),
 
                           const SizedBox(height: 25,),
-                          // GetX<FirebaseController>(
-                          //   builder: (FirebaseController partyController) {
-                          //     return buildActivitiesAndSpecialAppearance(context,partyController.parties[currentPage]);
-                          //   }
-                          // )
-
 
                         ],
                       ),
@@ -424,7 +414,6 @@ class _MainScreenState extends State<MainScreen> {
                   child: InkWell(
                     onTap: (){},
                     child: Column(
-
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(

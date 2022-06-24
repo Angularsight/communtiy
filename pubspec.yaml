@@ -77,7 +77,6 @@ dependencies:
   #For loading
   shimmer: ^2.0.0
 
-
   #Payment gateway
   razorpay_flutter:
 

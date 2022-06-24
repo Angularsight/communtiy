@@ -6,6 +6,8 @@ import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../models/user_details/history.dart';
+
 class FirebaseController extends GetxController {
 
   ///Getting instance of OnboardingController
@@ -117,7 +119,12 @@ class FirebaseController extends GetxController {
   }
 
 
-
+  Future<List<History>> fetchPartiesHistory(String userId) async{
+    return FirebaseFirestore.instance.collection('UserDetails').doc(userId).collection("History").get().then((querySnap) {
+      var v = querySnap.docs.map((e) => History.fromDocument(e)).toList();
+      return v;
+    });
+  }
 
 
 

@@ -210,7 +210,7 @@ class CheckoutPage extends StatelessWidget {
                             razorPayController.updateTicketDetails(party,host);
                             razorPayController.openCheckout(
                                 party.partyName!,
-                                party.entryFee!,
+                                (party.entryFee! - (party.entryFee! * 0.2)).toInt(),
                                 "7411001185",
                                 "angularsight77@gmail.com",
                                 ["Gpay","paytm","PhonePe"],

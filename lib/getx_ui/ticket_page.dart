@@ -1,19 +1,15 @@
 
 
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
-import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +19,7 @@ class TicketPage extends StatelessWidget {
    TicketPage({Key? key}) : super(key: key);
 
    final RazorPayController razorPayController = Get.find();
+   final OnBoardingController userController = Get.find();
 
 
 
@@ -50,6 +47,22 @@ class TicketPage extends StatelessWidget {
      });
 
 
+     /// Add partyId to history list
+     /// Instead of storing the qr Image we have stored the information required to generate the QR image
+     /// The same information can be used to replicate the QR code in party history tab
+     var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: userController.currentUser.uid).get();
+     var userDocId = userDoc.docs[0].id;
+     FirebaseFirestore.instance.collection("UserDetails").doc(userDocId).collection("History").doc().set({
+       'partyId':party.partyId,
+       'partyImage':party.images![0],
+       'partyName':party.partyName,
+       'partyDate':party.date,
+       'partyTime':party.time,
+       'partyVenue':party.location,
+       'partyHost':razorPayController.host!.hostName,
+       'qrDetail': razorPayController.paymentId,
+     });
+
    }
 
   @override
@@ -59,7 +72,6 @@ class TicketPage extends StatelessWidget {
     final t = Theme.of(context);
     final party = razorPayController.partyDetails;
     final host = razorPayController.host;
-
     uploadGuestToParty(party!);
 
     return Scaffold(
@@ -200,11 +212,7 @@ class TicketPage extends StatelessWidget {
                           child: Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: QrImage(
-                                data: 'paymentId:${razorPayController.paymentId} \n Date:${party.date} @${party.time} \n Venue:${party.location} \n Host:${host.hostName}',
-                                backgroundColor: Colors.white,
-                                size: 200,
-                              ),
+                              child: fetchQrImage(party, host),
                             ),
                           ),
 
@@ -259,6 +267,18 @@ class TicketPage extends StatelessWidget {
           ],
         ),
       );
+  }
+
+  QrImage fetchQrImage(PartyDetails party, HostModel host) {
+
+    return QrImage(
+                              data:'partyName:${party.partyName}\n'
+                                  'paymentId:${razorPayController.paymentId} \n '
+                                  'Date:${party.date} @${party.time} \n '
+                                  'Venue:${party.location} \n '
+                                  'Host:${host.hostName}',
+                              backgroundColor: Colors.white,
+                              size: 200,);
   }
 
    Padding buildPartyDetailRow(BuildContext context,String head,String headText, String tail ,String tailText) {
@@ -325,6 +345,7 @@ class TicketPage extends StatelessWidget {
        ),
      );
    }
+
 
   // Future<String> saveImageToGallery(BuildContext context,Uint8List screenshot) async{
   //

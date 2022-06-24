@@ -54,48 +54,13 @@ class OnBoardingController extends GetxController{
       });
       return res;
     }
-
   }
 
-
-  final currentUserDetail = UserDetailsModel().obs;
-
-  Future<List> fetchUserBookmarks(String userId)async{
-    return FirebaseFirestore.instance
-        .collection("UserDetails")
-        .where("userId",isEqualTo: userId)
-        .get()
-        .then((query) {
-      var v =  query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
-      currentUserDetail.value = v[0];
-      userDocId = query.docs[0].id;
-      return currentUserDetail.value.bookmarks!;
-    });
+  Future<String> fetchUserDocId() async{
+    var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: currentUser.uid).get();
+    var userDocId = userDoc.docs[0].id;
+    return userDocId;
   }
-
-  userBookmark(String partyId,bool addOrRemove){
-    var newBookmarkList = currentUserDetail.value.bookmarks;
-
-    /// addOrRemove = true ; means add
-    /// addOrRemove = false ; means remove
-    if(addOrRemove==true){
-      newBookmarkList!.add(partyId);
-    }else{
-      if(newBookmarkList!.isNotEmpty){
-        newBookmarkList.remove(partyId);
-      }
-    }
-
-    FirebaseFirestore.instance
-        .collection("UserDetails")
-        .doc(userDocId)
-        .update({
-      'bookmarks': newBookmarkList
-    });
-  }
-
-
-
 
 
 }

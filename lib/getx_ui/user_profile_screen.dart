@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
+import 'new_ui/party_history.dart';
+
 
 
 class ChartData {
@@ -107,7 +109,7 @@ class UserProfileScreen extends StatelessWidget {
                                         topRight: Radius.circular(20),
                                         topLeft: Radius.circular(10)),
                                     width: 15,
-                                    color: Color(0xff7E3299))
+                                    color: const Color(0xff7E3299))
                               ])
                             ]
                           )),
@@ -303,6 +305,8 @@ class UserProfileScreen extends StatelessWidget {
                     ],
                   );
                 });
+          }else if(heading=="History"){
+            Get.to(()=> PartyHistory());
           }
         },
         child: Container(

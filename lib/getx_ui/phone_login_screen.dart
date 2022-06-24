@@ -3,15 +3,12 @@
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/google_sign_in_controller.dart';
 import 'package:communtiy/getx_ui/OTP_screen.dart';
-import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-import '../controllers/onboarding_controller.dart';
 import '../utils/theme.dart';
 class PhoneLoginScreen extends StatelessWidget {
   PhoneLoginScreen({Key? key}) : super(key: key);
@@ -24,9 +21,9 @@ class PhoneLoginScreen extends StatelessWidget {
   String email ='';
   String password = '';
 
+  /// Do not delete the below line since internet check is happening in GoogleSignInController
   final GoogleSignInController googleSignInController = Get.put(GoogleSignInController());
   final AuthController authController = Get.find();
-  // final OnBoardingController onBoardingController = Get.put(OnBoardingController());
 
   @override
   Widget build(BuildContext context) {

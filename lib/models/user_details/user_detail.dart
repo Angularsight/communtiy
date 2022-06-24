@@ -12,7 +12,6 @@ class UserDetailsModel {
   int? age;
   int? xp;
   List? images;
-  List? bookmarks;
 
   UserDetailsModel({ this.userId,
     this.userName,
@@ -23,7 +22,7 @@ class UserDetailsModel {
     this.age,
     this.xp,
     this.images,
-    this.bookmarks
+
   });
 
 
@@ -39,7 +38,6 @@ class UserDetailsModel {
         xp: d['xp'],
         phoneNumber: d['phoneNumber'],
         images: d['images'],
-        bookmarks: d['bookmarks']
     );
   }
 
