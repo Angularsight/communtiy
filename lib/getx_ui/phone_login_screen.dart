@@ -30,7 +30,7 @@ class PhoneLoginScreen extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
-    return GetX<GoogleSignInController>(
+    return GetX<AuthController>(
       builder: (controller) {
         return controller.hasInternet==false?buildNoInternetPage(context):GestureDetector(
           onTap: (){

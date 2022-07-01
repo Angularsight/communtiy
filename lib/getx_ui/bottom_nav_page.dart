@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
@@ -16,6 +17,7 @@ class BottomNavigationPage extends StatelessWidget {
 
   final BottomNavController controller = Get.put(BottomNavController());
   final FirebaseController firebaseController = Get.put(FirebaseController());
+  final AuthController authController = Get.find();
 
 
   @override
@@ -27,7 +29,7 @@ class BottomNavigationPage extends StatelessWidget {
       /// If we run the code it will throw : Null check used on null operator error
       //   init: Get.put(BottomNavController()),
         builder: (controller){
-      return controller.hasInternet==false?buildNoInternetPage(context):Scaffold(
+      return authController.hasInternet==false?buildNoInternetPage(context):Scaffold(
         resizeToAvoidBottomInset: false,
           body: IndexedStack(
             index: controller.bottomIndex,
@@ -76,22 +78,22 @@ class BottomNavigationPage extends StatelessWidget {
 
   Widget buildNoInternetPage(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(17),
-                  bottomLeft: Radius.circular(17)),
-          ),
-        ),
-        leading: InkWell(
-            onTap: (){
-              Get.off(()=>BottomNavigationPage());
-            },
-            child: const Icon(Icons.arrow_back_rounded,color: Colors.white,)),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   flexibleSpace: Container(
+      //     decoration: BoxDecoration(
+      //       color: Theme.of(context).scaffoldBackgroundColor,
+      //         borderRadius: const BorderRadius.only(
+      //             bottomRight: Radius.circular(17),
+      //             bottomLeft: Radius.circular(17)),
+      //     ),
+      //   ),
+      //   leading: InkWell(
+      //       onTap: (){
+      //         Get.off(()=>BottomNavigationPage());
+      //       },
+      //       child: const Icon(Icons.arrow_back_rounded,color: Colors.white,)),
+      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
