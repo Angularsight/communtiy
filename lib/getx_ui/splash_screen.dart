@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-
+    final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
 
     /// SHOULD NOT USE THIS TIMER SINCE THE ROUTING IS ALREADY BEING DONE IN main.dart via getX authentication (line : 20)
@@ -31,6 +31,12 @@ class SplashScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/bare logo.png',
+              width: w,
+              height: h*0.15,
+            ),
+            SizedBox(height: h*0.05,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 import '../utils/theme.dart';
 class PhoneLoginScreen extends StatelessWidget {
@@ -39,6 +41,7 @@ class PhoneLoginScreen extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               gradient: Themes.logoGradient
+              // color: Theme.of(context).scaffoldBackgroundColor
             ),
             child: Scaffold(
               backgroundColor: Colors.transparent,
@@ -51,26 +54,14 @@ class PhoneLoginScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        /// OLD DESIGN IS IN PREVIOUS COMMITS COPY FROM THERE IF NEEDED
+                        Lottie.asset(
+                          'assets/lottie/lf20_xx2evytt.json',
                           width: w,
-                          height: h*0.4,
-                          child: CustomPaint(
-                            size: Size(w,(h*0.4*0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                            painter: RPSCustomPainter(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: h*0.1,
-                                  width: 2,
-                                  color: const Color(0xff595959),
-                                ),
-                              ],
-                            ),
-                          ),
+                          height: h*0.5
+
                         ),
-                        SizedBox(height: h*0.05,),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
                           child: Column(
@@ -78,7 +69,8 @@ class PhoneLoginScreen extends StatelessWidget {
                             children: [
                               Text("Hi",style: GoogleFonts.roboto(
                                   fontSize: 18,
-                                  color: const Color(0xff909090),
+                                  // color: const Color(0xff909090),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold
                               ),),
                               Text("Let's get you acquainted",style:GoogleFonts.roboto(
@@ -175,160 +167,13 @@ class PhoneLoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: h*0.01,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("Already have an account?",style: t.textTheme.headline1!.copyWith(
-                                    fontSize: 14,
-                                    color: const Color(0xff8E8E8E),
-                                  ),),
-                                  InkWell(
-                                    onTap: (){},
-                                    child: Text(" Login",style: t.textTheme.headline1!.copyWith(
-                                      fontSize: 14,
-                                      color: const Color(0xff439ACB),
-                                    )),
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: h*0.005,),
 
                             ],
                           ),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: w*0.45,
-                              height: 1,
-                              color: const Color(0xffC4C4C4),
-                            ),
-                            const SizedBox(width: 5,),
-                            const Text("or",style: TextStyle(
-                                color: Color(0xff838383)
-                            ),),
-                            const SizedBox(width: 5,),
-                            Container(
-                              width: w*0.48,
-                              height: 1,
-                              color: const Color(0xffC4C4C4),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: h*0.01,),
-                        Center(
-                          child: InkWell(
-                            onTap: (){
-                              // googleSignInController.googleLogin();
-                            },
-                            child: Container(
-                              width: w*0.75,
-                              height: h*0.055,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: const Color(0xff1E1E1E),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.8),
-                                        offset: const Offset(0,4),
-                                        blurRadius: 4,
-                                        spreadRadius: 0
-                                    )
-                                  ]
-                              ),
-                              child: Padding(
-                                padding:  const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text("Continue with Google",style:TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold
-                                    ) ,),
-                                    CircleAvatar(
-                                        radius:25,
-                                        backgroundColor: Colors.white,
-                                        child: ClipOval(child: Image.asset('assets/images/google logo.png',fit: BoxFit.contain)))
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: h*0.015,),
-                        Center(
-                          child: Container(
-                            width: w*0.75,
-                            height: h*0.055,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: const Color(0xff1E1E1E),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black.withOpacity(0.8),
-                                      offset: const Offset(0,4),
-                                      blurRadius: 4,
-                                      spreadRadius: 0
-                                  )
-                                ]
-                            ),
-                            child:  Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("Continue with Instagram",style:TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold
-                                  ) ,),
-                                  CircleAvatar(
-                                      radius: 24,
-                                      backgroundColor: Colors.transparent,
-                                      child: Image.asset('assets/images/insta logo.png',fit: BoxFit.cover,))
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: h*0.08),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.transparent,
-                          child: ClipOval(child: Image.asset('assets/images/disco ball.png',fit: BoxFit.cover,)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: h*0.25,
-                    right: w*0.05,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: h*0.2,
-                          width: w*0.4,
-                          child: Image.asset('assets/images/image 9.png',fit: BoxFit.contain,),
-                        ),
-                        SizedBox(
-                          child: CustomPaint(
-                            size: Size(w*0.4,(75*
-                                0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                            painter: RPSCustomPainter2(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
@@ -368,7 +213,7 @@ class RPSCustomPainter extends CustomPainter{
     var rect = Offset.zero & size;
     Paint paint0 = Paint()
       ..shader = LinearGradient(
-          colors: [Color(0xff060606),Color(0xffC4C4C4).withOpacity(0)],
+          colors: [const Color(0xff060606),const Color(0xffC4C4C4).withOpacity(0)],
           // colors: [const Color(0xffC4C4C4),const Color(0xffC4C4C4).withOpacity(0)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight
