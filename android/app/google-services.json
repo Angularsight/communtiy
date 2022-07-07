@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:205306871553:android:de164f4bcc8fbd5da9a500",
+        "android_client_info": {
+          "package_name": "com.effectives.leagues"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205306871553-gd5822kqpesvoa2mchevfn2ao8fhcall.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.effectives.leagues",
+            "certificate_hash": "8a491adc711a3b3b3e66511acafcf0a2f4907543"
+          }
+        },
+        {
+          "client_id": "205306871553-ptpd5q4ranuaad4tsrce8baj5k06d0kn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0JHfvvsL2uQr0EZkhMXy6MSFPrg3QH_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205306871553-ptpd5q4ranuaad4tsrce8baj5k06d0kn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:205306871553:android:978ca53dbad184f1a9a500",
         "android_client_info": {
           "package_name": "com.example.communtiy"
