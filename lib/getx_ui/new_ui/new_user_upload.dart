@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:chips_choice/chips_choice.dart';
+import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
@@ -1003,7 +1003,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         tooltip: (i, v) => v,
                       ),
                       choiceStyle: C2ChoiceStyle(
-                        // color: Colors.blue,
+                        color: Theme.of(context).canvasColor,
                         showCheckmark: true,
                         disabledColor: Colors.transparent,
                         labelStyle: const TextStyle(fontSize: 12,color: Colors.black), borderShape: RoundedRectangleBorder(

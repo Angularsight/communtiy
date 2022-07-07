@@ -7,7 +7,6 @@ import 'package:communtiy/utils/icons.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
 import '../utils/theme.dart';
@@ -269,7 +268,7 @@ class CheckoutPage extends StatelessWidget {
                             fontSize: 14
                         ),),
                         const SizedBox(width: 5,),
-                        Icon(CustomIcons.info,size: 14,color: Colors.white,)
+                        Icon(Icons.info_outline,size: 14,color: Colors.white,)
                       ],
                     ),
                   ],

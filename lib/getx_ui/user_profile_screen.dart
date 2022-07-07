@@ -5,7 +5,6 @@ import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 
 import 'new_ui/party_history.dart';
@@ -232,8 +231,8 @@ class UserProfileScreen extends StatelessWidget {
 
               // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
               buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
-              buildProfileListTile(w, context, 'Invite and earn', 'Invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
-              buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
+              buildProfileListTile(w, context, 'Invite and earn', 'Invite will earn you a free party including cover charges',Icons.repeat),
+              buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',Icons.vpn_key_rounded),
               buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
 
             ],
