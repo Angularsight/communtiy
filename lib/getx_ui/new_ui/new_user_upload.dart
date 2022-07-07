@@ -1002,13 +1002,24 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         label: (i, v) => v,
                         tooltip: (i, v) => v,
                       ),
+                      choiceActiveStyle: C2ChoiceStyle(
+                          color: Theme.of(context).canvasColor,
+                          showCheckmark: true,
+                          backgroundColor: const Color(0xff1A3841),
+                          // disabledColor: Colors.transparent,
+                          labelStyle: TextStyle(fontSize: 14,color: Theme.of(context).canvasColor), borderShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(color: Theme.of(context).primaryColor))
+
+                      ),
                       choiceStyle: C2ChoiceStyle(
                         color: Theme.of(context).canvasColor,
                         showCheckmark: true,
+                        backgroundColor: Colors.grey,
                         disabledColor: Colors.transparent,
                         labelStyle: const TextStyle(fontSize: 12,color: Colors.black), borderShape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Theme.of(context).primaryColor))
+                              side: BorderSide(color: Colors.grey.withOpacity(0.5)))
 
                       ),
 
