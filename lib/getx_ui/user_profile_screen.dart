@@ -232,7 +232,7 @@ class UserProfileScreen extends StatelessWidget {
 
               // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
               buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
-              buildProfileListTile(w, context, 'Invite and earn', 'Each invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
+              buildProfileListTile(w, context, 'Invite and earn', 'Invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
               buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
               buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
 

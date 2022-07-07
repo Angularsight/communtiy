@@ -167,13 +167,17 @@ class _OTPScreenState extends State<OTPScreen> {
                     fontWeight: FontWeight.normal,
                   ) ,),
                 )),
-                // const Spacer(),
-                Lottie.asset(
-                    'assets/lottie/66346-marking-a-calendar.json',
-                    width: w,
-                    height: h*0.5
-
+                SizedBox(height: h*0.05,),
+                CircleAvatar(
+                  radius: w*0.4,
+                  backgroundColor: Theme.of(context).canvasColor,
+                  child: Lottie.asset(
+                      'assets/lottie/66346-marking-a-calendar.json',
+                      width: w,
+                      height: h*0.5
+                  ),
                 ),
+                const SizedBox(height: 10,),
                 Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: InkWell(
