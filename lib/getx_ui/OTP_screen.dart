@@ -67,7 +67,7 @@ class _OTPScreenState extends State<OTPScreen> {
     final h = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
-        gradient: Themes.logoGradient
+          gradient: Themes.logoGradient
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -80,7 +80,7 @@ class _OTPScreenState extends State<OTPScreen> {
             },
             child: Column(
               children: [
-                 SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+                SizedBox(height: MediaQuery.of(context).size.height*0.1,),
                 Center(
                   child: Text("Verify your \n Phone number",textAlign: TextAlign.center,style:GoogleFonts.roboto(
                       fontSize: 24,
@@ -97,57 +97,57 @@ class _OTPScreenState extends State<OTPScreen> {
                 ),
                 const SizedBox(height: 7,),
                 Center(child:Text("Enter your OTP code here",style: GoogleFonts.roboto(
-                    fontSize: 15,
-                    color: Colors.grey.withOpacity(0.5),
-                    fontWeight: FontWeight.normal,
+                  fontSize: 15,
+                  color: Colors.grey.withOpacity(0.5),
+                  fontWeight: FontWeight.normal,
                 ),)),
                 const SizedBox(height: 25,),
 
 
                 Pinput(
-                      closeKeyboardWhenCompleted: false,
-                      length: 6,
-                      keyboardType: TextInputType.number,
-                      showCursor: false,
-                      focusNode: _pinNode,
-                      textInputAction: TextInputAction.none,
-                      controller: _pinPutController,
-                      onCompleted: (String pin)async{
-                        try{
-                          await FirebaseAuth.instance
-                              .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
-                              .then((value) async{
-                            if(value.user!=null){
-                              print('User Logged in Successfully via pinPut');
+                  closeKeyboardWhenCompleted: false,
+                  length: 6,
+                  keyboardType: TextInputType.number,
+                  showCursor: false,
+                  focusNode: _pinNode,
+                  textInputAction: TextInputAction.none,
+                  controller: _pinPutController,
+                  onCompleted: (String pin)async{
+                    try{
+                      await FirebaseAuth.instance
+                          .signInWithCredential(PhoneAuthProvider.credential(verificationId: _verificationCode, smsCode: pin))
+                          .then((value) async{
+                        if(value.user!=null){
+                          print('User Logged in Successfully via pinPut');
 
-                              ///Checking if the user(phoneNumber) already exists
-                              ///If yes: Then we direct the user to the home screen
-                              ///Else : We proceed to the on boarding section
-                              var userExists = await authController.checkUserExistence2(int.parse(widget.phoneNumber));
-                              if(userExists){
-                                Get.to(()=>BottomNavigationPage());
-                              }else{
-                                Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
-                              }
-                            }
-                          });
-                        }catch(e){
-                          FocusScope.of(context).unfocus();
-                          Fluttertoast.showToast(
-                              msg: 'Invalid OTP Entered',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.SNACKBAR,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0
-                          );
+                          ///Checking if the user(phoneNumber) already exists
+                          ///If yes: Then we direct the user to the home screen
+                          ///Else : We proceed to the on boarding section
+                          var userExists = await authController.checkUserExistence2(int.parse(widget.phoneNumber));
+                          if(userExists){
+                            Get.to(()=>BottomNavigationPage());
+                          }else{
+                            Get.to(()=>OnBoardingScreen(phoneNumber: widget.phoneNumber,));
+                          }
                         }
-                      },
-                      submittedPinTheme: submittedPinTheme,
-                      defaultPinTheme: defaultPinTheme,
-                      focusedPinTheme: focusedPinTheme,
-                    ),
+                      });
+                    }catch(e){
+                      FocusScope.of(context).unfocus();
+                      Fluttertoast.showToast(
+                          msg: 'Invalid OTP Entered',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                    }
+                  },
+                  submittedPinTheme: submittedPinTheme,
+                  defaultPinTheme: defaultPinTheme,
+                  focusedPinTheme: focusedPinTheme,
+                ),
 
 
                 const SizedBox(height: 25,),
@@ -167,13 +167,17 @@ class _OTPScreenState extends State<OTPScreen> {
                     fontWeight: FontWeight.normal,
                   ) ,),
                 )),
-                // const Spacer(),
-                Lottie.asset(
-                    'assets/lottie/66346-marking-a-calendar.json',
-                    width: w,
-                    height: h*0.5
-
+                SizedBox(height: h*0.05,),
+                CircleAvatar(
+                  radius: w*0.4,
+                  backgroundColor: Theme.of(context).canvasColor,
+                  child: Lottie.asset(
+                      'assets/lottie/66346-marking-a-calendar.json',
+                      width: w,
+                      height: h*0.5
+                  ),
                 ),
+                const SizedBox(height: 10,),
                 Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: InkWell(

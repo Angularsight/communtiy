@@ -37,40 +37,40 @@ class GoogleSignInController extends GetxController{
 
   }
 
-  late StreamSubscription subscription;
-  var _hasInternet = false.obs;
-  bool get hasInternet => _hasInternet.value;
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
-      _hasInternet.value = true;
-    });
-  }
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-    ever(_hasInternet, _handleInternetIssue);
-  }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
-    subscription.cancel();
-  }
-
-  _handleInternetIssue(bool internet){
-    if(internet==false){
-      _hasInternet.value = false;
-    }else{
-      _hasInternet.value = true;
-    }
-  }
+  // late StreamSubscription subscription;
+  // var _hasInternet = false.obs;
+  // bool get hasInternet => _hasInternet.value;
+  //
+  // @override
+  // void onInit() {
+  //   // TODO: implement onInit
+  //   super.onInit();
+  //   subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){
+  //     _hasInternet.value = true;
+  //   });
+  // }
+  //
+  // @override
+  // void onReady() {
+  //   // TODO: implement onReady
+  //   super.onReady();
+  //   ever(_hasInternet, _handleInternetIssue);
+  // }
+  //
+  // @override
+  // void onClose() {
+  //   // TODO: implement onClose
+  //   super.onClose();
+  //   subscription.cancel();
+  // }
+  //
+  // _handleInternetIssue(bool internet){
+  //   if(internet==false){
+  //     _hasInternet.value = false;
+  //   }else{
+  //     _hasInternet.value = true;
+  //   }
+  // }
 
 
 }

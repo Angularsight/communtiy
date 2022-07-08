@@ -33,153 +33,323 @@ class PhoneLoginScreen extends StatelessWidget {
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
     return GetX<AuthController>(
-      builder: (controller) {
-        return controller.hasInternet==false?buildNoInternetPage(context):GestureDetector(
-          onTap: (){
-            _phoneNoNode.unfocus();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: Themes.logoGradient
-              // color: Theme.of(context).scaffoldBackgroundColor
-            ),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              resizeToAvoidBottomInset: true,
-              // backgroundColor: const Color(0xff292929),
-              extendBodyBehindAppBar: true,
-              body: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// OLD DESIGN IS IN PREVIOUS COMMITS COPY FROM THERE IF NEEDED
-                        Lottie.asset(
-                          'assets/lottie/lf20_xx2evytt.json',
+        builder: (controller) {
+          if (controller.hasInternet==false) {
+            return buildNoInternetPage(context);
+          } else {
+            return GestureDetector(
+              onTap: (){
+                _phoneNoNode.unfocus();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: Themes.logoGradient
+                  // color: Theme.of(context).scaffoldBackgroundColor
+                ),
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  resizeToAvoidBottomInset: true,
+                  // backgroundColor: const Color(0xff292929),
+                  extendBodyBehindAppBar: true,
+                  body: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: h*0.72),
+                        child: Container(
                           width: w,
-                          height: h*0.5
-
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+                          height: h*0.3,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).canvasColor,
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(30),
+                                  topLeft: Radius.circular(30)
+                              )
+                          ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Hi",style: GoogleFonts.roboto(
-                                  fontSize: 18,
-                                  // color: const Color(0xff909090),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold
-                              ),),
-                              Text("Let's get you acquainted",style:GoogleFonts.roboto(
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    const Shadow(
-                                        color: Colors.black,
-                                        offset: Offset(0,4),
-                                        blurRadius: 2
-                                    )
-                                  ]
+                              SizedBox(height: h*0.07,),
+                              Text("Pick up lines 101:",style:GoogleFonts.roboto(
+                                fontSize: 18,
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                fontWeight: FontWeight.bold,
                               ) ,),
-                              SizedBox(height: h*0.02,),
-                              TextFormField(
-                                controller: _phoneNoController,
-                                focusNode: _phoneNoNode,
-                                keyboardType: TextInputType.phone,
-                                style: const TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.white,
-                                    letterSpacing: 18,
+                              const SizedBox(height: 10,),
+                              Container(
+                                width: w*0.85,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xff00171F),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Center(
+                                  child:Text("I ought to complain to Spotify for you not being named this week’s hottest single.",style:GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    color: const Color(0xffB8B8B8),
                                     fontWeight: FontWeight.bold,
+                                  ),textAlign: TextAlign.center,) ,
                                 ),
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                    focusColor: Colors.transparent,
-                                    filled: true,
-                                    fillColor: const Color(0xff393939),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: const BorderSide(
-                                            style: BorderStyle.none
-                                        ),
-                                    ),
-                                    prefix: const Text("+91",style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17
-                                    ),),
-                                    // prefixIcon: const Icon(Icons.phone,color: Color(0xff767676),size: 35,),
-                                    hintText: "Phone Number",
-                                    hintStyle: const TextStyle(
-                                        fontSize: 16,
-                                        color: Color(0xff767676),
-                                      letterSpacing: 1
-                                    )
-                                ),
-                                maxLength: 10,
-                                onFieldSubmitted: (text){
-                                  email = text;
-                                },
-                              ),
-
-                              SizedBox(height: h*0.02,),
-                              Center(
-                                child: InkWell(
-                                  onTap: ()async{
-                                    /// Meaning we are closing these pages for good.
-                                    if(_phoneNoController.text.length!=10){
-                                      Fluttertoast.showToast(
-                                          msg: "Phone Number is not 10 digits",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.SNACKBAR,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0
-                                      );
-                                    }else{
-                                      Get.offAll(()=> OTPScreen(phoneNumber: _phoneNoController.text,));
-                                    }
-                                  },
-                                  child: Container(
-                                    width: w*0.4,
-                                    height: h*0.05,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: const Color(0xff1E1E1E),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.black.withOpacity(0.8),
-                                              offset: const Offset(0,4),
-                                              blurRadius: 4,
-                                              spreadRadius: 0
-                                          )
-                                        ]
-                                    ),
-                                    child: const Center(child: Text("Sign up via OTP",style:TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold
-                                    ) ,),),
-                                  ),
-                                ),
-                              ),
-
+                              )
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            /// OLD DESIGN IS IN PREVIOUS COMMITS COPY FROM THERE IF NEEDED
+                            Lottie.asset(
+                                'assets/lottie/78167-rollin.json',
+                                width: w,
+                                height: h*0.5
+                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+                            //   child: Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Text("Hi",style: GoogleFonts.roboto(
+                            //           fontSize: 18,
+                            //           // color: const Color(0xff909090),
+                            //           color: Colors.white,
+                            //           fontWeight: FontWeight.bold
+                            //       ),),
+                            //       Text("Let's get you acquainted",style:GoogleFonts.roboto(
+                            //           fontSize: 22,
+                            //           color: Colors.white,
+                            //           fontWeight: FontWeight.bold,
+                            //           shadows: [
+                            //             const Shadow(
+                            //                 color: Colors.black,
+                            //                 offset: Offset(0,4),
+                            //                 blurRadius: 2
+                            //             )
+                            //           ]
+                            //       ) ,),
+                            //       SizedBox(height: h*0.02,),
+                            //       TextFormField(
+                            //         controller: _phoneNoController,
+                            //         focusNode: _phoneNoNode,
+                            //         keyboardType: TextInputType.phone,
+                            //         style: const TextStyle(
+                            //             fontSize: 17,
+                            //             color: Colors.white,
+                            //             letterSpacing: 18,
+                            //             fontWeight: FontWeight.bold,
+                            //         ),
+                            //         decoration: InputDecoration(
+                            //           counterText: '',
+                            //             focusColor: Colors.transparent,
+                            //             filled: true,
+                            //             fillColor: const Color(0xff393939),
+                            //             border: OutlineInputBorder(
+                            //                 borderRadius: BorderRadius.circular(12),
+                            //                 borderSide: const BorderSide(
+                            //                     style: BorderStyle.none
+                            //                 ),
+                            //             ),
+                            //             prefix: const Text("+91",style: TextStyle(
+                            //               color: Colors.white,
+                            //               fontSize: 17
+                            //             ),),
+                            //             // prefixIcon: const Icon(Icons.phone,color: Color(0xff767676),size: 35,),
+                            //             hintText: "Phone Number",
+                            //             hintStyle: const TextStyle(
+                            //                 fontSize: 16,
+                            //                 color: Color(0xff767676),
+                            //               letterSpacing: 1
+                            //             )
+                            //         ),
+                            //         maxLength: 10,
+                            //         onFieldSubmitted: (text){
+                            //           email = text;
+                            //         },
+                            //       ),
+                            //
+                            //       SizedBox(height: h*0.02,),
+                            //       Center(
+                            //         child: InkWell(
+                            //           onTap: ()async{
+                            //             /// Meaning we are closing these pages for good.
+                            //             if(_phoneNoController.text.length!=10){
+                            //               Fluttertoast.showToast(
+                            //                   msg: "Phone Number is not 10 digits",
+                            //                   toastLength: Toast.LENGTH_SHORT,
+                            //                   gravity: ToastGravity.SNACKBAR,
+                            //                   timeInSecForIosWeb: 1,
+                            //                   backgroundColor: Colors.red,
+                            //                   textColor: Colors.white,
+                            //                   fontSize: 16.0
+                            //               );
+                            //             }else{
+                            //               Get.offAll(()=> OTPScreen(phoneNumber: _phoneNoController.text,));
+                            //             }
+                            //           },
+                            //           child: Container(
+                            //             width: w*0.4,
+                            //             height: h*0.05,
+                            //             decoration: BoxDecoration(
+                            //                 borderRadius: BorderRadius.circular(20),
+                            //                 color: const Color(0xff1E1E1E),
+                            //                 boxShadow: [
+                            //                   BoxShadow(
+                            //                       color: Colors.black.withOpacity(0.8),
+                            //                       offset: const Offset(0,4),
+                            //                       blurRadius: 4,
+                            //                       spreadRadius: 0
+                            //                   )
+                            //                 ]
+                            //             ),
+                            //             child: const Center(child: Text("Sign up via OTP",style:TextStyle(
+                            //                 fontSize: 17,
+                            //                 color: Colors.white,
+                            //                 fontWeight: FontWeight.bold
+                            //             ) ,),),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //
+                            //     ],
+                            //   ),
+                            // ),
+
+                            Container(
+                              width: w*0.9,
+                              height: h*0.3,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context).canvasColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        offset: const Offset(0,4),
+                                        blurRadius: 5,
+                                        spreadRadius: 0
+                                    )
+                                  ]
+                              ),
+                              child:Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Hi",style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        // color: const Color(0xff909090),
+                                        color: Theme.of(context).scaffoldBackgroundColor,
+                                        fontWeight: FontWeight.bold
+                                    ),),
+                                    Text("Let's get you acquainted",style:GoogleFonts.roboto(
+                                      fontSize: 20,
+                                      color: Theme.of(context).scaffoldBackgroundColor,
+                                      fontWeight: FontWeight.bold,
+                                    ) ,),
+                                    SizedBox(height: h*0.02,),
+                                    Text("Phone Number",style:GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      color: Theme.of(context).scaffoldBackgroundColor,
+                                      fontWeight: FontWeight.bold,
+                                    ) ,),
+                                    TextFormField(
+                                      controller: _phoneNoController,
+                                      focusNode: _phoneNoNode,
+                                      keyboardType: TextInputType.phone,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.white,
+                                        letterSpacing: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration: InputDecoration(
+                                          counterText: '',
+                                          focusColor: Colors.transparent,
+                                          filled: true,
+                                          fillColor: const Color(0xff00171F),
+                                          // fillColor: const Color(0xff393939),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: const BorderSide(
+                                                style: BorderStyle.none
+                                            ),
+                                          ),
+                                          prefix: const Text("+91",style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17
+                                          ),),
+                                          // prefixIcon: const Icon(Icons.phone,color: Color(0xff767676),size: 35,),
+                                          hintText: "Phone Number",
+                                          hintStyle: const TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xff767676),
+                                              letterSpacing: 1
+                                          )
+                                      ),
+                                      maxLength: 10,
+                                      onFieldSubmitted: (text){
+                                        email = text;
+                                      },
+                                    ),
+
+                                    SizedBox(height: h*0.04,),
+                                    Center(
+                                      child: InkWell(
+                                        onTap: ()async{
+                                          /// Meaning we are closing these pages for good.
+                                          if(_phoneNoController.text.length!=10){
+                                            Fluttertoast.showToast(
+                                                msg: "Phone Number is not 10 digits",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.SNACKBAR,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0
+                                            );
+                                          }else{
+                                            Get.offAll(()=> OTPScreen(phoneNumber: _phoneNoController.text,));
+                                          }
+                                        },
+                                        child: Container(
+                                          width: w*0.4,
+                                          height: h*0.05,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: const Color(0xff1E1E1E),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.black.withOpacity(0.8),
+                                                    offset: const Offset(0,4),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 0
+                                                )
+                                              ]
+                                          ),
+                                          child: const Center(child: Text("Sign up ",style:TextStyle(
+                                              fontSize: 17,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold
+                                          ) ,),),
+                                        ),
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            )
+
+                          ],
+                        ),
+                      ),
+
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        );
-      }
+            );
+          }
+        }
     );
   }
 
@@ -253,7 +423,7 @@ class RPSCustomPainter2 extends CustomPainter{
 
 
     Paint paint0 = Paint()
-      // ..color = const Color(0xff222222)
+    // ..color = const Color(0xff222222)
       ..color = const Color(0xff222222).withOpacity(0.8)
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
