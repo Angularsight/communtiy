@@ -9,9 +9,11 @@ import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pinput/pinput.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 
@@ -79,6 +81,19 @@ class _NewUserUploadState extends State<NewUserUpload> {
     final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
 
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+        pickedImageFile.absolute.path,
+        quality: 50
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
+
     setState(() {
       pickedImageBool2 = true;
       pickedImage2 = pickedImageFile;
@@ -86,6 +101,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       photoIndex2 = imageList2.length - 1;
     });
   }
+
 
   bool userImagePickedBool = false;
   List<File> userProfilePic = [];
@@ -95,10 +111,25 @@ class _NewUserUploadState extends State<NewUserUpload> {
     await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
 
+
+
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+      pickedImageFile.absolute.path,
+      quality: 50
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
+
     setState(() {
       userImagePickedBool = true;
       pickedImage2 = pickedImageFile;
-      userProfilePic.add(pickedImageFile);
+      userProfilePic.add(compressedFile);
     });
   }
 

@@ -53,6 +53,10 @@ dependencies:
 
   #Getx
   get: ^4.6.5
+  geolocator: ^9.0.1
+#  location: ^4.4.0
+  geocoding: ^2.0.4
+
 
   #UI
   #Don't change google_fonts version coz it will throw error
@@ -67,6 +71,8 @@ dependencies:
 #  accordion: ^2.2.3
 #  expandable: ^5.0.1
   animations: ^2.0.2
+  flutter_image_compress: ^1.1.0
+  path_provider: ^2.0.11
 
   #Inner shadow plugin
 #  flutter_inset_box_shadow: ^1.0.7

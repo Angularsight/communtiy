@@ -92,7 +92,7 @@ class UserProfileScreen extends StatelessWidget {
                                 groupsSpace: 25,
                                 barGroups: [
                                   BarChartGroupData(x: 1,barRods: [
-                                    BarChartRodData(toY: 10,
+                                    BarChartRodData(toY: 6,
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             topLeft: Radius.circular(10)),

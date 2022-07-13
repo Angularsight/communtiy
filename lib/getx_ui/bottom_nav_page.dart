@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/bottom_nav_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/location_controller.dart';
 import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/getx_ui/user_profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class BottomNavigationPage extends StatelessWidget {
 
   final BottomNavController controller = Get.put(BottomNavController());
   final FirebaseController firebaseController = Get.put(FirebaseController());
+  // final LocationController locationController = Get.put(LocationController());
   final AuthController authController = Get.find();
 
 

@@ -1,6 +1,7 @@
 
 
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/location_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/utils/theme.dart';
@@ -423,7 +424,7 @@ class _MainScreenState extends State<MainScreen> {
                         userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
                             fontSize: 12
-                        ),):Text("Address",style: Theme.of(context).textTheme.headline1!.copyWith(
+                        ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
                             fontSize: 12
                         ),),
