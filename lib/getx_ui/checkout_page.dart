@@ -1,5 +1,6 @@
 
 
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
@@ -7,7 +8,7 @@ import 'package:communtiy/utils/icons.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../utils/theme.dart';
@@ -17,6 +18,7 @@ class CheckoutPage extends StatelessWidget {
   final HostModel host;
   CheckoutPage({Key? key,required this.party,required this.host}) : super(key: key);
   final RazorPayController razorPayController = Get.find();
+  final OnBoardingController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -207,14 +209,27 @@ class CheckoutPage extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: (){
-                            razorPayController.updateTicketDetails(party,host);
-                            razorPayController.openCheckout(
-                                party.partyName!,
-                                (party.entryFee! - (party.entryFee! * 0.2)).toInt(),
-                                "7411001185",
-                                "angularsight77@gmail.com",
-                                ["Gpay","paytm","PhonePe"],
-                                "9482397595");
+                            if(userController.userProfile.value.userName==null){
+                              Fluttertoast.showToast(
+                                  msg: "Complete onboarding in profile to proceed",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.SNACKBAR,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0
+                              );
+                            }else{
+                              razorPayController.updateTicketDetails(party,host);
+                              razorPayController.openCheckout(
+                                  party.partyName!,
+                                  (party.entryFee! - (party.entryFee! * 0.2)).toInt(),
+                                  "7411001185",
+                                  "angularsight77@gmail.com",
+                                  ["Gpay","paytm","PhonePe"],
+                                  "9482397595");
+                            }
+
                           },
                           child: Center(
                             child: Text("Proceed to Payment",
@@ -269,7 +284,7 @@ class CheckoutPage extends StatelessWidget {
                             fontSize: 14
                         ),),
                         const SizedBox(width: 5,),
-                        Icon(CustomIcons.info,size: 14,color: Colors.white,)
+                        Icon(Icons.info_outline,size: 14,color: Colors.white,)
                       ],
                     ),
                   ],

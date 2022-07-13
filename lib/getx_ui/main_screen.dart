@@ -441,7 +441,7 @@ class _MainScreenState extends State<MainScreen> {
                                 fit: BoxFit.cover
                             )
                         ),
-                      ):Image.asset("assets/images/default profile image.png",fit: BoxFit.cover,)
+                      ):Image.asset("assets/images/Drinks with Wings 3.png",fit: BoxFit.cover,)
                   ),
                 )
               ],
