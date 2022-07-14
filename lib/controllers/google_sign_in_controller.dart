@@ -2,10 +2,7 @@
 
 import 'dart:async';
 
-import 'package:communtiy/controllers/onboarding_controller.dart';
-import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/getx_ui/user_upload.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';

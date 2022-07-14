@@ -1,7 +1,6 @@
 
 
 import 'package:communtiy/controllers/firebase_controller.dart';
-import 'package:communtiy/controllers/location_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/utils/theme.dart';
@@ -22,7 +21,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final FirebaseController partyController = Get.find();
-  // final bottomNavController = Get.put(BottomNavController());
   final OnBoardingController userController = Get.put(OnBoardingController());
 
   final TextEditingController searchController = TextEditingController();
@@ -40,8 +38,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
     pageController = PageController(initialPage: 0,viewportFraction: 0.8);
     pageController.addListener(() {
       int next = pageController.page!.round();
@@ -97,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
                                       filled: true,
                                       fillColor: Theme.of(context).canvasColor,
                                       hintText: "Look up parties",
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: w*0.02),
                                       hintStyle: Theme.of(context).textTheme.headline1!.copyWith(
                                           color: Colors.black.withOpacity(0.5)
                                       ),
@@ -202,7 +198,7 @@ class _MainScreenState extends State<MainScreen> {
                                               child: Column(
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.only(top: 300.0,left: 8,right: 8),
+                                                    padding: EdgeInsets.only(top: h*0.4,left: w*0.008,right: w*0.008),
                                                     child: Container(
                                                       width: w * 0.4,
                                                       height: h*0.03,
@@ -236,7 +232,7 @@ class _MainScreenState extends State<MainScreen> {
                             }
                           ),
 
-                          const SizedBox(height: 25,),
+                          // const SizedBox(height: 25,),
 
                         ],
                       ),
@@ -410,7 +406,8 @@ class _MainScreenState extends State<MainScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.location_on_rounded,color: Theme.of(context).canvasColor,size: 30,),
-                const SizedBox(width: 5,),
+                SizedBox(width: w*0.01,),
+                // const SizedBox(width: 5,),
                 Expanded(
                   child: InkWell(
                     onTap: (){},
@@ -421,7 +418,8 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.white,
                             fontSize: 18
                         ),),
-                        userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),style: Theme.of(context).textTheme.headline1!.copyWith(
+                        userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),
+                          style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
                             fontSize: 12
                         ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
@@ -434,7 +432,8 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 ClipOval(
                   child: CircleAvatar(
-                      radius: 18,
+                      radius: w*0.05,
+                    // radius: 18,
                       child: profilePic!=null?Container(
                         decoration: BoxDecoration(
                             image: DecorationImage(

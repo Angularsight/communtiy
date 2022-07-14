@@ -23,6 +23,7 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -33,14 +34,15 @@ class CheckoutPage extends StatelessWidget {
         extendBodyBehindAppBar: true,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10,top: 75),
+            padding: EdgeInsets.only(left: w*0.015,right: w*0.015,bottom: w*0.015,top: h*0.1),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: 55,
+                      // radius: 55,
+                      radius: w*0.125,
                       child: ClipOval(
                           child: Container(
                               decoration: BoxDecoration(
@@ -79,15 +81,16 @@ class CheckoutPage extends StatelessWidget {
                   color: Colors.white
                 ),),
 
-                const SizedBox(height: 15,),
+                SizedBox(height: h*0.018,),
                 buildPartyDetailRow(context, "Date", party.date!, "Time", party.time!),
-                const SizedBox(height: 10,),
+                // const SizedBox(height: 10,),
+                SizedBox(height: h*0.013,),
                 buildPartyDetailRow(context, "Venue", party.location!, "Organiser", host.hostName!),
 
                 insertDottedLine(),
-                const SizedBox(height: 10,),
+                SizedBox(height: h*0.013,),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                  padding: EdgeInsets.symmetric(vertical: w*0.015,horizontal: h*0.018),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -111,26 +114,26 @@ class CheckoutPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.only(top: h*0.013),
                     child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${party.entryFee}")),
 
                 buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
                 buildPaymentDetailsRow(context, "Discount", "20%"),
                 Padding(
-                  padding: const EdgeInsets.only(left: 18,top: 5 ),
+                  padding: EdgeInsets.only(left: h*0.02,top: h*0.008 ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
                           width: w*0.3,
-                          height: 25,
+                          height: h*0.028,
                           child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
                               color: const Color(0xffFAFF00),
                               fontSize: 18
                           ),)),
                       SizedBox(
                           width: w*0.2,
-                          height: 25,
+                          height: h*0.028,
                           child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",style: t.textTheme.headline3!.copyWith(
                               color: const Color(0xffFAFF00),
                               fontSize: 18
@@ -138,9 +141,11 @@ class CheckoutPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20,),
+                // const SizedBox(height: 20,),
+                SizedBox(height: h*0.025,),
                 insertDottedLine(),
-                const SizedBox(height: 10,),
+                // const SizedBox(height: 10,),
+                SizedBox(height: h*0.013,),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
                   child: Row(
@@ -167,13 +172,15 @@ class CheckoutPage extends StatelessWidget {
                 ),
 
                 buildPartyInfo(t),
-                const SizedBox(height: 25,),
+                // const SizedBox(height: 25,),
+                SizedBox(height: h*0.03,),
 
                 Stack(
                   children: [
                     Container(
                       width: w*0.7,
-                      height: 40,
+                      height: h*0.05,
+                      // height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: t.canvasColor
@@ -194,7 +201,8 @@ class CheckoutPage extends StatelessWidget {
                       left: 80,
                       child: Container(
                         width: w*0.45,
-                        height: 40,
+                        height: h*0.05,
+                        // height: 40,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: t.canvasColor,

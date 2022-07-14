@@ -25,7 +25,7 @@ class PartyDetails2 extends StatelessWidget {
   final FirebaseController controller = Get.find();
   final RazorPayController razorPayController = Get.put(RazorPayController());
   final OnBoardingController userController = Get.find();
-  PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
+  // PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
 
   List<HostModel> host = [];
   List<UserDetailsModel> guests = [];
@@ -83,7 +83,7 @@ class PartyDetails2 extends StatelessWidget {
                             onTap: (){
                               openFullImageView(index,imagesList);
                             },
-                            child: imageCard(context,thisIndex));
+                            child: imageCard(context,thisIndex,w));
                       },
                       separatorBuilder: (context,index)=>const SizedBox(width: 0,),
                       itemCount: controller.parties[index!].images!.length),
@@ -436,13 +436,13 @@ class PartyDetails2 extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          height:20,
+                                          height:h*0.022,
                                           width: w*0.56,
                                           child: Text("Date : ${controller.parties[index!].date}",style: t.textTheme.headline3!.copyWith(
                                             color: const Color(0xffCBCBCB)
                                           ),)),
                                       SizedBox(
-                                          height:20,
+                                          height:h*0.022,
                                           width: w*0.3,
                                           child: Text("Time : ${controller.parties[index!].time}",style: t.textTheme.headline3!.copyWith(
                                               color: const Color(0xffCBCBCB)
@@ -461,7 +461,7 @@ class PartyDetails2 extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          height:20,
+                                          height:h*0.022,
                                           width: w*0.56,
                                           child: Text("Ratio : Will be updated ",style: t.textTheme.headline3!.copyWith(
                                               color: const Color(0xffCBCBCB)
@@ -489,8 +489,8 @@ class PartyDetails2 extends StatelessWidget {
                                                       baseColor: const Color(0xffd5d7d5),
                                                       highlightColor: const Color(0xfff3f3f3),
                                                       child: Container(
-                                                        width: 50,
-                                                        height: 15,
+                                                        width: h*0.05,
+                                                        height: h*0.022,
                                                         decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             borderRadius: BorderRadius.circular(5)
@@ -519,7 +519,7 @@ class PartyDetails2 extends StatelessWidget {
                                   children: [
                                     buildStrokeText2("Guest List", t, Colors.white, Colors.black,17),
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 15.0),
+                                      padding: EdgeInsets.only(right: w*0.05),
                                       child: InkWell(
                                           splashColor: Colors.white,
                                           onTap: ()async{
@@ -542,6 +542,7 @@ class PartyDetails2 extends StatelessWidget {
                                       try{
                                         guests = snapshot.data!;
                                         if(snapshot.hasData) {
+                                          final radius = w*0.1;
                                           return SizedBox(
                                             width: w,
                                             height: h*0.1,
@@ -549,10 +550,12 @@ class PartyDetails2 extends StatelessWidget {
                                                 scrollDirection: Axis.horizontal,
                                                 itemBuilder: (context,thisIndex){
                                                   return CircleAvatar(
-                                                    radius: 40,
+                                                    // radius: 40,
+                                                    radius: radius,
                                                     backgroundColor: const Color(0xffEEE741),
                                                     child: CircleAvatar(
-                                                      radius: 38,
+                                                      radius: radius-2,
+                                                      // radius: 38,
                                                       child: ClipOval(
                                                         child: Container(
                                                           decoration: BoxDecoration(
@@ -566,7 +569,7 @@ class PartyDetails2 extends StatelessWidget {
                                                     ),
                                                   );
                                                 },
-                                                separatorBuilder: (context,index)=>const SizedBox(width: 12,),
+                                                separatorBuilder: (context,index)=>SizedBox(width: w*0.025),
                                                 itemCount: controller.parties[index!].guests!.length),
                                           );
                                         } else {
@@ -614,10 +617,10 @@ class PartyDetails2 extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(left: 0,top: h*0.44),
                       child: CircleAvatar(
-                        radius: 50,
+                        radius: w*0.13,
                         backgroundColor: const Color(0xff1BC100),
                         child: CircleAvatar(
-                          radius: 48,
+                          radius: w*0.13-2,
                           child: ClipOval(
                             child: Container(
                               decoration: BoxDecoration(
@@ -695,9 +698,9 @@ class PartyDetails2 extends StatelessWidget {
     );
   }
 
-  Widget imageCard(BuildContext context,int thisIndex) {
+  Widget imageCard(BuildContext context,int thisIndex,double w) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0,bottom: 25,left: 8),
+      padding: EdgeInsets.only(right: w*0.015),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: SizedBox(

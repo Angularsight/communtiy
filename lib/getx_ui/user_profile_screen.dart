@@ -71,13 +71,19 @@ class UserProfileScreen extends StatelessWidget {
                               ),),
                             ),
                           ),
-                          const SizedBox(height: 20,),
+                          SizedBox(height: h*0.023,),
                           RotatedBox(
                             quarterTurns: 1,
                             child: SizedBox(
                               width: w*0.45,
                               height: h*0.2,
                               child: BarChart(BarChartData(
+                                barTouchData: BarTouchData(
+                                  touchTooltipData: BarTouchTooltipData(
+                                    fitInsideVertically: true,
+                                    direction: TooltipDirection.top,
+                                  )
+                                ),
                                 borderData: FlBorderData(
                                   show: false,
                                   border: const Border(
@@ -141,7 +147,7 @@ class UserProfileScreen extends StatelessWidget {
 
                     ],
                   ),
-                  const SizedBox(height: 20,),
+                  SizedBox(height: h*0.023,),
 
                   Padding(
                     padding: EdgeInsets.only(left: w*0.02),
@@ -152,7 +158,7 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   Container(
                     width: w*0.7,
-                    height: 35,
+                    height: h*0.043,
                     decoration: BoxDecoration(
                       color: t.scaffoldBackgroundColor,
                       borderRadius: const BorderRadius.only(
@@ -187,7 +193,7 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25,),
+                  SizedBox(height: h*0.031,),
 
                   // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
                   buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
@@ -235,7 +241,7 @@ class UserProfileScreen extends StatelessWidget {
                         mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(w*0.02),
                             child: InkWell(
                               onTap: (){
                                 logoutOfAccount();
@@ -248,7 +254,7 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(w*0.02),
                             child: InkWell(
                               onTap: (){
                                 Navigator.pop(context);

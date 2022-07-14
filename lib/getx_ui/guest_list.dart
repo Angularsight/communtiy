@@ -234,7 +234,7 @@ class GuestList2 extends StatelessWidget {
                   color: const Color(0xffA4A4A4), fontSize: 13),
               );
             },
-            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            separatorBuilder: (context, index) => const SizedBox(width: 7,),
             itemCount: list.length),
       );
     }
@@ -258,7 +258,7 @@ class GuestList2 extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: EdgeInsets.only(top: h*0.035),
               child: CustomPaint(
                 size: Size(w, (w * 0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
                 painter: RPSCustomPainter(context),
@@ -277,7 +277,7 @@ class GuestList2 extends StatelessWidget {
                                 .copyWith(color: Colors.white, fontSize: 18),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                            padding: EdgeInsets.only(right: w*0.02),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: SizedBox(
@@ -301,7 +301,7 @@ class GuestList2 extends StatelessWidget {
                             .copyWith(color: const Color(0xff696969), fontSize: 12),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(w*0.02),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -321,7 +321,7 @@ class GuestList2 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(w*0.025),
               child: CircleAvatar(
                 radius: h*0.07,
                 // backgroundColor: const Color(0xff1BC100),

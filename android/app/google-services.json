@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "205306871553-mft19vvl0p1trevsk8brq39eltmudv3r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.effectives.leagues",
+            "certificate_hash": "a90e7f59d2a224adc2b47946635301cd95332231"
+          }
+        },
+        {
           "client_id": "205306871553-ptpd5q4ranuaad4tsrce8baj5k06d0kn.apps.googleusercontent.com",
           "client_type": 3
         }
