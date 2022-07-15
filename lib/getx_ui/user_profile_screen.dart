@@ -1,5 +1,6 @@
 
 
+import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'new_ui/about_you_screen.dart';
 import 'new_ui/party_history.dart';
 
 
@@ -197,8 +199,8 @@ class UserProfileScreen extends StatelessWidget {
 
                   // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
                   buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
-                  buildProfileListTile(w, context, 'Invite and earn', 'Invite will earn you a free party including cover charges',Icons.repeat),
-                  buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',Icons.vpn_key_rounded),
+                  buildProfileListTile(w, context, 'Invite and earn', 'Coming Soon',Icons.repeat),
+                  buildProfileListTile(w, context, 'About You', 'Your credentials and details',Icons.vpn_key_rounded),
                   buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
 
                 ],
@@ -223,7 +225,7 @@ class UserProfileScreen extends StatelessWidget {
     return Padding(
       padding:EdgeInsets.only(bottom: w*0.05),
       child: InkWell(
-        onTap: (){
+        onTap: ()async{
           if(heading=="Switch Account"){
             // logoutOfAccount();
             showDialog(
@@ -274,6 +276,9 @@ class UserProfileScreen extends StatelessWidget {
                 });
           }else if(heading=="History"){
             Get.to(()=> PartyHistory());
+          }else if(heading=='About You'){
+            var interests = await userController.fetchUserInterests(userController.userProfile.value.userId.toString());
+            Get.to(()=> AboutYouScreen(interests: interests,));
           }
         },
         child: Container(

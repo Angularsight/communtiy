@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -60,6 +61,14 @@ class OnBoardingController extends GetxController{
     var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: currentUser.uid).get();
     var userDocId = userDoc.docs[0].id;
     return userDocId;
+  }
+
+  Future<Interests> fetchUserInterests(String userId)async{
+    var interests = await FirebaseFirestore.instance.collection('Interests').where('userId',isEqualTo: userId).get().then((querySnapshot) {
+      var result = querySnapshot.docs.map((doc) => Interests.fromDocument(doc)).toList();
+      return result[0];
+    });
+    return interests;
   }
 
 
