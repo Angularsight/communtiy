@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:get/get.dart';
 import '../../models/user_details/interests.dart';
 
 class AboutYouScreen extends StatefulWidget {
-  final Interests interests;
+  Interests interests;
   AboutYouScreen({Key? key,required this.interests}) : super(key: key);
 
   @override
@@ -19,8 +20,18 @@ class AboutYouScreen extends StatefulWidget {
 
 class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStateMixin{
   final OnBoardingController userController = Get.find();
-
   late TabController _tabController;
+
+  final TextEditingController interestController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController phoneNoController = TextEditingController();
+
+  final FocusNode interestNode = FocusNode();
+  final FocusNode ageNode = FocusNode();
+  final FocusNode phoneNoNode = FocusNode();
+
+  ///For Chips Choice
+  List<int> selectedOption = [];
 
   @override
   void initState() {
@@ -130,7 +141,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
 
                   SizedBox(
                     width: w,
-                    height: h*0.57,
+                    height: h*0.55,
                     child: TabBarView(
                         controller: _tabController,
                         children: [
@@ -153,7 +164,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
     var t1 = Theme.of(context).textTheme.headline1;
     final address = user.location!.split(',');
     return Padding(
-      padding: EdgeInsets.all(w*0.02),
+      padding: EdgeInsets.symmetric(horizontal:w*0.02,vertical: h*0.02),
       child: Column(
         children: [
           SizedBox(
@@ -167,27 +178,44 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                 itemBuilder: (context, index) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: w*0.4,
-                      // height: h*0.2,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(user.images![index]),
-                              fit: BoxFit.cover
-                          )
+                    child: InkWell(
+                      onLongPress: (){
+                        /// TODO: Replacing image in firestore via cloud storage with image compression
+                      },
+                      child: Container(
+                        width: w*0.4,
+                        // height: h*0.2,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(user.images![index]),
+                                fit: BoxFit.cover
+                            )
+                        ),
                       ),
                     ),
                   );
                 }),
           ),
-          SizedBox(height: h*0.01,),
+          SizedBox(height: h*0.02,),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Info",style:  t1!.copyWith(
+                  color: Colors.white,
+                  fontSize: 25
+              )),
+              SizedBox(width: w*0.02,),
+            ],
+          ),
+          SizedBox(height: h*0.005,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Location",style: t1!.copyWith(
+                  Text("Location",style: t1.copyWith(
                     color: Colors.white,
                     fontSize: 18
                   ),),
@@ -244,24 +272,15 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
 
   Widget interestsTab(w,h){
     var userInterests = widget.interests;
+    List<String> permanentInterests = ['Anime','Drama','Movies','Series','Sports'];
+
+    List<String> missingInterests = [];
     int itemCount = 0;
     List<String> variables= [];
     List<List?> variablesList = [];
-    if(userInterests.movies!.isNotEmpty){
-      itemCount+=1;
-      variables.add('Movies');
-      variablesList.add(userInterests.movies);
-    }
-
-    if(userInterests.series!.isNotEmpty){
-      itemCount+=1;
-      variables.add("Series");
-      variablesList.add(userInterests.series);
-    }
-
     if(userInterests.anime!.isNotEmpty){
       itemCount+=1;
-      variables.add("Anime");
+      variables.add('Anime');
       variablesList.add(userInterests.anime);
     }
 
@@ -271,14 +290,35 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
       variablesList.add(userInterests.drama);
     }
 
+    if(userInterests.movies!.isNotEmpty){
+      itemCount+=1;
+      variables.add("Movies");
+      variablesList.add(userInterests.movies);
+    }
+
+    if(userInterests.series!.isNotEmpty){
+      itemCount+=1;
+      variables.add("Series");
+      variablesList.add(userInterests.series);
+    }
+
     if(userInterests.sport!.isNotEmpty){
       itemCount+=1;
       variables.add("Sports");
       variablesList.add(userInterests.sport);
     }
-    print("Variables length:${variables.length}");
+
+    ///Adding missing interests to missing interests list for new addition of interests
+    for(String element in permanentInterests){
+      if(!variables.contains(element)){
+        missingInterests.add(element);
+      }
+    }
+
+    // print("Variables length:${variables.length}");
+
     return Padding(
-      padding: EdgeInsets.all(w*0.02),
+      padding: EdgeInsets.symmetric(horizontal:w*0.02,vertical: h*0.02),
       child: Column(
         children: [
           SizedBox(
@@ -287,42 +327,36 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
             child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 separatorBuilder: (context,index)=>SizedBox(width: w*0.02,),
-                itemCount: itemCount,
+                itemCount: permanentInterests.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    width: w*0.2,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).canvasColor,
-                      borderRadius: BorderRadius.circular(5)
+                  return InkWell(
+                    onTap: ()async{
+                      if(missingInterests.contains(permanentInterests[index])){
+                        int fieldIndex = missingInterests.indexOf(permanentInterests[index]);
+                        String field = missingInterests[fieldIndex];
+                        await updateInterest(field, ['']);
+                      }
+                    },
+                    child: Container(
+                      width: w*0.2,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: variables.contains(permanentInterests[index])?Theme.of(context).canvasColor:Colors.grey,
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: Center(child: Text(permanentInterests[index],style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.black,
+                        fontSize: 16
+                      ),),),
                     ),
-                    child: Center(child: Text(variables[index],style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.black,
-                      fontSize: 16
-                    ),),),
                   );
                 }),
           ),
-          if (variables.length<5) Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  child: Text("Add Interest",style: Theme.of(context).textTheme.headline1!.copyWith(
-                    color: Colors.blue,
-                    fontSize: 14
-                  ),),
-                  onTap: (){
-                  },
-                )
-              ],
-            ),
-          ) else Row(),
 
           SizedBox(height: h*0.01,),
 
           ListView.builder(
+              padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: variables.length,
@@ -349,7 +383,11 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                                 color: Colors.white,
                                 fontSize: 16
                               ),),
-                              const Icon(Icons.edit,color: Colors.white,size: 16,)
+                              InkWell(
+                                  onTap: (){
+                                    openInterestEditDialogBox(context,variables[mainIndex],variablesList[mainIndex],w,h);
+                                  },
+                                  child: const Icon(Icons.edit,color: Colors.white,size: 20,))
                             ],
                           ),
                           SizedBox(
@@ -378,6 +416,142 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
       ),
     );
   }
+
+  openInterestEditDialogBox(BuildContext context,String variable, List<dynamic>? variablesList,double w,double h) {
+
+    ///Converting dynamic list to string list
+    List<String> newInterestList = [];
+    List<String> editedInterestList = [];
+    String primaryTextForController = '';
+    for (var element in variablesList!) {
+      primaryTextForController+= element.toString()+',';
+      newInterestList.add(element.toString());
+    }
+    editedInterestList = newInterestList;
+    interestController.text = primaryTextForController;
+
+    showDialog(
+        context: context,
+        builder: (context){
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaY: 3,sigmaX: 3),
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)
+              ),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              child: SizedBox(
+                width: w,
+                height: h*0.25,
+                child: Padding(
+                  padding: EdgeInsets.all(w*0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(variable,style: Theme.of(context).textTheme.headline1!.copyWith(
+                        color: Colors.white,
+                        fontSize: 22
+                      ),),
+                      // SizedBox(height: h*0.01,),
+                      Text("Enter values separated by commas",style: Theme.of(context).textTheme.headline1!.copyWith(
+                          color: Colors.grey,
+                          fontSize: 14
+                      ),),
+                      SizedBox(height: h*0.01,),
+                      SizedBox(
+                        width: w * 0.7,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+
+                              fillColor: const Color(0xff5b5b5b),
+                              filled: true,
+                              hintText: 'Interests',
+                              hintStyle: TextStyle(
+                                color: Colors.white.withOpacity(0.4),
+                              ),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      style: BorderStyle.none))),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                          key: const ValueKey('interestEdit'),
+                          controller: interestController,
+                          focusNode: interestNode,
+                          onFieldSubmitted: (String text){
+                            editedInterestList = text.split(',');
+                            // print("Interest List After edit : $editedInterestList ");
+                          },
+                        ),
+                      ),
+                      // SizedBox(height: h*0.02,),
+                      const Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: ()async{
+                              editedInterestList.remove('');
+                              if(editedInterestList==newInterestList){
+                                Navigator.pop(context);
+                              }else{
+                               // print("Not same:$editedInterestList , $newInterestList");
+                               await updateInterest(variable, editedInterestList);
+                               Navigator.pop(context);
+                              }
+                            },
+                            child: Text("Done",style: Theme.of(context).textTheme.headline2!.copyWith(
+                              color: Colors.white,
+                              fontSize: 18
+                            ),),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+    );
+
+  }
+
+
+
+  readFromInterest()async{
+    var newInterest = await FirebaseFirestore.instance.collection("Interests").where('userId',isEqualTo: userController.userProfile.value.userId).get().then((querySnapshot) {
+      var result = querySnapshot.docs.map((doc) => Interests.fromDocument(doc)).toList();
+      return result[0];
+    });
+
+    setState(() {
+      widget.interests = newInterest;
+    });
+
+  }
+
+  updateInterest(String field,List<dynamic> value)async{
+    var doc = await FirebaseFirestore.instance.collection('Interests').where('userId',isEqualTo: userController.userProfile.value.userId).get();
+    var docId = doc.docs[0].id;
+
+    ///Updating doc
+    await FirebaseFirestore.instance.collection("Interests").doc(docId).update({
+      field.toLowerCase():value
+    });
+
+    ///Calling read to refresh the UI
+    await readFromInterest();
+
+  }
+
+
 
 }
 

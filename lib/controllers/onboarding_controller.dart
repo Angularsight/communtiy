@@ -38,9 +38,12 @@ class OnBoardingController extends GetxController{
           .where('userId',isEqualTo: currentUser.uid)
           .snapshots()
           .map((query) {
-        var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
-        // print('connectUserToApp error :$user');
-        return user[user.length-1];
+            var user = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+            if(user.isNotEmpty){
+              _userProfile.value = user[0];
+            }
+            // print('connectUserToApp error :$user');
+            return user[user.length-1];
       });
       return res;
     }else{
@@ -56,6 +59,11 @@ class OnBoardingController extends GetxController{
       return res;
     }
   }
+
+
+  // Stream<Interests> connectToUserInterests(){
+  //
+  // }
 
   Future<String> fetchUserDocId() async{
     var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: currentUser.uid).get();
