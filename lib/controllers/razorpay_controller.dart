@@ -33,7 +33,7 @@ class RazorPayController extends GetxController{
     paymentId = response.paymentId;
     // Get.snackbar("Payment Succesful", "Order Id :${response.orderId} \n Payment Id :${response.paymentId} \n Signature : ${response.signature}");
 
-    Get.to(TicketPage());
+    Get.to(()=>TicketPage());
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
