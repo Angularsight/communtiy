@@ -1,12 +1,18 @@
 
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/models/coupons/coupon_images.dart';
 import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class OnBoardingController extends GetxController{
   var animeList = List<String>.empty(growable: true).obs;
@@ -94,6 +100,50 @@ class OnBoardingController extends GetxController{
       return result;
     });
     return v;
+  }
+
+  Future<File> pickImageFromGallery() async {
+    final imagePicker = ImagePicker();
+    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedImageFile = File(selectedImage!.path);
+
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+        pickedImageFile.absolute.path,
+        quality: 25
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
+    return compressedFile;
+  }
+
+  Future<String> uploadToStorage(String username,int i,File replacementImage)async{
+    String url ='';
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("users")
+        .child(username)
+        .child(username + i.toString() + '.jpg');
+    await ref.putFile(replacementImage).whenComplete(() async {
+      await ref.getDownloadURL().then((value) {
+        url = value;
+      });
+    });
+    return url;
+  }
+
+  Future<void> updateDataToFirebase(String userName,List newImages)async{
+    var doc = await FirebaseFirestore.instance.collection("UserDetails").where('userName',isEqualTo: userName).get();
+    String docId = doc.docs[0].id;
+
+    FirebaseFirestore.instance.collection("UserDetails").doc(docId).update({
+      'images':newImages
+    });
   }
 
 

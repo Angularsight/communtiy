@@ -108,6 +108,7 @@ dependencies:
   lottie: ^1.3.0
   connectivity_plus: ^2.3.5
   wave: ^0.2.2
+  focused_menu: ^1.0.5
 
 
 

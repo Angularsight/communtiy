@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:get/get.dart';
 
 import '../../models/user_details/interests.dart';
@@ -30,8 +32,12 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
   final FocusNode ageNode = FocusNode();
   final FocusNode phoneNoNode = FocusNode();
 
+
+
   ///For Chips Choice
   List<int> selectedOption = [];
+  bool imageLoading = false;
+  int loadingIndex = 0;
 
   @override
   void initState() {
@@ -176,21 +182,40 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                 separatorBuilder: (context,index)=>SizedBox(width: w*0.02,),
                 itemCount: user.images!.length,
                 itemBuilder: (context, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: InkWell(
-                      onLongPress: (){
-                        /// TODO: Replacing image in firestore via cloud storage with image compression
-                      },
-                      child: Container(
+                  return FocusedMenuHolder(
+
+                    blurBackgroundColor: Colors.blueGrey[900],
+                    onPressed: (){},
+                    menuOffset: 10,
+                    menuWidth: w*0.4-5,
+                    menuItems: [
+                      FocusedMenuItem(
+                          title: const Text("Replace image"),
+                          onPressed: ()async{
+                            setState(() {
+                              imageLoading = true;
+                              loadingIndex = index;
+                            });
+                            var newImage = await userController.pickImageFromGallery();
+                            var newImageUrl = await userController.uploadToStorage(user.userName.toString(), index+1, newImage);
+                            var newImageList = user.images;
+                            newImageList![index] = newImageUrl;
+                            await userController.updateDataToFirebase(user.userName.toString(), newImageList);
+                            setState(() {
+                              user.images![index] = newImageUrl;
+                              imageLoading = false;
+                            });
+                          },
+                        trailingIcon: const Icon(Icons.image,size: 20,),
+                        backgroundColor: Theme.of(context).canvasColor,
+                      )
+                    ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
                         width: w*0.4,
-                        // height: h*0.2,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(user.images![index]),
-                                fit: BoxFit.cover
-                            )
-                        ),
+                        child: (imageLoading==true&&loadingIndex==index)?Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),)
+                            :Image.network(user.images![index],fit: BoxFit.cover,),
                       ),
                     ),
                   );
@@ -548,8 +573,9 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
 
     ///Calling read to refresh the UI
     await readFromInterest();
-
   }
+
+
 
 
 

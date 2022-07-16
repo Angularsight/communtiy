@@ -84,7 +84,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     ///Image compression part
     var compressedFileUintList = await FlutterImageCompress.compressWithFile(
         pickedImageFile.absolute.path,
-        quality: 50
+        quality: 25
     );
     final tempDirectory = await getTemporaryDirectory();
     final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
@@ -107,8 +107,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
   List<File> userProfilePic = [];
   void _pickDJImage() async {
     final imagePicker = ImagePicker();
-    final selectedImage =
-    await imagePicker.pickImage(source: ImageSource.gallery);
+    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
 
 
@@ -116,7 +115,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     ///Image compression part
     var compressedFileUintList = await FlutterImageCompress.compressWithFile(
       pickedImageFile.absolute.path,
-      quality: 50
+      quality: 25
     );
     final tempDirectory = await getTemporaryDirectory();
     final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
@@ -139,7 +138,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       final ref = FirebaseStorage.instance
           .ref()
           .child("users")
-          .child(username)
+          .child(username.trim())
           .child(username + i.toString() + '.jpg');
       await ref.putFile(imageList2[j]).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
@@ -275,7 +274,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
           height: h*0.06,
           child: Row(
             children: [
-              InkWell(
+              selectedStep>0?InkWell(
                 onTap: (){
                   Get.offAll(()=>BottomNavigationPage());
                 },
@@ -290,7 +289,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                     fontSize: 16
                   ),),),
                 ),
-              ),
+              ):Row(),
               InkWell(
                 onTap: (){
                   setState(() {
@@ -372,7 +371,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                   });
                 },
                 child: Container(
-                  width: w*0.5,
+                  width: selectedStep==0?w:w*0.5,
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor
                   ),
