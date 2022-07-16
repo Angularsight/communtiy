@@ -1,6 +1,8 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/models/coupons/coupon_images.dart';
+import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:communtiy/models/user_details/interests.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +23,9 @@ class OnBoardingController extends GetxController{
 
   var phoneNumber = 0.obs;
   var holdRerouteBool = true;
+
+  RxInt carouselIndicatorIndex = 0.obs;
+
 
   final _userProfile = UserDetailsModel().obs;
   Rx<UserDetailsModel> get userProfile => _userProfile;
@@ -61,10 +66,6 @@ class OnBoardingController extends GetxController{
   }
 
 
-  // Stream<Interests> connectToUserInterests(){
-  //
-  // }
-
   Future<String> fetchUserDocId() async{
     var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: currentUser.uid).get();
     var userDocId = userDoc.docs[0].id;
@@ -77,6 +78,22 @@ class OnBoardingController extends GetxController{
       return result[0];
     });
     return interests;
+  }
+
+  Future<CouponImages>fetchCouponImages()async{
+    var v = await FirebaseFirestore.instance.collection('Coupons').doc('Images').get().then((query) {
+      var result = CouponImages.fromDocument(query);
+      return result;
+    });
+    return v;
+  }
+
+  Future<List<DiscountAndImage>>fetchDiscountAndImages()async{
+    var v = await FirebaseFirestore.instance.collection('CouponCodes').orderBy('discount',descending: false).get().then((query) {
+      var result = query.docs.map((e) => DiscountAndImage.fromDocument(e)).toList();
+      return result;
+    });
+    return v;
   }
 
 

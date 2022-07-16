@@ -39,7 +39,7 @@ class PartyHistory extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: const Icon(Icons.arrow_back,color: Colors.white,)),
-                    const SizedBox(width: 20,),
+                    SizedBox(width: w*0.03,),
                     Text("History",style: Theme.of(context).textTheme.headline1!.copyWith(
                       color: Colors.white,
                       fontSize: 25,

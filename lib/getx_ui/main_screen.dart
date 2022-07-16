@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../controllers/onboarding_controller.dart';
+import 'new_ui/coupons_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -397,8 +398,8 @@ class _MainScreenState extends State<MainScreen> {
     return GetX<OnBoardingController>(
       // init: Get.put(OnBoardingController()),
       builder: (userController) {
-        userController.userProfile.bindStream(userController.connectUserToApp());
-        final profilePic = userController.userProfile.value.userProfilePic;
+        // userController.userProfile.bindStream(userController.connectUserToApp());
+        // final profilePic = userController.userProfile.value.userProfilePic;
         return SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: w * 0.06,vertical: h * 0.01),
@@ -430,20 +431,44 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-                ClipOval(
-                  child: CircleAvatar(
+
+                Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
+                SizedBox(width: w*0.03,),
+                InkWell(
+                  onTap: ()async{
+                    var couponImages = await userController.fetchCouponImages();
+                    var discountAndImages = await userController.fetchDiscountAndImages();
+                    Get.to(()=>CouponsScreen(couponImages: couponImages, discountAndImage: discountAndImages,));
+                  },
+                  child: ClipOval(
+                    child: CircleAvatar(
                       radius: w*0.05,
-                    // radius: 18,
-                      child: profilePic!=null?Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(profilePic.toString()),
-                                fit: BoxFit.cover
-                            )
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/Drinks with wings 4.png'),
+                            fit: BoxFit.cover
+                          )
                         ),
-                      ):Image.asset("assets/images/Drinks with Wings 3.png",fit: BoxFit.cover,)
+                      )
+                    ),
                   ),
                 )
+
+                // ClipOval(
+                //   child: CircleAvatar(
+                //       radius: w*0.05,
+                //     // radius: 18,
+                //       child: profilePic!=null?Container(
+                //         decoration: BoxDecoration(
+                //             image: DecorationImage(
+                //                 image: NetworkImage(profilePic.toString()),
+                //                 fit: BoxFit.cover
+                //             )
+                //         ),
+                //       ):Image.asset("assets/images/Drinks with Wings 3.png",fit: BoxFit.cover,)
+                //   ),
+                // )
               ],
             ),
           ),
