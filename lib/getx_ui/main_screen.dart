@@ -391,9 +391,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget buildHomeLocationBar2(BuildContext context, double w,double h) {
-    // userController.userProfile.bindStream(userController.connectUserToApp());
-    // final profilePic = userController.userProfile.value.userProfilePic;
-
 
     return GetX<OnBoardingController>(
       // init: Get.put(OnBoardingController()),
@@ -442,7 +439,7 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   child: ClipOval(
                     child: CircleAvatar(
-                      radius: w*0.05,
+                      radius: w*0.045,
                       child: Container(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -454,21 +451,6 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 )
-
-                // ClipOval(
-                //   child: CircleAvatar(
-                //       radius: w*0.05,
-                //     // radius: 18,
-                //       child: profilePic!=null?Container(
-                //         decoration: BoxDecoration(
-                //             image: DecorationImage(
-                //                 image: NetworkImage(profilePic.toString()),
-                //                 fit: BoxFit.cover
-                //             )
-                //         ),
-                //       ):Image.asset("assets/images/Drinks with Wings 3.png",fit: BoxFit.cover,)
-                //   ),
-                // )
               ],
             ),
           ),
