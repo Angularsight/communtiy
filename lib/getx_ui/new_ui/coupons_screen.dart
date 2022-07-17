@@ -5,6 +5,8 @@ import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/coupons/coupon_images.dart';
 import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -125,7 +127,7 @@ class CouponsScreen extends StatelessWidget {
                               width: w,
                               height: h*0.15,
                               decoration: BoxDecoration(
-                                color: const Color(0xff1D4956),
+                                color:(index+1)==user.userProfile.value.streaks? const Color(0xff1D4956):const Color(0xff2c2c2c),
                                 borderRadius: BorderRadius.circular(10)
                               ),
                               child: Stack(
@@ -139,7 +141,7 @@ class CouponsScreen extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children:[
                                             Text(discountAndImage[index].name.toString(),style:t.textTheme.headline1!.copyWith(
-                                              color: Colors.white,
+                                              color: (index+1)==user.userProfile.value.streaks?Colors.white:Colors.grey,
                                               fontSize: 20
                                             ),),
                                             Expanded(
@@ -148,29 +150,49 @@ class CouponsScreen extends StatelessWidget {
                                                 fontSize: 14
                                               ),),
                                             ),
-                                            InkWell(
-                                              onTap: (){
-                                                print("pressed on claim code $index");
-                                              },
-                                              child: Container(
-                                                width: w*0.25,
-                                                height: h*0.03,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(5),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black.withOpacity(0.75),
-                                                      offset: const Offset(0,2),
-                                                      blurRadius: 2,
-                                                      spreadRadius: 0
-                                                    ),
-                                                  ]
+                                            Container(
+                                              width: w*0.5,
+                                              height: h*0.035,
+                                              decoration: BoxDecoration(
+                                                color: (index+1)==user.userProfile.value.streaks?Colors.white:Colors.grey,
+                                                borderRadius: BorderRadius.circular(5),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(0.75),
+                                                    offset: const Offset(0,2),
+                                                    blurRadius: 2,
+                                                    spreadRadius: 0
+                                                  ),
+                                                ]
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: w*0.01),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(discountAndImage[index].code.toString(),style: t.textTheme.headline1!.copyWith(
+                                                      color:(index+1)==user.userProfile.value.streaks? const Color(0xff1D4956):Colors.grey.shade900.withOpacity(0.5),
+                                                      fontSize: 14
+                                                    ),),
+                                                    InkWell(
+                                                        onTap: (){
+                                                          if((index+1)==user.userProfile.value.streaks){
+                                                            Clipboard.setData(ClipboardData(text: discountAndImage[index].code.toString())).then((_){
+                                                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                                content: Text("Copied to Clipboard"),
+
+                                                              ));
+                                                            });
+                                                          }else{
+                                                            Fluttertoast.showToast(msg: "Increase streaks to get the code");
+                                                          }
+
+                                                        },
+                                                        child: Icon(Icons.copy,
+                                                          color:(index+1)==user.userProfile.value.streaks? Colors.blue:Colors.grey.shade900.withOpacity(0.5),
+                                                          size: 18,))
+                                                  ],
                                                 ),
-                                                child: Center(child:Text("Claim Code",style: t.textTheme.headline1!.copyWith(
-                                                  color: const Color(0xff1D4956),
-                                                  fontSize: 14
-                                                ),)),
                                               ),
                                             )
                                           ],
@@ -182,9 +204,10 @@ class CouponsScreen extends StatelessWidget {
                                           bottomRight: Radius.circular(10),
                                         ),
                                         child: SizedBox(
-                                          width: w*0.32,
+                                          width: w*0.3,
                                           height: h*0.15,
-                                          child: Image.network(discountAndImage[index].image.toString(),fit: BoxFit.cover,),
+                                          child: (index+1)==user.userProfile.value.streaks?Image.network(discountAndImage[index].image.toString(),fit: BoxFit.cover,)
+                                              :Image.network(discountAndImage[index].image.toString(),fit: BoxFit.cover,color:Colors.grey.withOpacity(0.5),)
                                         ),
                                       )
                                     ],
@@ -195,15 +218,15 @@ class CouponsScreen extends StatelessWidget {
                                     child: Container(
                                       width: w*0.03,
                                       height: h*0.03,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xff1D4956),
-                                        borderRadius: BorderRadius.only(
+                                      decoration: BoxDecoration(
+                                        color:(index+1)==user.userProfile.value.streaks? const Color(0xff1D4956):Colors.grey.withOpacity(0.5),
+                                        borderRadius: const BorderRadius.only(
                                           bottomRight: Radius.circular(10),
                                           bottomLeft: Radius.circular(10)
                                         )
                                       ),
-                                      child: Center(child: Text((index+1).toString(),style: const TextStyle(
-                                        color: Colors.white,
+                                      child: Center(child: Text((index+1).toString(),style: TextStyle(
+                                        color:(index+1)==user.userProfile.value.streaks? Colors.white:Colors.grey.shade900.withOpacity(0.5),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold
                                       ),),),

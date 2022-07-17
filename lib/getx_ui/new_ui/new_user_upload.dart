@@ -176,7 +176,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
-        'streaks':0
+        'streaks':1
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -189,7 +189,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
-        'streaks':0
+        'streaks':1
       });
     }
 

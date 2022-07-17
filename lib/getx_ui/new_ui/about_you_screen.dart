@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:get/get.dart';
@@ -117,7 +118,16 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                         fontSize: 15
                       ),),
                       const SizedBox(width: 5,),
-                      const Icon(Icons.copy,color: Colors.blue,size: 20,)
+                      InkWell(
+                          onTap: (){
+                            Clipboard.setData(ClipboardData(text: user.userId.toString())).then((_){
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                content: Text("Copied to Clipboard"),
+                                duration: Duration(seconds: 2),
+                              ));
+                            });
+                          },
+                          child: const Icon(Icons.copy,color: Colors.blue,size: 20,))
                     ],
                   ),
                   SizedBox(height: h*0.025,),

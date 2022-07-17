@@ -300,7 +300,7 @@ class PartyDetails2 extends StatelessWidget {
                                                     itemCount: controller.parties[index!].guests!.length),
                                               );
                                             } else {
-                                              return const CircularProgressIndicator();
+                                              return CircularProgressIndicator(color: Theme.of(context).scaffoldBackgroundColor,);
                                             }
                                           }catch(e){
                                             return Shimmer.fromColors(
