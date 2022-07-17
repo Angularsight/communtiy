@@ -2,6 +2,7 @@
 
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
+import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
 import 'package:communtiy/utils/icons.dart';
@@ -13,12 +14,17 @@ import 'package:get/get.dart';
 
 import '../utils/theme.dart';
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
   final PartyDetails party;
   final HostModel host;
-  CheckoutPage({Key? key,required this.party,required this.host}) : super(key: key);
+  final List<DiscountAndImage> discountAndImage;
+  CheckoutPage({Key? key,required this.party,required this.host,required this.discountAndImage}) : super(key: key);
 
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
 
+class _CheckoutPageState extends State<CheckoutPage> {
   final RazorPayController razorPayController = Get.find();
   final OnBoardingController userController = Get.find();
 
@@ -36,6 +42,12 @@ class CheckoutPage extends StatelessWidget {
   final FocusNode friend4Node = FocusNode();
   final FocusNode friend5Node = FocusNode();
 
+  int discountPartyFee = 0;
+  int discountPercent = -1;
+  int discountAmount = 0;
+  int friendDiscount = 0;
+  int multiplier = 1;
+
 
 
   @override
@@ -43,6 +55,7 @@ class CheckoutPage extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
         gradient: Themes.logoGradient
@@ -65,253 +78,170 @@ class CheckoutPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(left: w*0.015,right: w*0.015,bottom: w*0.015,top: h*0.1),
               child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        // radius: 55,
-                        radius: w*0.125,
-                        child: ClipOval(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(party.images![0]),
-                                    fit: BoxFit.cover
-                                  )
-                                ),
-                            ),
-                        )
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    child: CustomPaint(
-                      size: Size(100,(50*
-                          0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                      painter: RPSCustomPainter(),
-                    ),
-                  ),
-
-                  Text(party.partyName!,style: t.textTheme.caption!.copyWith(
-                    shadows: [
-                      const Shadow(
-                        color: Colors.black,
-                        offset: Offset(0,4),
-                        blurRadius: 2
-                      ),
-                      const Shadow(
-                          color: Colors.black,
-                          offset: Offset(0,4),
-                          blurRadius: 1
-                      )
-                    ],
-                    fontSize: 32,
-                    color: Colors.white
-                  ),),
-
-                  SizedBox(height: h*0.018,),
-                  buildPartyDetailRow(context, "Date", party.date!, "Time", party.time!),
-                  SizedBox(height: h*0.013,),
-                  buildPartyDetailRow(context, "Venue", party.location!, "Organiser", host.hostName!),
-
-                  // insertDottedLine(),
-                  // SizedBox(height: h*0.013,),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: w*0.03),
-                    child: Container(
-                      width: w,
-                      padding: EdgeInsets.symmetric(vertical: h*0.02,horizontal: w*0.02),
-                      decoration: BoxDecoration(
-                        color: const Color(0xff0F343F),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-                          buildCouponCodeTile(context,w,h,party),
-                          SizedBox(height: h*0.02,),
-                          buildInviteAndDiscountTile(context,w,h,party),
-
-                          SizedBox(height: h*0.02,),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: w*0.015,horizontal: h*0.018),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("Payment Details",style: t.textTheme.headline3!.copyWith(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                  shadows: [
-                                    const Shadow(
-                                        color: Colors.black,
-                                        offset: Offset(0,4),
-                                        blurRadius: 2
+                          CircleAvatar(
+                            // radius: 55,
+                            radius: w*0.125,
+                            child: ClipOval(
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(widget.party.images![0]),
+                                        fit: BoxFit.cover
+                                      )
                                     ),
-                                    const Shadow(
-                                        color: Colors.black,
-                                        offset: Offset(0,4),
-                                        blurRadius: 1
-                                    )
-                                  ]
-                                ),),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.only(top: h*0.013),
-                              child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${party.entryFee}")),
-
-                          buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
-                          buildPaymentDetailsRow(context, "Discount", "20%"),
-                          Padding(
-                            padding: EdgeInsets.only(left: h*0.02,top: h*0.008 ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                    width: w*0.3,
-                                    height: h*0.028,
-                                    child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
-                                        color: const Color(0xffFAFF00),
-                                        fontSize: 18
-                                    ),)),
-                                SizedBox(
-                                    width: w*0.2,
-                                    height: h*0.028,
-                                    child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",style: t.textTheme.headline3!.copyWith(
-                                        color: const Color(0xffFAFF00),
-                                        fontSize: 18
-                                    ),))
-                              ],
-                            ),
-                          ),
+                                ),
+                            )
+                          )
                         ],
                       ),
-                    ),
-                  ),
-                  //
-                  // SizedBox(height: h*0.025,),
-                  //
-                  SizedBox(height: h*0.013,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text("Party Info",style: t.textTheme.headline3!.copyWith(
-                            fontSize: 18,
-                            color: Colors.white,
-                          shadows: [
-                            const Shadow(
-                                color: Colors.black,
-                                offset: Offset(0,4),
-                                blurRadius: 2
-                            ),
-                            const Shadow(
-                                color: Colors.black,
-                                offset: Offset(0,4),
-                                blurRadius: 1
-                            )
-                          ]
-                        ),),
-                      ],
-                    ),
-                  ),
+                      SizedBox(
+                        child: CustomPaint(
+                          size: Size(100,(50*
+                              0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                          painter: RPSCustomPainter(),
+                        ),
+                      ),
 
-                  buildPartyInfo(t),
-                  // const SizedBox(height: 25,),
-                  SizedBox(height: h*0.03,),
+                      Text(widget.party.partyName!,style: t.textTheme.caption!.copyWith(
+                        shadows: [
+                          const Shadow(
+                            color: Colors.black,
+                            offset: Offset(0,4),
+                            blurRadius: 2
+                          ),
+                          const Shadow(
+                              color: Colors.black,
+                              offset: Offset(0,4),
+                              blurRadius: 1
+                          )
+                        ],
+                        fontSize: 32,
+                        color: Colors.white
+                      ),),
 
-                  // Stack(
-                  //   children: [
-                  //     Container(
-                  //       width: w*0.7,
-                  //       height: h*0.05,
-                  //       // height: 40,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //         color: t.canvasColor
-                  //       ),
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",
-                  //         style: t.textTheme.headline3!.copyWith(
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.bold,
-                  //           color: Colors.black
-                  //         ),
-                  //         ),
-                  //       ),
-                  //
-                  //     ),
-                  //     Positioned(
-                  //       left: 80,
-                  //       child: Container(
-                  //         width: w*0.45,
-                  //         height: h*0.05,
-                  //         // height: 40,
-                  //         decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(10),
-                  //             color: t.canvasColor,
-                  //           boxShadow: [
-                  //             BoxShadow(
-                  //               color: Colors.black.withOpacity(0.25),
-                  //               offset: const Offset(-4,4),
-                  //               blurRadius: 4,
-                  //               spreadRadius: 0
-                  //             )
-                  //           ]
-                  //         ),
-                  //         child: InkWell(
-                  //           onTap: (){
-                  //             if(userController.userProfile.value.userName==null){
-                  //               Fluttertoast.showToast(
-                  //                   msg: "Complete onboarding in profile to proceed",
-                  //                   toastLength: Toast.LENGTH_SHORT,
-                  //                   gravity: ToastGravity.SNACKBAR,
-                  //                   timeInSecForIosWeb: 1,
-                  //                   backgroundColor: Colors.red,
-                  //                   textColor: Colors.white,
-                  //                   fontSize: 16.0
-                  //               );
-                  //             }else{
-                  //               razorPayController.updateTicketDetails(party,host);
-                  //               razorPayController.openCheckout(
-                  //                   party.partyName!,
-                  //                   (party.entryFee! - (party.entryFee! * 0.2)).toInt(),
-                  //                   "7411001185",
-                  //                   "angularsight77@gmail.com",
-                  //                   ["Gpay","paytm","PhonePe"],
-                  //                   "9482397595");
-                  //             }
-                  //
-                  //           },
-                  //           child: Center(
-                  //             child: Text("Proceed to Payment",
-                  //               style: t.textTheme.headline3!.copyWith(
-                  //                   fontSize: 16,
-                  //                   color: Colors.black,
-                  //                 fontWeight: FontWeight.normal
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                      SizedBox(height: h*0.018,),
+                      buildPartyDetailRow(context, "Date", widget.party.date!, "Time", widget.party.time!),
+                      SizedBox(height: h*0.013,),
+                      buildPartyDetailRow(context, "Venue", widget.party.location!, "Organiser", widget.host.hostName!),
 
-                  // SizedBox(height: h*0.05,)
-                ],
-              ),
+                      // insertDottedLine(),
+                      // SizedBox(height: h*0.013,),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: w*0.03),
+                        child: Container(
+                          width: w,
+                          padding: EdgeInsets.symmetric(vertical: h*0.02,horizontal: w*0.02),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff0F343F),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+
+                              buildCouponCodeTile(context,w,h,widget.party),
+                              SizedBox(height: h*0.02,),
+                              buildInviteAndDiscountTile(context,w,h,widget.party),
+
+                              SizedBox(height: h*0.02,),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: w*0.015,horizontal: h*0.018),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text("Payment Details",style: t.textTheme.headline3!.copyWith(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      shadows: [
+                                        const Shadow(
+                                            color: Colors.black,
+                                            offset: Offset(0,4),
+                                            blurRadius: 2
+                                        ),
+                                        const Shadow(
+                                            color: Colors.black,
+                                            offset: Offset(0,4),
+                                            blurRadius: 1
+                                        )
+                                      ]
+                                    ),),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(top: h*0.013),
+                                  child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${widget.party.entryFee}")),
+
+                              buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
+                              if (discountPercent!=-1 && friendDiscount !=0) buildPaymentDetailsRow(context, "Discount", "Rs.${friendDiscount + discountAmount}")
+                              else if(friendDiscount!=0)buildPaymentDetailsRow(context, "Discount", "Rs.$friendDiscount")
+                              else if(discountPercent!=-1) buildPaymentDetailsRow(context, "Discount", "$discountPercent%")
+                              else Row(),
+
+                              Padding(
+                                padding: EdgeInsets.only(left: h*0.02,top: h*0.008 ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                        width: w*0.3,
+                                        height: h*0.028,
+                                        child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
+                                            color: const Color(0xffFAFF00),
+                                            fontSize: 18
+                                        ),)),
+                                    buildGrandTotalRow(w, h, t,)
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: h*0.013,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("Party Info",style: t.textTheme.headline3!.copyWith(
+                                fontSize: 18,
+                                color: Colors.white,
+                              shadows: [
+                                const Shadow(
+                                    color: Colors.black,
+                                    offset: Offset(0,4),
+                                    blurRadius: 2
+                                ),
+                                const Shadow(
+                                    color: Colors.black,
+                                    offset: Offset(0,4),
+                                    blurRadius: 1
+                                )
+                              ]
+                            ),),
+                          ],
+                        ),
+                      ),
+
+                      buildPartyInfo(t),
+                      // const SizedBox(height: 25,),
+                      SizedBox(height: h*0.03,),
+
+                    ],
+                  )
             ),
           ),
         ),
       ),
     );
   }
+
+
 
   Padding buildPaymentButton(double w, double h, ThemeData t) {
     return Padding(
@@ -320,7 +250,7 @@ class CheckoutPage extends StatelessWidget {
             alignment: AlignmentDirectional.center,
             children: [
               Container(
-                width: w*0.65,
+                width: w*0.8,
                 height: h*0.05,
                 // height: 40,
                 decoration: BoxDecoration(
@@ -329,18 +259,18 @@ class CheckoutPage extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Rs.${(party.entryFee! - (party.entryFee! * 0.2)).toInt()}",
+                  child: Text("Rs.${getCheckAmount()}",
                     style: t.textTheme.headline3!.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black
                     ),
-                  ),
+                  )
                 ),
 
               ),
               Positioned(
-                left: 80,
+                left: w*0.2,
                 child: Container(
                   width: w*0.45,
                   height: h*0.05,
@@ -359,6 +289,7 @@ class CheckoutPage extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: (){
+                      int checkoutAmount = getCheckAmount();
                       if(userController.userProfile.value.userName==null){
                         Fluttertoast.showToast(
                             msg: "Complete onboarding in profile to proceed",
@@ -370,10 +301,10 @@ class CheckoutPage extends StatelessWidget {
                             fontSize: 16.0
                         );
                       }else{
-                        razorPayController.updateTicketDetails(party,host);
+                        razorPayController.updateTicketDetails(widget.party,widget.host);
                         razorPayController.openCheckout(
-                            party.partyName!,
-                            (party.entryFee! - (party.entryFee! * 0.2)).toInt(),
+                            widget.party.partyName!,
+                            checkoutAmount,
                             "7411001185",
                             "angularsight77@gmail.com",
                             ["Gpay","paytm","PhonePe"],
@@ -446,20 +377,6 @@ class CheckoutPage extends StatelessWidget {
                   ],
                 ),
               ],
-            );
-  }
-
-  Padding insertDottedLine() {
-    return const Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: DottedLine(
-                dashRadius: 5,
-                dashGapRadius: 5,
-                dashLength: 5,
-                lineThickness: 5,
-                dashGapLength: 5,
-                dashColor: Color(0xffC4C4C4),
-              ),
             );
   }
 
@@ -542,53 +459,95 @@ class CheckoutPage extends StatelessWidget {
   }
 
   Widget buildCouponCodeTile(BuildContext context,double w,double h,PartyDetails party) {
+
+    String appliedCoupon ='';
+    int couponStreakNo = 0; /// No coupon has streak=0, hence it can set as default value
+    int couponIndex = -1;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: ExpansionTile(
-        iconColor: Colors.white,
-        backgroundColor: const Color(0xff062732),
-        collapsedIconColor: Colors.white,
-        collapsedBackgroundColor: const Color(0xff062732),
-        title: Text("Apply Coupon Code",style: Theme.of(context).textTheme.headline1!.copyWith(
-            color: Colors.white,
-            fontSize: 18
-        ),),
-        children: [
-          SizedBox(height: h*0.01,),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-                  suffixText: "Apply",
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Paste coupon code here',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
+            iconColor: Colors.white,
+            backgroundColor: const Color(0xff062732),
+            collapsedIconColor: Colors.white,
+            collapsedBackgroundColor: const Color(0xff062732),
+            title: Text("Apply Coupon Code",style: Theme.of(context).textTheme.headline1!.copyWith(
                 color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
+                fontSize: 18
+            ),),
+            children: [
+              SizedBox(height: h*0.01,),
+              SizedBox(
+                width: w*0.8,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      suffix: InkWell(
+                          onTap: (){
+                            print("Entered suffix :${couponController.text}");
+                            /// Checking if applied coupon exists by looping through all coupon docs
+                            /// Saving name and streakCount of applied coupon ie if it exists
+                            for (var element in widget.discountAndImage) {
+                              couponIndex+=1;
+                              if(couponController.text == element.code){
+                                print("Entered coupon exists");
+                                appliedCoupon = couponController.text;
+                                couponStreakNo = element.streakCount!;
+                                discountPercent = element.discount!;
+                                print("appliedCoupon:$appliedCoupon \n couponStreak:$couponStreakNo \n couponIndex:$couponIndex");
+                                break;
+                              }
+                            }
+                            print("After appliedCoupon:$appliedCoupon \n couponStreak:$couponStreakNo \n couponIndex:$couponIndex");
+
+                            /// If couponStreakNo is same as user streak
+                            if((userController.userProfile.value.streaks==couponStreakNo)&&(appliedCoupon!='')){
+                              print("Entered streak condition");
+                              /// If the user hasn't already used the coupon
+                              if(!widget.discountAndImage[couponIndex].couponUsedBy!.contains(userController.userProfile.value.userId)){
+                                print("Satisfied all conditions for application of coupon");
+
+                                /// Discount = partyFee - discountPercentage
+                                setState(() {
+                                  discountPercent = discountPercent;
+                                  discountAmount = (party.entryFee! *(discountPercent/100)).toInt();
+                                  discountPartyFee = (party.entryFee! - (party.entryFee! *(discountPercent/100))).toInt();
+                                  print("DiscountedPartyFee:$discountPartyFee");
+                                });
+                              }
+                            }
+
+                          },
+                          child: const Text("Apply",style: TextStyle(
+                            color: Colors.white
+                          ),)),
+                      fillColor: const Color(0xff0F343F),
+                      filled: true,
+                      hintText: 'Paste coupon code here',
+                      hintStyle: TextStyle(
+                        color: Colors.white.withOpacity(0.4),
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              style: BorderStyle.none))),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.name,
+                  key: const ValueKey('couponCode'),
+                  controller: couponController,
+                  focusNode: couponNode,
+                  onFieldSubmitted: (String text){
+                    couponController.text = text;
+                  },
+                ),
               ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('couponCode'),
-              controller: couponController,
-              focusNode: couponNode,
-              onFieldSubmitted: (String text){
-                couponController.text = text;
-              },
-            ),
-          ),
-          SizedBox(height: h*0.01,),
-        ],
-      ),
+              SizedBox(height: h*0.01,),
+            ],
+          )
     );
   }
 
@@ -625,177 +584,124 @@ class CheckoutPage extends StatelessWidget {
               )),
             ],
           ),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Friend 1*',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('friend1'),
-              controller: friend1Controller,
-              focusNode: friend1Node,
-              onFieldSubmitted: (String text){
-                friend1Controller.text = text;
-              },
-            ),
-          ),
+          buildFriendTextField(w,'Friend 1*',friend1Controller,friend1Node),
+          buildFriendTextField(w, 'Friend 2*', friend2Controller, friend2Node),
+          buildFriendTextField(w,'Friend 3*',friend3Controller,friend3Node),
+          buildFriendTextField(w, 'Friend 4', friend4Controller, friend4Node),
+          buildFriendTextField(w,'Friend 5',friend5Controller,friend5Node),
           SizedBox(height: h*0.01,),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Friend 2*',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('friend2'),
-              controller: friend2Controller,
-              focusNode: friend2Node,
-              onFieldSubmitted: (String text){
-                friend2Controller.text = text;
-              },
-            ),
-          ),
-          SizedBox(height: h*0.01,),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Friend 3*',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('friend3'),
-              controller: friend3Controller,
-              focusNode: friend3Node,
-              onFieldSubmitted: (String text){
-                friend3Controller.text = text;
-              },
-            ),
-          ),
-
-          SizedBox(height: h*0.01,),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Friend 4',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('friend4'),
-              controller: friend4Controller,
-              focusNode: friend4Node,
-              onFieldSubmitted: (String text){
-                friend4Controller.text = text;
-              },
-            ),
-          ),
-
-          SizedBox(height: h*0.01,),
-          SizedBox(
-            width: w*0.8,
-            child: TextFormField(
-              decoration: InputDecoration(
-
-                  fillColor: const Color(0xff0F343F),
-                  filled: true,
-                  hintText: 'Friend 5',
-                  hintStyle: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          style: BorderStyle.none))),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textInputAction: TextInputAction.next,
-              keyboardType: TextInputType.name,
-              key: const ValueKey('friend5'),
-              controller: friend5Controller,
-              focusNode: friend5Node,
-              onFieldSubmitted: (String text){
-                friend5Controller.text = text;
-              },
-            ),
-          ),
-          SizedBox(height: h*0.01,),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                width: w*0.2,
-                height: h*0.05,
-                decoration: BoxDecoration(
-                  color: const Color(0xff0F343F),
-                  borderRadius: BorderRadius.circular(8)
+              InkWell(
+                onTap: ()async{
+                  List<String> ids = [];
+                  int existingGuestIndex = -1;
+                  if(friend1Controller.text!=''&&friend2Controller.text!=''&&friend3Controller.text!=''){
+                    if(friend4Controller.text!=''&& friend5Controller.text!=''){
+
+                      if(friend5Controller.text=='' || friend4Controller.text==''){
+                        Fluttertoast.showToast(
+                            msg: 'Discounts are there are only for 3 or 5 people.',
+                            backgroundColor: Colors.white
+                        );
+                      }
+                      ids.add(friend1Controller.text);
+                      ids.add(friend2Controller.text);
+                      ids.add(friend3Controller.text);
+                      ids.add(friend4Controller.text);
+                      ids.add(friend5Controller.text);
+                      print("Friend 1:${friend1Controller.text}\n Friend 2:${friend2Controller.text} \n Friend 3:${friend3Controller.text} \n Friend 4:${friend4Controller.text} \n Friend 5:${friend5Controller.text}");
+
+                      /// Check if these IDs are legit
+                      var result = await userController.checkIfIdIsValid(ids);
+                      if(result==5){
+                        ///Check if they are already in the party
+
+                        var partyGuests = party.guests!.cast<String>();
+                        print('PartyGuests5 :$partyGuests');
+                        for (var id in ids) {
+                          print("Id in Ids5 :$id");
+                          if (partyGuests.contains(id)) {
+                            existingGuestIndex = ids.indexOf(id);
+                            Fluttertoast.showToast(
+                                msg: 'Friend ${existingGuestIndex +
+                                    1} is already in the party\n Enter some other ID',
+                                backgroundColor: Colors.white
+                            );
+                            return;
+                          }
+                        }
+
+                        ///All conditions are satisfied for 5 friends
+                        setState(() {
+                          friendDiscount = 1000; // For 5 people
+                          multiplier = 5;
+                        });
+
+                      }else{
+                        Fluttertoast.showToast(
+                            msg: '${3-result} of the ID is not correct',
+                            backgroundColor: Colors.redAccent.shade200
+                        );
+                      }
+                    }else{
+                      ids.add(friend1Controller.text);
+                      ids.add(friend2Controller.text);
+                      ids.add(friend3Controller.text);
+                      print("Friend 1:${friend1Controller.text}\n Friend 2:${friend2Controller.text} \n Friend 3:${friend3Controller.text}");
+                      /// Check if these IDs are legit
+                      var result = await userController.checkIfIdIsValid(ids);
+                      if(result==3){
+                        ///Check if they are already in the party
+
+                        var partyGuests = party.guests!.cast<String>();
+                        print('PartyGuests :$partyGuests');
+                        for (var id in ids) {
+                          print("Id in Ids :$id");
+                          if(partyGuests.contains(id)){
+                            existingGuestIndex = ids.indexOf(id);
+                            Fluttertoast.showToast(
+                                msg: 'Friend ${existingGuestIndex+1} is already in the party\n Enter some other ID',
+                                backgroundColor: Colors.white
+                            );
+                            return;
+                          }
+                        }
+
+                        ///All conditions are satisfied for 3 friends
+                        setState(() {
+                          friendDiscount = 300;
+                          multiplier = 3;
+                        });
+
+                      }else{
+                        Fluttertoast.showToast(
+                            msg: '${3-result} of the ID is not correct',
+                            backgroundColor: Colors.redAccent.shade200
+                        );
+                      }
+                    }
+
+
+                  }else{
+                    Fluttertoast.showToast(
+                        msg: 'Enter at least 3 IDs to unlock discount',
+                      backgroundColor: Colors.white
+                    );
+                  }
+                },
+                child: Container(
+                  width: w*0.2,
+                  height: h*0.05,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff0F343F),
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: const Center(child:Text("Apply",style: TextStyle(
+                    color: Colors.white,
+                  ),)),
                 ),
-                child: const Center(child:Text("Apply",style: TextStyle(
-                  color: Colors.white,
-                ),)),
               ),
               SizedBox(width: w*0.05,),
             ],
@@ -805,6 +711,89 @@ class CheckoutPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Padding buildFriendTextField(double w,String hintText,TextEditingController controller,FocusNode focusNode) {
+    return Padding(
+      padding: EdgeInsets.only(top: w*0.01),
+      child: SizedBox(
+            width: w*0.8,
+            child: TextFormField(
+              decoration: InputDecoration(
+
+                  fillColor: const Color(0xff0F343F),
+                  filled: true,
+                  hintText: hintText,
+                  hintStyle: TextStyle(
+                    color: Colors.white.withOpacity(0.4),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                          style: BorderStyle.none))),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.name,
+              controller: controller,
+              focusNode: focusNode,
+              onFieldSubmitted: (String text){
+                controller.text = text;
+              },
+            ),
+          ),
+    );
+  }
+
+  SizedBox buildGrandTotalRow(double w, double h, ThemeData t) {
+    if((discountPercent==-1)&& friendDiscount==0){
+      return SizedBox(
+          width: w*0.2,
+          height: h*0.028,
+          child: Text("Rs.${widget.party.entryFee!}",style: t.textTheme.headline3!.copyWith(
+              color: const Color(0xffFAFF00),
+              fontSize: 18
+          ),));
+    }else if((friendDiscount!=0)&&(discountPercent!=-1)){
+      return SizedBox(
+          width: w*0.2,
+          height: h*0.028,
+          child: Text("Rs.${(widget.party.entryFee!*multiplier)-friendDiscount-discountAmount}",style: t.textTheme.headline3!.copyWith(
+              color: const Color(0xffFAFF00),
+              fontSize: 18
+          ),));
+    }else if(friendDiscount!=0 && discountPercent==-1){
+      return SizedBox(
+          width: w*0.2,
+          height: h*0.028,
+          child: Text("Rs.${(widget.party.entryFee!*multiplier)-friendDiscount}",style: t.textTheme.headline3!.copyWith(
+              color: const Color(0xffFAFF00),
+              fontSize: 18
+          ),));
+    }else{
+      return SizedBox(
+          width: w*0.2,
+          height: h*0.028,
+          child: Text("Rs.$discountPartyFee",style: t.textTheme.headline3!.copyWith(
+              color: const Color(0xffFAFF00),
+              fontSize: 18
+          ),));
+    }
+  }
+
+  int getCheckAmount() {
+    if((discountPercent==-1)&&friendDiscount==0){
+      return widget.party.entryFee!.toInt();
+    }else if((discountPercent!=-1)&&(friendDiscount!=0)){
+      return ((widget.party.entryFee!.toInt()*multiplier) - discountAmount - friendDiscount);
+    }else if(friendDiscount!=0 && discountPercent==-1){
+      return ((widget.party.entryFee!.toInt()*multiplier) - friendDiscount);
+    }else{
+      return discountPartyFee;
+    }
   }
 }
 

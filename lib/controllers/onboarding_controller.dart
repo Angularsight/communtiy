@@ -33,6 +33,14 @@ class OnBoardingController extends GetxController{
   RxInt carouselIndicatorIndex = 0.obs;
 
 
+  /// For checkout Page
+  var appliedCoupon = ''.obs;
+  var couponStreakNo = 0.obs; /// No coupon has streak=0, hence it can set as default value
+  var couponIndex = -1.obs;
+  var discountPartyFee = 0.obs;
+  var discountPercent = 0.obs;
+
+
   final _userProfile = UserDetailsModel().obs;
   Rx<UserDetailsModel> get userProfile => _userProfile;
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -144,6 +152,20 @@ class OnBoardingController extends GetxController{
     FirebaseFirestore.instance.collection("UserDetails").doc(docId).update({
       'images':newImages
     });
+  }
+
+  Future<int> checkIfIdIsValid(List<String> ids)async{
+    final res = await FirebaseFirestore.instance
+        .collection("UserDetails")
+        .where("userId",whereIn: ids)
+        .get()
+        .then((query) {
+      var users = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+      return users;
+    });
+    print("result of checkUserExistence2:${res.length}");
+    return res.length;
+
   }
 
 

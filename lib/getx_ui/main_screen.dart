@@ -439,12 +439,13 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   child: ClipOval(
                     child: CircleAvatar(
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                       radius: w*0.045,
                       child: Container(
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/images/Drinks with wings 4.png'),
-                            fit: BoxFit.cover
+                            fit: BoxFit.cover,
                           )
                         ),
                       )

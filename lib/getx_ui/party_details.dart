@@ -44,8 +44,9 @@ class PartyDetails2 extends StatelessWidget {
     return Scaffold(
 
       bottomNavigationBar: InkWell(
-        onTap: (){
-          Get.to(()=>CheckoutPage(party: controller.parties[index!], host: host[0],));
+        onTap: ()async{
+          var discountAndImages = await userController.fetchDiscountAndImages();
+          Get.to(()=>CheckoutPage(party: controller.parties[index!], host: host[0],discountAndImage: discountAndImages,));
         },
         child: Container(
           width: w,
@@ -282,6 +283,7 @@ class PartyDetails2 extends StatelessWidget {
                                                         backgroundColor: const Color(0xffEEE741),
                                                         child: CircleAvatar(
                                                           radius: radius-2,
+                                                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                                           // radius: 38,
                                                           child: ClipOval(
                                                             child: Container(

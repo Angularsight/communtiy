@@ -180,7 +180,7 @@ class CouponsScreen extends StatelessWidget {
                                                             Clipboard.setData(ClipboardData(text: discountAndImage[index].code.toString())).then((_){
                                                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                                                 content: Text("Copied to Clipboard"),
-
+                                                                duration: Duration(seconds: 3),
                                                               ));
                                                             });
                                                           }else{

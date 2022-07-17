@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
 
-
-
   static LinearGradient appBarGradient = LinearGradient(colors: [
     const Color(0xff333333),
     const Color(0xff303030).withOpacity(0.47)
