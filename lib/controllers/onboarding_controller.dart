@@ -165,6 +165,18 @@ class OnBoardingController extends GetxController{
     });
     print("result of checkUserExistence2:${res.length}");
     return res.length;
+  }
+
+
+  Future<void> updateStreaksOfFriends(String userId)async{
+    ///Fetching user docId
+    var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: userId).get();
+    var docId = userDoc.docs[0].id;
+    var userDetails = userDoc.docs.map((e) => UserDetailsModel.fromDocument(e)).toList()[0];
+
+    FirebaseFirestore.instance.collection("UserDetails").doc(docId).update({
+      'streaks':userDetails.streaks! + 1
+    });
 
   }
 

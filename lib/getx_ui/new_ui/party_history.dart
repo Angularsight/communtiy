@@ -3,21 +3,20 @@
 
 import 'dart:ui';
 
-import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/history_controller.dart';
-import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/models/user_details/history.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../utils/theme.dart';
 
 class PartyHistory extends StatelessWidget {
   PartyHistory({Key? key}) : super(key: key);
 
   final HistoryController historyController = Get.put(HistoryController());
+  final RazorPayController razorPayController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +198,7 @@ class PartyHistory extends StatelessWidget {
                       data:'partyName:${history.partyName}\n'
                           'paymentId:${history.qrDetail} \n '
                           'Date:${history.partyDate} @${history.partyTime} \n '
+                          'NoOfTickets:${razorPayController.friendsList.value.length}'
                           'Venue:${history.partyVenue} \n '
                           'Host:${history.partyHost}',
                       backgroundColor: Colors.transparent,

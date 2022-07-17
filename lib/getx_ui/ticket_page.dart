@@ -21,9 +21,6 @@ class TicketPage extends StatelessWidget {
    final RazorPayController razorPayController = Get.find();
    final OnBoardingController userController = Get.find();
 
-
-
-
    void uploadGuestToParty(PartyDetails party)async{
 
      /// Getting the documentId using partyId which is unique to each party
@@ -40,6 +37,13 @@ class TicketPage extends StatelessWidget {
        print("ADDED NEW GUEST TO FIREBASE");
        newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
      }
+
+     /// Adding all friends IDs which were entered in the checkout page
+     print("Guest List Before adding friends :$newGuestList \n Friends List before adding :${razorPayController.friendsList.value}" );
+     for (var element in razorPayController.friendsList.value) {
+       newGuestList.add(element);
+     }
+     print("Guest List after adding friends:$newGuestList");
 
 
      FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
@@ -62,6 +66,16 @@ class TicketPage extends StatelessWidget {
        'partyHost':razorPayController.host!.hostName,
        'qrDetail': razorPayController.paymentId,
      });
+
+     /// Incrementing streak of user
+     FirebaseFirestore.instance.collection("UserDetails").doc(userDocId).update({
+       'streaks': userController.userProfile.value.streaks! +1
+     });
+
+     /// Incrementing streaks of all IDs in friends list
+     for(var element in razorPayController.friendsList.value){
+       userController.updateStreaksOfFriends(element);
+     }
 
    }
 
@@ -275,6 +289,7 @@ class TicketPage extends StatelessWidget {
                               data:'partyName:${party.partyName}\n'
                                   'paymentId:${razorPayController.paymentId} \n '
                                   'Date:${party.date} @${party.time} \n '
+                                  'NoOfTickets:${razorPayController.friendsList.value.length}'
                                   'Venue:${party.location} \n '
                                   'Host:${host.hostName}',
                               backgroundColor: Colors.white,
@@ -345,36 +360,6 @@ class TicketPage extends StatelessWidget {
        ),
      );
    }
-
-
-  // Future<String> saveImageToGallery(BuildContext context,Uint8List screenshot) async{
-  //
-  //   /// SAVING IMAGE PART
-  //   /// Requesting storage permission from the mobile to store the image in gallery
-  //   // await [Permission.storage].request();
-  //
-  //   final imageName = 'ticket_${DateTime.now().toIso8601String().replaceAll('.', "_").replaceAll(":", "_")}';
-  //
-  //   /// This saves the taken screenshot into the gallery and returns the path of the file
-  //   final result = await ImageGallerySaver.saveImage(screenshot,name: imageName);
-  //   Scaffold.of(context).showSnackBar(SnackBar(content: Container(
-  //     width: double.infinity,
-  //     height: 50,
-  //     child: Row(
-  //       children: [
-  //         Text("Screenshot saved to Gallery",style: Theme.of(context).textTheme.headline1!.copyWith(
-  //           fontSize: 18,
-  //           color: Colors.white
-  //         ),),
-  //         const SizedBox(width: 10,),
-  //         Icon(CustomIcons.check,color: Colors.green,)
-  //       ],
-  //     ),
-  //   )));
-  //   return result['filePath'];
-  //
-  // }
-
 
 }
 

@@ -5,8 +5,6 @@ import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/utils/icons.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -181,6 +179,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               else if(discountPercent!=-1) buildPaymentDetailsRow(context, "Discount", "$discountPercent%")
                               else Row(),
 
+                              if(friendDiscount!=0) buildPaymentDetailsRow(context, "No of tickets", "$multiplier")
+                              else Row(),
+
                               Padding(
                                 padding: EdgeInsets.only(left: h*0.02,top: h*0.008 ),
                                 child: Row(
@@ -240,8 +241,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ),
     );
   }
-
-
 
   Padding buildPaymentButton(double w, double h, ThemeData t) {
     return Padding(
@@ -389,7 +388,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                      width: w*0.2,
+                      width: w*0.3,
                       height: 25,
                       child: Text(title,style: t.textTheme.headline3!.copyWith(
                         color: Colors.white,
@@ -513,6 +512,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   discountPartyFee = (party.entryFee! - (party.entryFee! *(discountPercent/100))).toInt();
                                   print("DiscountedPartyFee:$discountPartyFee");
                                 });
+
+                                razorPayController.showSuccessDialogBox(context, w, h, discountAmount);
+
                               }
                             }
 
@@ -611,6 +613,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ids.add(friend3Controller.text);
                       ids.add(friend4Controller.text);
                       ids.add(friend5Controller.text);
+                      razorPayController.friendsList.value = ids; // Storing ids to be used in ticket page for adding to guest list and increasing streaks
                       print("Friend 1:${friend1Controller.text}\n Friend 2:${friend2Controller.text} \n Friend 3:${friend3Controller.text} \n Friend 4:${friend4Controller.text} \n Friend 5:${friend5Controller.text}");
 
                       /// Check if these IDs are legit
@@ -636,8 +639,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ///All conditions are satisfied for 5 friends
                         setState(() {
                           friendDiscount = 1000; // For 5 people
-                          multiplier = 5;
+                          multiplier = 6; /// 6 coz 5+1 where 1 is the user himself
                         });
+                        razorPayController.showSuccessDialogBox(context, w, h, friendDiscount);
 
                       }else{
                         Fluttertoast.showToast(
@@ -649,6 +653,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ids.add(friend1Controller.text);
                       ids.add(friend2Controller.text);
                       ids.add(friend3Controller.text);
+                      razorPayController.friendsList.value = ids; // Storing ids to be used in ticket page for adding to guest list and increasing streaks
                       print("Friend 1:${friend1Controller.text}\n Friend 2:${friend2Controller.text} \n Friend 3:${friend3Controller.text}");
                       /// Check if these IDs are legit
                       var result = await userController.checkIfIdIsValid(ids);
@@ -672,8 +677,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ///All conditions are satisfied for 3 friends
                         setState(() {
                           friendDiscount = 300;
-                          multiplier = 3;
+                          multiplier = 4; /// 4 coz 3+1 where 1 is the user himself
                         });
+                        razorPayController.showSuccessDialogBox(context, w, h, friendDiscount);
 
                       }else{
                         Fluttertoast.showToast(
@@ -795,6 +801,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       return discountPartyFee;
     }
   }
+
 }
 
 class RPSCustomPainter extends CustomPainter{
