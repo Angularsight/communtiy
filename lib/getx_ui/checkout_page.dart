@@ -490,6 +490,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               if(couponController.text == element.code){
                                 print("Entered coupon exists");
                                 appliedCoupon = couponController.text;
+                                /// Below line will is used for fetching the coupon doc ID to upload all IDs the couponUsedBy list
+                                userController.appliedCoupon.value = appliedCoupon;
                                 couponStreakNo = element.streakCount!;
                                 discountPercent = element.discount!;
                                 print("appliedCoupon:$appliedCoupon \n couponStreak:$couponStreakNo \n couponIndex:$couponIndex");

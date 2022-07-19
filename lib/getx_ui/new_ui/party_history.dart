@@ -16,7 +16,7 @@ class PartyHistory extends StatelessWidget {
   PartyHistory({Key? key}) : super(key: key);
 
   final HistoryController historyController = Get.put(HistoryController());
-  final RazorPayController razorPayController = Get.find();
+  final RazorPayController razorPayController = Get.put(RazorPayController());
 
   @override
   Widget build(BuildContext context) {

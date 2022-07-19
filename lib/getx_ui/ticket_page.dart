@@ -45,11 +45,9 @@ class TicketPage extends StatelessWidget {
      }
      print("Guest List after adding friends:$newGuestList");
 
-
      FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
        'guests': newGuestList
      });
-
 
      /// Add partyId to history list
      /// Instead of storing the qr Image we have stored the information required to generate the QR image
@@ -76,6 +74,11 @@ class TicketPage extends StatelessWidget {
      for(var element in razorPayController.friendsList.value){
        userController.updateStreaksOfFriends(element);
      }
+
+     /// Adding all friends and user to couponUsedBy list
+     userController.updateCouponUsedByList(userController.appliedCoupon.value,
+         razorPayController.friendsList.value,
+         FirebaseAuth.instance.currentUser!.uid);
 
    }
 

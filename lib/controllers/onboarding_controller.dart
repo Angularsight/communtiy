@@ -41,6 +41,7 @@ class OnBoardingController extends GetxController{
   var discountPercent = 0.obs;
 
 
+
   final _userProfile = UserDetailsModel().obs;
   Rx<UserDetailsModel> get userProfile => _userProfile;
   final currentUser = FirebaseAuth.instance.currentUser!;
@@ -94,7 +95,7 @@ class OnBoardingController extends GetxController{
     return interests;
   }
 
-  Future<CouponImages>fetchCouponImages()async{
+  Future<CouponImages> fetchCouponImages()async{
     var v = await FirebaseFirestore.instance.collection('Coupons').doc('Images').get().then((query) {
       var result = CouponImages.fromDocument(query);
       return result;
@@ -102,13 +103,42 @@ class OnBoardingController extends GetxController{
     return v;
   }
 
-  Future<List<DiscountAndImage>>fetchDiscountAndImages()async{
+  Future<List<DiscountAndImage>> fetchDiscountAndImages()async{
+    var v = await FirebaseFirestore.instance.collection('CouponCodes').orderBy('discount',descending: false).get().then((query) {
+      var result = query.docs.map((e) => DiscountAndImage.fromDocument(e)).toList();
+      return result;
+    });
+
+    return v;
+  }
+
+  Future<void> updateCouponUsedByList(String couponCode,List userAndFriendsIds,String userId)async{
+    String couponDocId = '';
+    var oldCouponUsedByList = [];
+    var v = await FirebaseFirestore.instance.collection('CouponCodes').where('code',isEqualTo: couponCode).get().then((query) {
+      couponDocId = query.docs[0].id;
+      var result = query.docs.map((e) => DiscountAndImage.fromDocument(e)).toList()[0];
+      oldCouponUsedByList = result.couponUsedBy!;
+      return result;
+    });
+
+    oldCouponUsedByList.add(userId);
+    oldCouponUsedByList.addAll(userAndFriendsIds);
+
+    FirebaseFirestore.instance.collection("CouponCodes").doc(couponDocId).update({
+      'couponUsedBy':oldCouponUsedByList
+    });
+  }
+
+  Future<List<DiscountAndImage>>updateCouponsUsedByList(List<String> ids)async{
     var v = await FirebaseFirestore.instance.collection('CouponCodes').orderBy('discount',descending: false).get().then((query) {
       var result = query.docs.map((e) => DiscountAndImage.fromDocument(e)).toList();
       return result;
     });
     return v;
   }
+
+
 
   Future<File> pickImageFromGallery() async {
     final imagePicker = ImagePicker();
