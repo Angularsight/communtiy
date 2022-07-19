@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-
+    final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
 
     /// SHOULD NOT USE THIS TIMER SINCE THE ROUTING IS ALREADY BEING DONE IN main.dart via getX authentication (line : 20)
@@ -31,6 +31,12 @@ class SplashScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/bare logo.png',
+              width: w,
+              height: h*0.15,
+            ),
+            SizedBox(height: h*0.05,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -45,11 +51,11 @@ class SplashScreen extends StatelessWidget {
                 // buildLetters(w, t, "Y"),
               ],
             ),
-            const SizedBox(height: 10,),
+            SizedBox(height: h*0.01,),
 
             SizedBox(
               width: w,
-              height: 50,
+              height: h*0.05,
               child: DefaultTextStyle(
                 style: t.textTheme.headline3!.copyWith(
                     fontSize: 18,
@@ -60,12 +66,13 @@ class SplashScreen extends StatelessWidget {
                                   end: Alignment.bottomCenter).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0))
                 ),
                 child: AnimatedTextKit(
-                  repeatForever: false,
+                  repeatForever: true,
                   pause: const Duration(milliseconds: 200),
 
                     animatedTexts: [
-                      RotateAnimatedText("Who|When|Where"),
-                      RotateAnimatedText("You|Here|Now"),
+                      RotateAnimatedText("A place where everyone is single"),
+                      // RotateAnimatedText("Who|When|Where"),
+                      // RotateAnimatedText("You|Here|Now"),
                     ]),
               ),
             ),
@@ -81,13 +88,13 @@ class SplashScreen extends StatelessWidget {
       height: w * 0.1,
       decoration: BoxDecoration(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(color: t.primaryColor)),
       child: Center(
           child: Text(
         letter,
         style: t.textTheme.headline1!.copyWith(
-            fontSize: 25, fontWeight: FontWeight.bold, color: t.primaryColor),
+            fontSize: w*0.05, fontWeight: FontWeight.bold, color: t.primaryColor),
       )),
     );
   }

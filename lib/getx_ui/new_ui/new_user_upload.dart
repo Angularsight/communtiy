@@ -2,16 +2,18 @@
 
 import 'dart:io';
 
-import 'package:chips_choice/chips_choice.dart';
+import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pinput/pinput.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 
@@ -79,6 +81,19 @@ class _NewUserUploadState extends State<NewUserUpload> {
     final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
 
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+        pickedImageFile.absolute.path,
+        quality: 25
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
+
     setState(() {
       pickedImageBool2 = true;
       pickedImage2 = pickedImageFile;
@@ -87,18 +102,33 @@ class _NewUserUploadState extends State<NewUserUpload> {
     });
   }
 
+
   bool userImagePickedBool = false;
   List<File> userProfilePic = [];
   void _pickDJImage() async {
     final imagePicker = ImagePicker();
-    final selectedImage =
-    await imagePicker.pickImage(source: ImageSource.gallery);
+    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
+
+
+
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+      pickedImageFile.absolute.path,
+      quality: 25
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
 
     setState(() {
       userImagePickedBool = true;
       pickedImage2 = pickedImageFile;
-      userProfilePic.add(pickedImageFile);
+      userProfilePic.add(compressedFile);
     });
   }
 
@@ -108,7 +138,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       final ref = FirebaseStorage.instance
           .ref()
           .child("users")
-          .child(username)
+          .child(username.trim())
           .child(username + i.toString() + '.jpg');
       await ref.putFile(imageList2[j]).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
@@ -145,7 +175,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'location':location,
         'age':int.parse(age),
         'xp':int.parse('5'),
-        'images':urlList2
+        'images':urlList2,
+        'streaks':1
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -157,7 +188,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'location':location,
         'age':int.parse(age),
         'xp':int.parse('5'),
-        'images':urlList2
+        'images':urlList2,
+        'streaks':1
       });
     }
 
@@ -242,7 +274,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
           height: h*0.06,
           child: Row(
             children: [
-              InkWell(
+              selectedStep>0?InkWell(
                 onTap: (){
                   Get.offAll(()=>BottomNavigationPage());
                 },
@@ -257,7 +289,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                     fontSize: 16
                   ),),),
                 ),
-              ),
+              ):Row(),
               InkWell(
                 onTap: (){
                   setState(() {
@@ -290,6 +322,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                           context: context,
                           builder: (context){
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)
+                              ),
+                              backgroundColor: Theme.of(context).canvasColor,
                               title: const Text("Confirmation"),
                               content: const Text("Are you sure you want to submit this form?"),
                               actions: [
@@ -313,6 +349,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: InkWell(
                                         onTap: ()async{
+                                          Navigator.pop(context);
+                                          Themes.showProgressDialogWithoutText(context);
                                           await _prepareDataForFirebase();
                                           _uploadInterestToFirebase();
                                           // Get.offAll(()=>BottomNavigationPage());
@@ -326,7 +364,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             );
                           });
@@ -334,7 +371,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                   });
                 },
                 child: Container(
-                  width: w*0.5,
+                  width: selectedStep==0?w:w*0.5,
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor
                   ),
@@ -997,13 +1034,24 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         label: (i, v) => v,
                         tooltip: (i, v) => v,
                       ),
+                      choiceActiveStyle: C2ChoiceStyle(
+                          color: Theme.of(context).canvasColor,
+                          showCheckmark: true,
+                          backgroundColor: const Color(0xff1A3841),
+                          // disabledColor: Colors.transparent,
+                          labelStyle: TextStyle(fontSize: 14,color: Theme.of(context).canvasColor), borderShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(color: Theme.of(context).primaryColor))
+
+                      ),
                       choiceStyle: C2ChoiceStyle(
-                        // color: Colors.blue,
+                        color: Theme.of(context).canvasColor,
                         showCheckmark: true,
+                        backgroundColor: Colors.grey,
                         disabledColor: Colors.transparent,
                         labelStyle: const TextStyle(fontSize: 12,color: Colors.black), borderShape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Theme.of(context).primaryColor))
+                              side: BorderSide(color: Colors.grey.withOpacity(0.5)))
 
                       ),
 

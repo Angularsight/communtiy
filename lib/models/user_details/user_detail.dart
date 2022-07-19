@@ -12,6 +12,7 @@ class UserDetailsModel {
   int? age;
   int? xp;
   List? images;
+  int? streaks;
 
   UserDetailsModel({ this.userId,
     this.userName,
@@ -21,7 +22,8 @@ class UserDetailsModel {
     this.location,
     this.age,
     this.xp,
-    this.images
+    this.images,
+    this.streaks
   });
 
 
@@ -36,7 +38,8 @@ class UserDetailsModel {
         age: d['age'],
         xp: d['xp'],
         phoneNumber: d['phoneNumber'],
-        images: d['images']
+        images: d['images'],
+        streaks: d['streaks']
     );
   }
 

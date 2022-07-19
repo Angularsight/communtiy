@@ -1,13 +1,16 @@
 
 
+import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'new_ui/about_you_screen.dart';
+import 'new_ui/party_history.dart';
+
 
 
 class ChartData {
@@ -22,7 +25,6 @@ class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key? key}) : super(key: key);
   final OnBoardingController userController = Get.put(OnBoardingController());
 
-  final TooltipBehavior _tooltipBehavior = TooltipBehavior(enable: true,tooltipPosition: TooltipPosition.pointer,duration: 2,activationMode: ActivationMode.singleTap);
   // final loginUser = FirebaseAuth.instance.currentUser!;
 
   void bindStreamToUser(){
@@ -48,147 +50,162 @@ class UserProfileScreen extends StatelessWidget {
       body:SafeArea(
         child: SingleChildScrollView(
           // physics: const RangeMaintainingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: GetX<OnBoardingController>(
+            builder: (controller) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: w*0.02,top: w*0.05),
-                        child: SizedBox(
-                          width: w*0.42,
-                          child: Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
-                              fontSize: 24,
-                              color: Colors.white
-                          ),),
-                        ),
-                      ),
-                      const SizedBox(height: 20,),
-                      SizedBox(
-                        width: w*0.45,
-                        height: h*0.2,
-                        child: SfCartesianChart(
-                            enableSideBySideSeriesPlacement: true,
-                            plotAreaBorderWidth: 0,
-                            margin: EdgeInsets.zero,
-                            primaryXAxis: CategoryAxis(
-                                majorTickLines: const MajorTickLines(size: 0,width: 0),
-                                labelPosition: ChartDataLabelPosition.outside,
-                                labelPlacement: LabelPlacement.betweenTicks,
-                                labelAlignment: LabelAlignment.center,
-                                borderColor: Colors.grey,
-                                labelRotation: 0,
-                                placeLabelsNearAxisLine: true,
-                                tickPosition: TickPosition.inside,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                axisLine: const AxisLine(width: 1,color: Colors.black87),
-                                isVisible: false
-                            ),
-
-                            primaryYAxis: NumericAxis(
-                                majorTickLines: const MajorTickLines(size: 0,width: 0),
-                                isVisible: false,
-                                majorGridLines: const MajorGridLines(width: 0),
-                                axisLine: const AxisLine(width: 1,color: Colors.black87)
-                            ),
-                            tooltipBehavior: _tooltipBehavior,
-                            series: <ChartSeries>[
-                              BarSeries<ChartData, double>(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20)
-                                  ),
-                                  dataSource: chartData,
-                                  enableTooltip: true,
-
-                                  xValueMapper: (ChartData data, _) => data.label,
-                                  yValueMapper: (ChartData data, _) => data.qty,
-                                  pointColorMapper: (ChartData c,_)=>c.color,
-                                  // Width of the bars
-                                  width: 0.5,
-                                  // Spacing between the bars
-                                  spacing: 0.3
-                              )
-                            ]
-                        ),
-                      ),
-                    ],
-                  ),
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(200),
-                    ),
-                    child: Container(
-                      width: w*0.55,
-                      height: h*0.35,
-                      decoration: const BoxDecoration(
-                        color: Colors.transparent,
-                      ),
-                      child: fetchProfileImage(user),
-                      // child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
-                    ),
-                  )
-
-                ],
-              ),
-              const SizedBox(height: 20,),
-
-              Padding(
-                padding: EdgeInsets.only(left: w*0.02),
-                child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
-                  fontSize: 20,
-                  color: Colors.white
-                ),),
-              ),
-              Container(
-                width: w*0.7,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: t.scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10)
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      offset: const Offset(0,4),
-                      blurRadius: 4,
-                      spreadRadius: 0
-                    )
-                  ]
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: w*0.02),
-                  child: Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Balance: 50 coins",style: t.textTheme.headline1!.copyWith(
-                        color: t.primaryColor,
-                        fontSize: 20,
-                      ),),
-                      Text('Refill',style: t.textTheme.headline1!.copyWith(
-                        color: const Color(0xff417ACF),
-                        fontSize: 14,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2,
-                      ),)
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: w*0.02,top: w*0.05),
+                            child: SizedBox(
+                              width: w*0.42,
+                              child: controller.userProfile.value.userName!=null?Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
+                                  fontSize: 24,
+                                  color: Colors.white
+                              ),):Text("Legend",style: t.textTheme.headline1!.copyWith(
+                                  fontSize: 24,
+                                  color: Colors.white
+                              ),),
+                            ),
+                          ),
+                          SizedBox(height: h*0.023,),
+                          RotatedBox(
+                            quarterTurns: 1,
+                            child: SizedBox(
+                              width: w*0.45,
+                              height: h*0.2,
+                              child: BarChart(BarChartData(
+                                barTouchData: BarTouchData(
+                                  touchTooltipData: BarTouchTooltipData(
+                                    fitInsideVertically: true,
+                                    direction: TooltipDirection.top,
+                                  )
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                  border: const Border(
+                                    top: BorderSide.none,
+                                    right: BorderSide.none,
+                                    left: BorderSide(width: 1),
+                                    bottom: BorderSide(width: 1)
+                                  ),
+                                ),
+                                titlesData: FlTitlesData(show: false),
+                                gridData: FlGridData(show: false),
+                                groupsSpace: 25,
+                                barGroups: [
+                                  BarChartGroupData(x: 1,barRods: [
+                                    BarChartRodData(toY: 6,
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            topLeft: Radius.circular(10)),
+                                        width: 15,
+                                        color: Colors.green)
+                                  ]),
+                                  BarChartGroupData(x: 2,barRods: [
+                                    BarChartRodData(toY: 5,
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            topLeft: Radius.circular(10)),
+                                        width: 15,
+                                        color: Theme.of(context).canvasColor)
+                                  ]),
+                                  BarChartGroupData(x: 3,barRods: [
+                                    BarChartRodData(toY: 7,
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            topLeft: Radius.circular(10)),
+                                        width: 15,
+                                        color: const Color(0xff7E3299))
+                                  ])
+                                ]
+                              )),
+                            ),
+                          )
+                        ],
+                      ),
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(200),
+                        ),
+                        child: Container(
+                          width: w*0.55,
+                          height: h*0.35,
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: controller.userProfile.value.userProfilePic!=null?
+                          Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,)
+                              :Image.asset('assets/images/Drinks with Wings 3.png',fit: BoxFit.cover,),
+                          // child: fetchProfileImage(user),
+                          // child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
+                        ),
+                      )
+
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 25,),
+                  SizedBox(height: h*0.023,),
 
-              buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
-              buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
-              buildProfileListTile(w, context, 'Invite and earn', 'Each invite will earn you a free party including cover charges', FlutterIcons.google_circles_communities_mco),
-              buildProfileListTile(w, context, 'Credentials', 'Phone No,name,password',MaterialCommunityIcons.key_variant),
-              buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
+                  Padding(
+                    padding: EdgeInsets.only(left: w*0.02),
+                    child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
+                      fontSize: 20,
+                      color: Colors.white
+                    ),),
+                  ),
+                  Container(
+                    width: w*0.7,
+                    height: h*0.043,
+                    decoration: BoxDecoration(
+                      color: t.scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10)
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          offset: const Offset(0,4),
+                          blurRadius: 4,
+                          spreadRadius: 0
+                        )
+                      ]
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: w*0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Balance: 50 coins",style: t.textTheme.headline1!.copyWith(
+                            color: t.primaryColor,
+                            fontSize: 20,
+                          ),),
+                          Text('Refill',style: t.textTheme.headline1!.copyWith(
+                            color: const Color(0xff417ACF),
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                            decorationThickness: 2,
+                          ),)
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: h*0.031,),
 
-            ],
+                  // buildProfileListTile(w, context,'Bookmarks','Parties and people',Icons.bookmark),
+                  buildProfileListTile(w, context, 'History', 'All parties attended', Icons.history),
+                  buildProfileListTile(w, context, 'Invite and earn', 'Coming Soon',Icons.repeat),
+                  buildProfileListTile(w, context, 'About You', 'Your credentials and details',Icons.vpn_key_rounded),
+                  buildProfileListTile(w, context, 'Switch Account', 'Want to login from a different account?', Icons.logout)
+
+                ],
+              );
+            }
           ),
         ),
       )
@@ -208,9 +225,60 @@ class UserProfileScreen extends StatelessWidget {
     return Padding(
       padding:EdgeInsets.only(bottom: w*0.05),
       child: InkWell(
-        onTap: (){
+        onTap: ()async{
           if(heading=="Switch Account"){
-            logoutOfAccount();
+            // logoutOfAccount();
+            showDialog(
+                context: context,
+                builder: (context){
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    ),
+                    backgroundColor: Theme.of(context).canvasColor,
+                    title: const Text("Log Out"),
+                    content: const Text("Are you sure you want to log out of this account?"),
+                    actions: [
+                      Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(w*0.02),
+                            child: InkWell(
+                              onTap: (){
+                                logoutOfAccount();
+                              },
+                              child: const Center(child: Text("Confirm",style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.redAccent,
+                                  fontSize: 16
+                              ),),),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(w*0.02),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: const Center(child: Text("Cancel",style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff1A3841),
+
+                                  fontSize: 16
+                              ),),),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                });
+          }else if(heading=="History"){
+            Get.to(()=> PartyHistory());
+          }else if(heading=='About You'){
+            var interests = await userController.fetchUserInterests(userController.userProfile.value.userId.toString());
+            Get.to(()=> AboutYouScreen(interests: interests,));
           }
         },
         child: Container(

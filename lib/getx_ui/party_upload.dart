@@ -5,9 +5,11 @@ import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PartyUpload extends StatefulWidget {
   PartyUpload({Key? key}) : super(key: key);
@@ -26,8 +28,7 @@ class _PartyUploadState extends State<PartyUpload> {
   final TextEditingController djNameController = TextEditingController();
   final TextEditingController djPlaying = TextEditingController();
   final TextEditingController activityNameController = TextEditingController();
-  final TextEditingController activityDescriptionController =
-      TextEditingController();
+  final TextEditingController activityDescriptionController = TextEditingController();
   final TextEditingController guestLimitController = TextEditingController();
 
   late FocusNode partyTitleNode;
@@ -94,11 +95,25 @@ class _PartyUploadState extends State<PartyUpload> {
   final djUrlList = [];
   final activitiesList = [];
   final redundancyList = [];
+
   void _pickImageFromGallery() async {
     final imagePicker = ImagePicker();
     final selectedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
+
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+        pickedImageFile.absolute.path,
+        quality: 50
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
 
     setState(() {
       pickedImageBool = true;
@@ -113,9 +128,21 @@ class _PartyUploadState extends State<PartyUpload> {
   bool djPickedImageBool = false;
   void _pickDJImage() async {
     final imagePicker = ImagePicker();
-    final selectedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
+
+    ///Image compression part
+    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+        pickedImageFile.absolute.path,
+        quality: 50
+    );
+    final tempDirectory = await getTemporaryDirectory();
+    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
+    compressedFile.writeAsBytesSync(compressedFileUintList!);
+
+
+    print("File length before compression:${pickedImageFile.lengthSync()}");
+    print("File length after compression:${compressedFile.lengthSync()}");
 
     setState(() {
       djPickedImageBool = true;
@@ -156,9 +183,12 @@ class _PartyUploadState extends State<PartyUpload> {
 
   void _uploadDataToFirebase(List<String> playingSongs) {
 
+    /// Timestamp of upload is the partyId of all parties
+    final partyId = DateTime.now().millisecondsSinceEpoch.toString();
+
     FirebaseFirestore.instance.collection('PartyDetails').doc().set({
         'partyName':partyName,
-        'partyId':"#mvpis",
+        'partyId':partyId,
         "partyHostId": 'Blank',
         'hostId':"#mvpis",
         'entryFee':int.parse(entryFee),
@@ -189,7 +219,12 @@ class _PartyUploadState extends State<PartyUpload> {
     final timePicked = await _pickTime();
     if (timePicked != null) {
       setState(() {
-        time = "${timePicked.hour}:${timePicked.minute} ${timePicked.period.name}";
+        /// If else is to convert time from Railway timings to 12 hour format
+        if(timePicked.hour>12){
+          time = "${timePicked.hour-12}:${timePicked.minute} ${timePicked.period.name}";
+        }else{
+          time = "${timePicked.hour}:${timePicked.minute} ${timePicked.period.name}";
+        }
       });
     }
     print("$date \n Time: $time");

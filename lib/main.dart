@@ -8,6 +8,7 @@ import 'package:communtiy/getx_ui/splash_screen.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 
@@ -18,7 +19,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
     Future.delayed(const Duration(seconds: 5)).then((value) => Get.put(AuthController()));
-    Get.put(GoogleSignInController());
+    // Get.put(GoogleSignInController());
   });
   runApp(const MyApp2());
 }
@@ -29,6 +30,10 @@ class MyApp2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    ///Prevents app from going into landscape view or mode
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       /// InitialRoute always displays the first screen which appears after Hot Restart

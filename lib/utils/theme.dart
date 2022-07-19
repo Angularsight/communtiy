@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
 
-
-
   static LinearGradient appBarGradient = LinearGradient(colors: [
     const Color(0xff333333),
     const Color(0xff303030).withOpacity(0.47)
@@ -72,9 +70,21 @@ class Themes {
   );
 
 
+  static showProgressDialogWithoutText(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Center progressDialog = Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),);
+        return progressDialog;
+      },
+    );
+  }
+
   ThemeData themeData() {
     return ThemeData(
-      scaffoldBackgroundColor: const Color(0xff292929),
+      // scaffoldBackgroundColor: const Color(0xff292929),
+      scaffoldBackgroundColor: const Color(0xff191919),
       primaryColor: const Color(0xffFAFF00),
       canvasColor: const Color(0xffE3D170),
       backgroundColor: Colors.white,

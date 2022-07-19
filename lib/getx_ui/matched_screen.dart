@@ -99,7 +99,7 @@ class MatchedScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
+                        padding: EdgeInsets.symmetric(horizontal: w*0.025,vertical: h*0.01),
                         child: Text("Community",style: t.textTheme.caption!.copyWith(
                             color: Colors.white
                         ),),
@@ -121,7 +121,7 @@ class MatchedScreen extends StatelessWidget {
                                           return Container(
                                             width: w * 0.3,
                                             height: h*0.13,
-                                            margin: const EdgeInsets.only(right: 10,left: 10),
+                                            margin: EdgeInsets.symmetric(horizontal: w*0.025),
                                             decoration: BoxDecoration(
                                                 border: index==controller.partyIndexForMatchedPage.value?Border.all(color: t.primaryColor):Border.all(color: Colors.transparent),
                                                 borderRadius: BorderRadius.circular(10)
@@ -177,7 +177,7 @@ class MatchedScreen extends StatelessWidget {
                     child:Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("${controller.parties[controller.partyIndexForMatchedPage.value].time.toString()} pm",style: Theme.of(context).textTheme.headline3!.copyWith(
+                        Text(controller.parties[controller.partyIndexForMatchedPage.value].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                             color: Colors.white),),
                         Text(controller.parties[controller.partyIndexForMatchedPage.value].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                             color: Colors.white),),
@@ -202,7 +202,8 @@ class MatchedScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: Themes.appBarGradient,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              // gradient: Themes.appBarGradient,
               borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(17),
                   bottomLeft: Radius.circular(17)),
@@ -214,8 +215,9 @@ class MatchedScreen extends StatelessWidget {
                     spreadRadius: 0)
               ]),
         ),
+        automaticallyImplyLeading: false,
         title: Padding(
-          padding: EdgeInsets.only(left: w * 0.2),
+          padding: EdgeInsets.only(left: w * 0.35),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -249,35 +251,35 @@ class MatchedScreen extends StatelessWidget {
             ],
           ),
         ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return Padding(
-              padding:EdgeInsets.only(bottom: h*0.02, top: h*0.01),
-              child: IconButton(
-                icon: Icon(
-                  CustomIcons.hamburger,
-                  size: 30,
-                ),
-                onPressed: () {
-                  return Scaffold.of(context).openDrawer();
-                },
-              ),
-            );
-          },
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(top: h*0.01, right: h*0.015),
-            child: InkWell(
-              splashColor: Colors.red,
-              onTap: () {},
-              child: const Icon(
-                Icons.account_circle,
-                size: 30,
-              ),
-            ),
-          ),
-        ]
+        // leading: Builder(
+        //   builder: (BuildContext context) {
+        //     return Padding(
+        //       padding:EdgeInsets.only(bottom: h*0.02, top: h*0.01),
+        //       child: IconButton(
+        //         icon: Icon(
+        //           CustomIcons.hamburger,
+        //           size: 30,
+        //         ),
+        //         onPressed: () {
+        //           return Scaffold.of(context).openDrawer();
+        //         },
+        //       ),
+        //     );
+        //   },
+        // ),
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(top: h*0.01, right: h*0.015),
+        //     child: InkWell(
+        //       splashColor: Colors.red,
+        //       onTap: () {},
+        //       child: const Icon(
+        //         Icons.account_circle,
+        //         size: 30,
+        //       ),
+        //     ),
+        //   ),
+        // ]
     );
   }
 

@@ -12,26 +12,69 @@ class GuestList2 extends StatelessWidget {
   GuestList2({Key? key, this.guests, this.interests}) : super(key: key);
 
   final PageController pageController = PageController(initialPage: 0,viewportFraction: 0.8);
+  final TextEditingController searchController = TextEditingController();
+  final FocusNode searchNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
-    return Scaffold(body: GetX<FirebaseController>(builder: (controller) {
-      return Column(
-        children: [
-          SizedBox(
-            width: w,
-            height: h,
-            child: ListView.builder(
-                itemCount: controller.guests.length,
-                itemBuilder: (context, index) {
-                  return guestListTile(context, index, controller);
-                }),
-          )
-        ],
-      );
-    }));
+    return Scaffold(
+        body: GetX<FirebaseController>(
+            builder: (controller) {
+              return GestureDetector(
+                onTap: (){
+                  searchNode.unfocus();
+                },
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 20),
+                        //   child: SizedBox(
+                        //     width: w ,
+                        //     child: TextFormField(
+                        //       decoration: InputDecoration(
+                        //         suffixIcon: const Icon(Icons.search,color: Color(0xff505050),),
+                        //           fillColor: const Color(0xff131313),
+                        //           filled: true,
+                        //           hintText: 'Search guests',
+                        //           hintStyle: TextStyle(
+                        //             color: Colors.white.withOpacity(0.4),
+                        //           ),
+                        //           border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(10),
+                        //               borderSide: const BorderSide(
+                        //                   style: BorderStyle.none))),
+                        //       style: Theme.of(context).textTheme.headline1!
+                        //           .copyWith(color: Colors.white, fontSize: 16),
+                        //       textInputAction: TextInputAction.next,
+                        //       keyboardType: TextInputType.name,
+                        //       key: const ValueKey('username'),
+                        //       controller: searchController,
+                        //       focusNode: searchNode,
+                        //       onChanged: (text) {
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          width: w,
+                          child: ListView.builder(
+                              itemCount: controller.guests.length,
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return guestListTile(context, index, controller);
+                              }),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }));
   }
 
   void openDialogBox(BuildContext context, UserDetailsModel guest, Interests interests) {
@@ -45,7 +88,7 @@ class GuestList2 extends StatelessWidget {
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 10,
-            backgroundColor: const Color(0xff292929),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
@@ -191,7 +234,7 @@ class GuestList2 extends StatelessWidget {
                   color: const Color(0xffA4A4A4), fontSize: 13),
               );
             },
-            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            separatorBuilder: (context, index) => const SizedBox(width: 7,),
             itemCount: list.length),
       );
     }
@@ -203,7 +246,11 @@ class GuestList2 extends StatelessWidget {
     final t = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        openDialogBox(context, guests![index], interests![index]);
+        ///interestIndex is needed to fetch the index of this particular guest
+        ///If this is not used then guest and their interests will not be matched.
+        var interestIndex = interests!.indexWhere((element) => element.userId==guests![index].userId);
+        // print("Index of interest of this guest:$interestIndex");
+        openDialogBox(context, guests![index], interests![interestIndex]);
       },
       child: SizedBox(
         height: h * 0.2,
@@ -211,13 +258,10 @@ class GuestList2 extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: EdgeInsets.only(top: h*0.035),
               child: CustomPaint(
-                size: Size(
-                    w,
-                    (w * 0.5833333333333334)
-                        .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                painter: RPSCustomPainter(),
+                size: Size(w, (w * 0.5833333333333334).toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                painter: RPSCustomPainter(context),
                 child: Padding(
                   padding: EdgeInsets.only(left: w * 0.37),
                   child: Column(
@@ -233,7 +277,7 @@ class GuestList2 extends StatelessWidget {
                                 .copyWith(color: Colors.white, fontSize: 18),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                            padding: EdgeInsets.only(right: w*0.02),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: SizedBox(
@@ -257,7 +301,7 @@ class GuestList2 extends StatelessWidget {
                             .copyWith(color: const Color(0xff696969), fontSize: 12),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(w*0.02),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -277,7 +321,7 @@ class GuestList2 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(w*0.025),
               child: CircleAvatar(
                 radius: h*0.07,
                 // backgroundColor: const Color(0xff1BC100),
@@ -305,10 +349,13 @@ class GuestList2 extends StatelessWidget {
 }
 
 class RPSCustomPainter extends CustomPainter {
+  final BuildContext context;
+
+  RPSCustomPainter(this.context);
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint0 = Paint()
-      ..color = const Color(0xff292929)
+      ..color = Theme.of(context).scaffoldBackgroundColor
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 
@@ -322,7 +369,7 @@ class RPSCustomPainter extends CustomPainter {
     path0.lineTo(size.width * 0.2491667, size.height * 0.0014286);
     path0.close();
 
-    canvas.drawShadow(path0, Colors.black, 10.0, true);
+    canvas.drawShadow(path0, Colors.black, 3.5, false);
     canvas.drawPath(path0, paint0);
   }
 

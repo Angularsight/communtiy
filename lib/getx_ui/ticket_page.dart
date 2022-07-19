@@ -1,33 +1,25 @@
 
 
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/bottom_nav_page.dart';
-import 'package:communtiy/getx_ui/main_screen.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
-import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:screenshot/screenshot.dart';
 
 class TicketPage extends StatelessWidget {
    TicketPage({Key? key}) : super(key: key);
 
    final RazorPayController razorPayController = Get.find();
-   final screenshotController = ScreenshotController();
-
-
+   final OnBoardingController userController = Get.find();
 
    void uploadGuestToParty(PartyDetails party)async{
 
@@ -39,13 +31,55 @@ class TicketPage extends StatelessWidget {
      /// Uncomment the below part to add current user to the guest List.
      /// Updating guestList of the particular party using docId
      List<dynamic> newGuestList = party.guests!;
-     newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
+
+     ///If the user is already in the party then no need to add him again
+     if(!newGuestList.contains(FirebaseAuth.instance.currentUser!.uid)){
+       print("ADDED NEW GUEST TO FIREBASE");
+       newGuestList.add(FirebaseAuth.instance.currentUser!.uid);
+     }
+
+     /// Adding all friends IDs which were entered in the checkout page
+     print("Guest List Before adding friends :$newGuestList \n Friends List before adding :${razorPayController.friendsList.value}" );
+     for (var element in razorPayController.friendsList.value) {
+       newGuestList.add(element);
+     }
+     print("Guest List after adding friends:$newGuestList");
 
      FirebaseFirestore.instance.collection("PartyDetails").doc(docId).update({
        'guests': newGuestList
      });
 
-     print("UPLOADED NEW GUEST TO FIREBASE");
+     /// Add partyId to history list
+     /// Instead of storing the qr Image we have stored the information required to generate the QR image
+     /// The same information can be used to replicate the QR code in party history tab
+     var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: userController.currentUser.uid).get();
+     var userDocId = userDoc.docs[0].id;
+     FirebaseFirestore.instance.collection("UserDetails").doc(userDocId).collection("History").doc().set({
+       'partyId':party.partyId,
+       'partyImage':party.images![0],
+       'partyName':party.partyName,
+       'partyDate':party.date,
+       'partyTime':party.time,
+       'partyVenue':party.location,
+       'partyHost':razorPayController.host!.hostName,
+       'qrDetail': razorPayController.paymentId,
+     });
+
+     /// Incrementing streak of user
+     FirebaseFirestore.instance.collection("UserDetails").doc(userDocId).update({
+       'streaks': userController.userProfile.value.streaks! +1
+     });
+
+     /// Incrementing streaks of all IDs in friends list
+     for(var element in razorPayController.friendsList.value){
+       userController.updateStreaksOfFriends(element);
+     }
+
+     /// Adding all friends and user to couponUsedBy list
+     userController.updateCouponUsedByList(userController.appliedCoupon.value,
+         razorPayController.friendsList.value,
+         FirebaseAuth.instance.currentUser!.uid);
+
    }
 
   @override
@@ -55,12 +89,9 @@ class TicketPage extends StatelessWidget {
     final t = Theme.of(context);
     final party = razorPayController.partyDetails;
     final host = razorPayController.host;
-
     uploadGuestToParty(party!);
 
-    return Screenshot(
-      controller: screenshotController,
-      child: Scaffold(
+    return Scaffold(
         extendBodyBehindAppBar: true,
         body: Stack(
           children: [
@@ -198,11 +229,7 @@ class TicketPage extends StatelessWidget {
                           child: Center(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: QrImage(
-                                data: 'paymentId:${razorPayController.paymentId} \n Date:${party.date} @${party.time} \n Venue:${party.location} \n Host:${host.hostName}',
-                                backgroundColor: Colors.white,
-                                size: 200,
-                              ),
+                              child: fetchQrImage(party, host),
                             ),
                           ),
 
@@ -256,8 +283,20 @@ class TicketPage extends StatelessWidget {
 
           ],
         ),
-      ),
-    );
+      );
+  }
+
+  QrImage fetchQrImage(PartyDetails party, HostModel host) {
+
+    return QrImage(
+                              data:'partyName:${party.partyName}\n'
+                                  'paymentId:${razorPayController.paymentId} \n '
+                                  'Date:${party.date} @${party.time} \n '
+                                  'NoOfTickets:${razorPayController.friendsList.value.length}'
+                                  'Venue:${party.location} \n '
+                                  'Host:${host.hostName}',
+                              backgroundColor: Colors.white,
+                              size: 200,);
   }
 
    Padding buildPartyDetailRow(BuildContext context,String head,String headText, String tail ,String tailText) {
@@ -324,35 +363,6 @@ class TicketPage extends StatelessWidget {
        ),
      );
    }
-
-  Future<String> saveImageToGallery(BuildContext context,Uint8List screenshot) async{
-
-    /// SAVING IMAGE PART
-    /// Requesting storage permission from the mobile to store the image in gallery
-    // await [Permission.storage].request();
-
-    final imageName = 'ticket_${DateTime.now().toIso8601String().replaceAll('.', "_").replaceAll(":", "_")}';
-
-    /// This saves the taken screenshot into the gallery and returns the path of the file
-    final result = await ImageGallerySaver.saveImage(screenshot,name: imageName);
-    Scaffold.of(context).showSnackBar(SnackBar(content: Container(
-      width: double.infinity,
-      height: 50,
-      child: Row(
-        children: [
-          Text("Screenshot saved to Gallery",style: Theme.of(context).textTheme.headline1!.copyWith(
-            fontSize: 18,
-            color: Colors.white
-          ),),
-          const SizedBox(width: 10,),
-          Icon(CustomIcons.check,color: Colors.green,)
-        ],
-      ),
-    )));
-    return result['filePath'];
-
-  }
-
 
 }
 
