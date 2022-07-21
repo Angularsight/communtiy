@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../controllers/onboarding_controller.dart';
 import 'new_ui/coupons_screen.dart';
 
@@ -346,7 +345,10 @@ class _MainScreenState extends State<MainScreen> {
                 height: h*0.55,
                 // duration: const Duration(milliseconds: 400),
                 child:partyController.parties[index].images![0]!=null?
-                Image.network(partyController.parties[index].images![0].toString(),fit: BoxFit.cover,)
+                Image.network(partyController.parties[index].images![0].toString(),fit: BoxFit.cover,
+                  errorBuilder: (context,widget,reason){
+                    return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),);
+                  },)
                     : Image.asset("assets/images/default profile image.png"),
               ),
               Padding(
