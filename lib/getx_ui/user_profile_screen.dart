@@ -140,7 +140,10 @@ class UserProfileScreen extends StatelessWidget {
                             color: Colors.transparent,
                           ),
                           child: controller.userProfile.value.userProfilePic!=null?
-                          Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,)
+                          Image.network(user.userProfilePic.toString(),fit: BoxFit.cover,
+                              errorBuilder: (context,widget,reason){
+                                return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),);
+                              })
                               :Image.asset('assets/images/Drinks with Wings 3.png',fit: BoxFit.cover,),
                           // child: fetchProfileImage(user),
                           // child: Image.asset('assets/images/Rectangle 101.png',fit: BoxFit.cover,),
