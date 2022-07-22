@@ -1,7 +1,9 @@
 
 
+import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
+import 'package:communtiy/getx_ui/new_ui/new_user_upload.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -264,7 +266,6 @@ class UserProfileScreen extends StatelessWidget {
                               child: const Center(child: Text("Cancel",style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xff1A3841),
-
                                   fontSize: 16
                               ),),),
                             ),
@@ -276,9 +277,18 @@ class UserProfileScreen extends StatelessWidget {
                 });
           }else if(heading=="History"){
             Get.to(()=> PartyHistory());
+
           }else if(heading=='About You'){
-            var interests = await userController.fetchUserInterests(userController.userProfile.value.userId.toString());
-            Get.to(()=> AboutYouScreen(interests: interests,));
+            final AuthController authController = Get.find();
+            var userExistence = await authController.checkUserExistence3(FirebaseAuth.instance.currentUser!.uid);
+
+            if(userExistence==true){
+              var interests = await userController.fetchUserInterests(userController.userProfile.value.userId.toString());
+              Get.to(()=> AboutYouScreen(interests: interests,));
+            }else{
+              Get.to(()=>NewUserUpload(phoneNumber: FirebaseAuth.instance.currentUser!.phoneNumber,));
+            }
+
           }
         },
         child: Container(

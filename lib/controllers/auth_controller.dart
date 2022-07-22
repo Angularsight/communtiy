@@ -85,7 +85,20 @@ class AuthController extends GetxController{
     print("result of checkUserExistence2:${res.length}");
     bool existenceOfUser = res.length >=1;
     return existenceOfUser;
+  }
 
+  Future<bool> checkUserExistence3(String userId)async{
+    final res = await FirebaseFirestore.instance
+        .collection("UserDetails")
+        .where("userId",isEqualTo: userId)
+        .get()
+        .then((query) {
+      var users = query.docs.map((e) => UserDetailsModel.fromDocument(e)).toList();
+      return users;
+    });
+    print("result of checkUserExistence3:${res.length}");
+    bool existenceOfUser = res.length >=1;
+    return existenceOfUser;
   }
 
 }

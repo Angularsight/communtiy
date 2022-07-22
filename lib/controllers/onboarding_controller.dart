@@ -50,10 +50,6 @@ class OnBoardingController extends GetxController{
   Stream<UserDetailsModel> connectUserToApp(){
 
     if(currentUser.phoneNumber!.isNotEmpty){
-      // print('OnBoarding Phone No:${currentUser.phoneNumber}');
-      // String formattedPhoneNo = currentUser.phoneNumber!.substring(3);
-      // print('Formatted Phone No:$formattedPhoneNo');
-      // print("currentId:${currentUser.uid}");
       var res = FirebaseFirestore.instance.collection('UserDetails')
           .where('userId',isEqualTo: currentUser.uid)
           .snapshots()

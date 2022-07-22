@@ -32,6 +32,12 @@ class CouponsScreen extends StatelessWidget {
             padding: EdgeInsets.all(w*0.05),
             child: GetX<OnBoardingController>(
               builder: (ctrl) {
+                int streaksValue = -1;
+                if(ctrl.userProfile.value.streaks!=null){
+                  streaksValue = ctrl.userProfile.value.streaks!;
+                } else{
+                  streaksValue = 0;
+                }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -101,7 +107,7 @@ class CouponsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: Center(
-                        child: Text("Streaks : ${ctrl.userProfile.value.streaks}",style: t.textTheme.headline1!.copyWith(
+                        child: Text("Streaks : $streaksValue",style: t.textTheme.headline1!.copyWith(
                           // color: Color(0xffDFA91D),
                           fontSize: 18,
                           color: Colors.black,

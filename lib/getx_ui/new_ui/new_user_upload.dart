@@ -59,6 +59,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
   String height = '';
   String pet = "";
   String _radioValue = 'Single';
+  String _radioValueGender = "Male";
 
   List<String> chipSelectList = [];
   List<String> userInterestDescription = [];
@@ -165,7 +166,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
   void _uploadDataToFirebase() {
     if(currentUser.phoneNumber!.isNotEmpty){
-
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
         'userName':username,
@@ -176,7 +176,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
-        'streaks':1
+        'streaks':1,
+        'gender':_radioValueGender.toString()
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -189,7 +190,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
-        'streaks':1
+        'streaks':1,
+        'gender':_radioValueGender.toString()
       });
     }
 
@@ -274,7 +276,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
           height: h*0.06,
           child: Row(
             children: [
-              selectedStep>0?InkWell(
+              InkWell(
                 onTap: (){
                   Get.offAll(()=>BottomNavigationPage());
                 },
@@ -289,7 +291,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                     fontSize: 16
                   ),),),
                 ),
-              ):Row(),
+              ),
               InkWell(
                 onTap: (){
                   setState(() {
@@ -371,7 +373,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                   });
                 },
                 child: Container(
-                  width: selectedStep==0?w:w*0.5,
+                  width: w*0.5,
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor
                   ),
@@ -750,6 +752,39 @@ class _NewUserUploadState extends State<NewUserUpload> {
                   onChanged: (String? val){
                     setState(() {
                       _radioValue = val!;
+                    });
+                  }),
+            ],
+          ),
+          const Text("Gender",style: t1,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              RadioButton(
+                  activeColor: Theme.of(context).primaryColor,
+                  description: "Male",
+                  value: "Male",
+                  textStyle: t1.copyWith(
+                      color: Colors.white
+                  ),
+                  groupValue: _radioValueGender,
+                  onChanged: (String? val){
+                    setState(() {
+                      _radioValueGender = val!;
+                    });
+                  }),
+              const SizedBox(width: 10,),
+              RadioButton(
+                  activeColor: Theme.of(context).primaryColor,
+                  description: "Female",
+                  value: "Female",
+                  textStyle: t1.copyWith(
+                      color: Colors.white
+                  ),
+                  groupValue: _radioValueGender,
+                  onChanged: (String? val){
+                    setState(() {
+                      _radioValueGender = val!;
                     });
                   }),
             ],
