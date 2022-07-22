@@ -431,24 +431,35 @@ class _MainScreenState extends State<MainScreen> {
 
                 Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
                 SizedBox(width: w*0.03,),
-                InkWell(
-                  onTap: ()async{
-                    var couponImages = await userController.fetchCouponImages();
-                    var discountAndImages = await userController.fetchDiscountAndImages();
-                    Get.to(()=>CouponsScreen(couponImages: couponImages, discountAndImage: discountAndImages,));
-                  },
-                  child: ClipOval(
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      radius: w*0.045,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/Drinks with wings 4.png'),
-                            fit: BoxFit.cover,
-                          )
-                        ),
-                      )
+                Ink(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: ()async{
+                      var couponImages = await userController.fetchCouponImages();
+                      var discountAndImages = await userController.fetchDiscountAndImages();
+                      Get.to(()=>CouponsScreen(couponImages: couponImages, discountAndImage: discountAndImages,));
+                    },
+                    child: ClipOval(
+                      child: CircleAvatar(
+                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        radius: w*0.042,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/Drinks with wings 7.png'),
+                              fit: BoxFit.contain,
+                            )
+                          ),
+                        )
+                      ),
                     ),
                   ),
                 )
