@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -151,7 +152,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
     print(urlList2);
 
-    final ref2 = FirebaseStorage.instance.ref().child('users').child(username).child('profile pic').child(username+'.jpg');
+    final ref2 = FirebaseStorage.instance.ref().child('users').child(username.trim()).child('profile pic').child(username+'.jpg');
     await ref2.putFile(userProfilePic[0]).whenComplete(() async {
       await ref2.getDownloadURL().then((value) {
         userProfilePicUrlList.add(value);
@@ -165,13 +166,23 @@ class _NewUserUploadState extends State<NewUserUpload> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   void _uploadDataToFirebase() {
+
+    String phoneNumber = '';
+    if(widget.phoneNumber!.length==12){
+      /// In case the user fills the form from about_you page
+      phoneNumber = widget.phoneNumber!.substring(2);
+    }else{
+      /// In case the user fills the form after on boarding screens
+      phoneNumber = widget.phoneNumber!;
+    }
+
     if(currentUser.phoneNumber!.isNotEmpty){
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
         'userName':username,
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
-        'phoneNumber':int.parse(widget.phoneNumber!),
+        'phoneNumber':int.parse(phoneNumber),
         'location':location,
         'age':int.parse(age),
         'xp':int.parse('5'),
@@ -946,6 +957,11 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                     setState(() {
                                       final userDescriptionList = userInterestDescription;
                                       userInterests.insert(0,UserInterest(interestOptions[interestOptionSelected], userDescriptionList));
+                                      Fluttertoast.showToast(
+                                        msg: 'Favorite ${interestOptions[interestOptionSelected]} list added',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER
+                                      );
                                     });
                                   },
                                   child: Container(
