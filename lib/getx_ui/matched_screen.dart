@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
-import 'package:communtiy/utils/icons.dart';
 import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -251,35 +250,6 @@ class MatchedScreen extends StatelessWidget {
             ],
           ),
         ),
-        // leading: Builder(
-        //   builder: (BuildContext context) {
-        //     return Padding(
-        //       padding:EdgeInsets.only(bottom: h*0.02, top: h*0.01),
-        //       child: IconButton(
-        //         icon: Icon(
-        //           CustomIcons.hamburger,
-        //           size: 30,
-        //         ),
-        //         onPressed: () {
-        //           return Scaffold.of(context).openDrawer();
-        //         },
-        //       ),
-        //     );
-        //   },
-        // ),
-        // actions: [
-        //   Padding(
-        //     padding: EdgeInsets.only(top: h*0.01, right: h*0.015),
-        //     child: InkWell(
-        //       splashColor: Colors.red,
-        //       onTap: () {},
-        //       child: const Icon(
-        //         Icons.account_circle,
-        //         size: 30,
-        //       ),
-        //     ),
-        //   ),
-        // ]
     );
   }
 

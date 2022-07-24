@@ -21,7 +21,7 @@ import 'package:steps_indicator/steps_indicator.dart';
 
 class UserInterest{
   final String heading;
-  final List<String> description;
+  List<String> description;
 
   UserInterest(this.heading, this.description);
 }
@@ -509,7 +509,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Tell us about yourself",style: TextStyle(
+            const Text("Tell us about yourself *",style: TextStyle(
               fontSize: 20,
               color: Color(0xffD3D3D3),
               fontWeight: FontWeight.bold,
@@ -764,6 +764,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                     setState(() {
                       _radioValue = val!;
                     });
+                    showOnlyForSinglesPopUp(context);
+                    setState(() {
+                      _radioValue = 'Single';
+                    });
                   }),
             ],
           ),
@@ -923,7 +927,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
             SizedBox(height: h*0.02,),
             Container(
               width: w,
-              height: h*0.45,
+              // height: h*0.45,
               decoration: BoxDecoration(
                 gradient: Themes.transparentGradient,
                 borderRadius: BorderRadius.circular(10)
@@ -956,12 +960,26 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                   onTap: (){
                                     setState(() {
                                       final userDescriptionList = userInterestDescription;
-                                      userInterests.insert(0,UserInterest(interestOptions[interestOptionSelected], userDescriptionList));
-                                      Fluttertoast.showToast(
-                                        msg: 'Favorite ${interestOptions[interestOptionSelected]} list added',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.CENTER
-                                      );
+                                      var itemIndex = userInterests.indexWhere((element) => element.heading==interestOptions[interestOptionSelected]);
+                                      print("Item to be inserted bool :$itemIndex");
+                                      if(itemIndex!=-1){
+                                        print("Entered in contains field");
+                                        userInterests[itemIndex] = UserInterest(interestOptions[interestOptionSelected], userDescriptionList);
+                                        Fluttertoast.showToast(
+                                            msg: 'Favorite ${interestOptions[interestOptionSelected]} list updated',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER
+                                        );
+                                      }else{
+                                        userInterests.insert(0,UserInterest(interestOptions[interestOptionSelected], userDescriptionList));
+                                        Fluttertoast.showToast(
+                                            msg: 'Favorite ${interestOptions[interestOptionSelected]} list added',
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER
+                                        );
+                                      }
+
+
                                     });
                                   },
                                   child: Container(
@@ -985,7 +1003,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                           const SizedBox(height: 5,),
                           Container(
                             width: w*0.8,
-                            height: h*0.23,
+                            // height: h*0.23,
                             decoration: const BoxDecoration(
                               color: Color(0xff1A3841),
                               borderRadius: BorderRadius.only(
@@ -998,7 +1016,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: h * 0.06,
+                                    height: h * 0.07,
                                     width: w * 0.8,
                                     child: TextFormField(
                                       autocorrect: true,
@@ -1106,14 +1124,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
                       ),
 
-                    //   choiceActiveStyle: C2ChoiceStyle(
-                    //       brightness: Brightness.dark,
-                    //       color: Theme.of(context).primaryColor,
-                    //       borderShape: RoundedRectangleBorder(
-                    //           borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    //           side: BorderSide(color: Theme.of(context).primaryColor)),
-                    //       labelStyle: const TextStyle(fontSize: 12, color: Colors.black),
-                    // ),
 
                     )
 
@@ -1310,6 +1320,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                   InkWell(
                     onTap: (){
                       setState(() {
+                        userInterests[index].description = [];
                         userInterests.removeAt(index);
                       });
                     },
@@ -1329,6 +1340,42 @@ class _NewUserUploadState extends State<NewUserUpload> {
       ),
     );
 
+  }
+
+  void showOnlyForSinglesPopUp(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)
+            ),
+            backgroundColor: Theme.of(context).canvasColor,
+            title: const Center(child: Text("We apologize")),
+            content: const Text("This app is only for singles as of now",textAlign: TextAlign.center,),
+            actions: [
+              Row(
+                mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: (){
+
+                        Navigator.pop(context);
+                      },
+                      child: const Center(child: Text("Ok",style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.redAccent,
+                          fontSize: 16
+                      ),),),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 
 }
