@@ -93,7 +93,7 @@ class GuestList2 extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
                 width: w * 0.75,
-                height: h * 0.7,
+                height: h * 0.6,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -133,24 +133,8 @@ class GuestList2 extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Does\'nt matter if you win by an inch or a mile winning is winning', style: t.textTheme.headline1!.copyWith(
-                                color: Colors.white, fontSize: 16),
-                            ),
-                            SizedBox(height: h*0.008),
-                            Text("Bio", style: t.textTheme.headline3!.copyWith(color: const Color(0xffC0C0C0)),
-                            ),
-                            Row(
-                              children: [
-                                Text("Height : ${interests.height}", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),
-                                ),
-                                SizedBox(
-                                  width: h*0.008,
-                                ),
-                                Text("Weight : 60kgs", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),
-                                ),
-                              ],
+                            Text('Interests', style: t.textTheme.headline1!.copyWith(
+                                color: Colors.white, fontSize: 20),
                             ),
                             SizedBox(height: h*0.008),
                             Text("Favorites", style: t.textTheme.headline3!.copyWith(
@@ -190,12 +174,16 @@ class GuestList2 extends StatelessWidget {
                             Text("Pet : ${interests.pet}", style: t.textTheme.headline3!.copyWith(
                                 color: const Color(0xffA4A4A4), fontSize: 13),),
 
-                            const SizedBox(height: 20,),
-                            Text("Hobbies and Likes", style: t.textTheme.headline3!.copyWith(
-                                color: const Color(0xffC0C0C0)),
+                            const SizedBox(
+                              height: 5,
                             ),
-                            const SizedBox(height: 5,),
-                            buildInterestAttributeList(h, w, interests.series, t, true)
+                            Row(
+                              children: [
+                                Text("Series : ", style: t.textTheme.headline3!.copyWith(
+                                    color: const Color(0xffA4A4A4), fontSize: 13),),
+                                buildInterestAttributeList(h, w, interests.series, t, false)
+                              ],
+                            ),
                           ],
                         ),
                       )
@@ -300,21 +288,21 @@ class GuestList2 extends StatelessWidget {
                         style: t.textTheme.headline1!
                             .copyWith(color: const Color(0xff696969), fontSize: 12),
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(w*0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Icon(
-                                CustomIcons.threeDotsHorizontal,
-                                color: t.primaryColor,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
+                      // Padding(
+                      //   padding: EdgeInsets.all(w*0.02),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       InkWell(
+                      //         onTap: () {},
+                      //         child: Icon(
+                      //           CustomIcons.threeDotsHorizontal,
+                      //           color: t.primaryColor,
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
