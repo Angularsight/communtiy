@@ -140,7 +140,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       final ref = FirebaseStorage.instance
           .ref()
           .child("users")
-          .child(username.trim())
+          .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(2)})').trim())
           .child(username + i.toString() + '.jpg');
       await ref.putFile(imageList2[j]).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
@@ -152,7 +152,9 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
     print(urlList2);
 
-    final ref2 = FirebaseStorage.instance.ref().child('users').child(username.trim()).child('profile pic').child(username+'.jpg');
+    final ref2 = FirebaseStorage.instance.ref().child('users')
+        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
+        .child('profile pic').child(username+'.jpg');
     await ref2.putFile(userProfilePic[0]).whenComplete(() async {
       await ref2.getDownloadURL().then((value) {
         userProfilePicUrlList.add(value);
@@ -196,7 +198,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'userName':username,
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
-        'phoneNumber':int.parse(widget.phoneNumber!),
+        'phoneNumber':int.parse(phoneNumber),
         'location':location,
         'age':int.parse(age),
         'xp':int.parse('5'),
@@ -364,8 +366,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                         onTap: ()async{
                                           Navigator.pop(context);
                                           Themes.showProgressDialogWithoutText(context);
-                                          await _prepareDataForFirebase();
-                                          _uploadInterestToFirebase();
+                                          // await _prepareDataForFirebase();
+                                          // _uploadInterestToFirebase();
                                           // Get.offAll(()=>BottomNavigationPage());
                                         },
                                         child: const Center(child: Text("Confirm",style: TextStyle(
@@ -646,9 +648,10 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 decoration: InputDecoration(
                     fillColor: const Color(0xff838383),
                     filled: true,
-                    hintText: 'Ex:24',
+                    hintText: 'Ex: Navrang, Bangalore - 560010',
                     hintStyle: TextStyle(
                       color: Colors.white.withOpacity(0.4),
+                      fontSize: 14
                     ),
                     suffixIcon: const Icon(Icons.location_on_outlined,color: Color(0xffD3D3D3),),
                     border: OutlineInputBorder(
@@ -721,7 +724,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("What's your status?",style: TextStyle(
+          const Text("What's your status? *",style: TextStyle(
               fontSize: 20,
               color: Color(0xffD3D3D3),
               fontWeight: FontWeight.bold,

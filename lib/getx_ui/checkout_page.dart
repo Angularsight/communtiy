@@ -291,7 +291,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       int checkoutAmount = getCheckAmount();
                       if(userController.userProfile.value.userName==null){
                         Fluttertoast.showToast(
-                            msg: "Complete onboarding in profile to proceed",
+                            msg: "Complete About You in profile to proceed",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.SNACKBAR,
                             timeInSecForIosWeb: 1,

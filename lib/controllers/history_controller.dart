@@ -22,7 +22,7 @@ class HistoryController extends GetxController{
     }catch (r){
       historyList.value = [];
       Fluttertoast.showToast(
-          msg: "Complete onboarding to see history",
+          msg: "Complete About You to see history",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
           timeInSecForIosWeb: 1,

@@ -531,12 +531,13 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                         children: [
                           InkWell(
                             onTap: ()async{
-                              editedInterestList.remove('');
-                              if(editedInterestList==newInterestList){
+                              var properList = interestController.text.split(',');
+                              properList.remove('');
+                              if(properList==newInterestList){
                                 Navigator.pop(context);
                               }else{
                                // print("Not same:$editedInterestList , $newInterestList");
-                               await updateInterest(variable, editedInterestList);
+                               await updateInterest(variable, properList);
                                Navigator.pop(context);
                               }
                             },

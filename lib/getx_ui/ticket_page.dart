@@ -287,13 +287,13 @@ class TicketPage extends StatelessWidget {
   }
 
   QrImage fetchQrImage(PartyDetails party, HostModel host) {
-
-    return QrImage(
+     var noOfTickets = razorPayController.friendsList.value.length + 1; // Here 1 is the user himself
+     return QrImage(
                               data:'partyName:${party.partyName}\n'
-                                  'paymentId:${razorPayController.paymentId} \n '
-                                  'Date:${party.date} @${party.time} \n '
-                                  'NoOfTickets:${razorPayController.friendsList.value.length}'
-                                  'Venue:${party.location} \n '
+                                  'paymentId:${razorPayController.paymentId}\n '
+                                  'Date:${party.date} @${party.time}\n '
+                                  'NoOfTickets:$noOfTickets\n'
+                                  'Venue:${party.location}\n '
                                   'Host:${host.hostName}',
                               backgroundColor: Colors.white,
                               size: 200,);

@@ -14,6 +14,7 @@ class UserDetailsModel {
   List? images;
   int? streaks;
   String? gender;
+  String? email;
 
   UserDetailsModel({ this.userId,
     this.userName,
@@ -25,7 +26,8 @@ class UserDetailsModel {
     this.xp,
     this.images,
     this.streaks,
-    this.gender
+    this.gender,
+    this.email
   });
 
 
@@ -42,7 +44,8 @@ class UserDetailsModel {
         phoneNumber: d['phoneNumber'],
         images: d['images'],
         streaks: d['streaks'],
-        gender: d['gender']
+        gender: d['gender'],
+        email: d['email']
     );
   }
 

@@ -175,6 +175,7 @@ class PartyHistory extends StatelessWidget {
   }
 
   void showQrCodeImage(BuildContext context,History history) {
+    var noOfTickets = razorPayController.friendsList.value.length + 1; // Here 1 is the user himself
     showDialog(
         context: context,
         builder: (context){
@@ -196,10 +197,10 @@ class PartyHistory extends StatelessWidget {
                     height: h*0.38,
                     child: QrImage(
                       data:'partyName:${history.partyName}\n'
-                          'paymentId:${history.qrDetail} \n '
-                          'Date:${history.partyDate} @${history.partyTime} \n '
-                          'NoOfTickets:${razorPayController.friendsList.value.length}'
-                          'Venue:${history.partyVenue} \n '
+                          'paymentId:${history.qrDetail}\n '
+                          'Date:${history.partyDate} @${history.partyTime}\n '
+                          'NoOfTickets:$noOfTickets\n'
+                          'Venue:${history.partyVenue}\n '
                           'Host:${history.partyHost}',
                       backgroundColor: Colors.transparent,
                       size: h*0.5,)

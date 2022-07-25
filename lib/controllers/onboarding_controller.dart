@@ -161,7 +161,7 @@ class OnBoardingController extends GetxController{
     final ref = FirebaseStorage.instance
         .ref()
         .child("users")
-        .child(username)
+        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(2)})').trim())
         .child(username + i.toString() + '.jpg');
     await ref.putFile(replacementImage).whenComplete(() async {
       await ref.getDownloadURL().then((value) {
