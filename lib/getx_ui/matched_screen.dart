@@ -9,7 +9,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class MatchedScreen extends StatelessWidget {
   MatchedScreen({Key? key}) : super(key: key);
 
-  final FirebaseController controller = Get.find();
+  final FirebaseController controller = Get.put(FirebaseController());
   final PageController pageController = PageController(initialPage: 0, viewportFraction: 1);
   int currentIndex =0;
 

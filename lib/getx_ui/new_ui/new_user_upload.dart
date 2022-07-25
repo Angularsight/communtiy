@@ -39,6 +39,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController occupationController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
   final TextEditingController petController = TextEditingController();
@@ -49,6 +50,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
   late FocusNode userNameNode;
   late FocusNode ageNode;
   late FocusNode locationNode;
+  late FocusNode emailNode;
   late FocusNode occupationNode;
   late FocusNode heightNode;
   late FocusNode petNode;
@@ -56,6 +58,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
   String username = '';
   String age = '';
   String location = '';
+  String email = '';
   String occupation = '';
   String height = '';
   String pet = "";
@@ -86,7 +89,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     ///Image compression part
     var compressedFileUintList = await FlutterImageCompress.compressWithFile(
         pickedImageFile.absolute.path,
-        quality: 25
+        quality: 10
     );
     final tempDirectory = await getTemporaryDirectory();
     final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
@@ -99,7 +102,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     setState(() {
       pickedImageBool2 = true;
       pickedImage2 = pickedImageFile;
-      imageList2.add(pickedImageFile);
+      imageList2.add(compressedFile);
       photoIndex2 = imageList2.length - 1;
     });
   }
@@ -107,7 +110,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
 
   bool userImagePickedBool = false;
   List<File> userProfilePic = [];
-  void _pickDJImage() async {
+  void _pickProfileImage() async {
     final imagePicker = ImagePicker();
     final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     final pickedImageFile = File(selectedImage!.path);
@@ -117,7 +120,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     ///Image compression part
     var compressedFileUintList = await FlutterImageCompress.compressWithFile(
       pickedImageFile.absolute.path,
-      quality: 25
+      quality: 10
     );
     final tempDirectory = await getTemporaryDirectory();
     final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
@@ -140,7 +143,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
       final ref = FirebaseStorage.instance
           .ref()
           .child("users")
-          .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(2)})').trim())
+          .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
           .child(username + i.toString() + '.jpg');
       await ref.putFile(imageList2[j]).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
@@ -170,14 +173,15 @@ class _NewUserUploadState extends State<NewUserUpload> {
   void _uploadDataToFirebase() {
 
     String phoneNumber = '';
-    if(widget.phoneNumber!.length==12){
+    if(widget.phoneNumber!.length==13){
       /// In case the user fills the form from about_you page
-      phoneNumber = widget.phoneNumber!.substring(2);
+      phoneNumber = widget.phoneNumber!.substring(3);
     }else{
       /// In case the user fills the form after on boarding screens
       phoneNumber = widget.phoneNumber!;
     }
 
+    print("Phone number before upload :$phoneNumber");
     if(currentUser.phoneNumber!.isNotEmpty){
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
@@ -185,12 +189,13 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
         'phoneNumber':int.parse(phoneNumber),
-        'location':location,
+        'location':'Navrang,Bangalore-560010',
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
         'streaks':1,
-        'gender':_radioValueGender.toString()
+        'gender':_radioValueGender.toString(),
+        'email':email
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
@@ -199,12 +204,13 @@ class _NewUserUploadState extends State<NewUserUpload> {
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
         'phoneNumber':int.parse(phoneNumber),
-        'location':location,
+        'location':'Navrang,Bangalore-560010',
         'age':int.parse(age),
         'xp':int.parse('5'),
         'images':urlList2,
         'streaks':1,
-        'gender':_radioValueGender.toString()
+        'gender':_radioValueGender.toString(),
+        'email':email
       });
     }
 
@@ -214,12 +220,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
   }
 
   void _uploadInterestToFirebase() {
-    // var anime = interestController.animeList.value;
-    // var movies = interestController.movies.value;
-    // var series = interestController.series.value;
-    // var drama = interestController.dramaList.value;
-    // var sport = interestController.sports.value;
-
     var anime = [];
     var movies = [];
     var series = [];
@@ -268,6 +268,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     occupationNode = FocusNode();
     heightNode = FocusNode();
     petNode = FocusNode();
+    emailNode = FocusNode();
   }
 
   @override
@@ -318,8 +319,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
                           content: Text('Please enter all fields to move forward',),
                         ));
                       }
-                      // selectedStep = selectedStep+1;
-                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                     }else if(selectedStep==1){
                       if(_radioValue!='' && occupation!='' && _pinPutController.text!='' && pet!=''){
                         selectedStep = selectedStep+1;
@@ -330,8 +329,6 @@ class _NewUserUploadState extends State<NewUserUpload> {
                             backgroundColor: Colors.redAccent,
                             content: Text('Please enter all fields to move forward',)));
                       }
-                      // selectedStep = selectedStep+1;
-                      // pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                     }else if(selectedStep==2){
                       showDialog(
                           context: context,
@@ -366,9 +363,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
                                         onTap: ()async{
                                           Navigator.pop(context);
                                           Themes.showProgressDialogWithoutText(context);
-                                          // await _prepareDataForFirebase();
-                                          // _uploadInterestToFirebase();
-                                          // Get.offAll(()=>BottomNavigationPage());
+                                          await _prepareDataForFirebase();
+                                          _uploadInterestToFirebase();
                                         },
                                         child: const Center(child: Text("Confirm",style: TextStyle(
                                             fontWeight: FontWeight.w500,
@@ -631,7 +627,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
                         onFieldSubmitted: (text) {
                           age = text;
-                          FocusScope.of(context).requestFocus(locationNode);
+                          FocusScope.of(context).requestFocus(emailNode);
                         },
                       ),
                     ),
@@ -640,7 +636,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
               ],
             ),
             const SizedBox(height: 8,),
-            const Text("Home Location",style: t1,),
+            const Text("Email",style: t1,),
             const SizedBox(height: 2,),
             SizedBox(
               width: w * 0.8,
@@ -648,12 +644,12 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 decoration: InputDecoration(
                     fillColor: const Color(0xff838383),
                     filled: true,
-                    hintText: 'Ex: Navrang, Bangalore - 560010',
+                    hintText: 'Ex: anything@gmail.com',
                     hintStyle: TextStyle(
-                      color: Colors.white.withOpacity(0.4),
-                      fontSize: 14
+                        color: Colors.white.withOpacity(0.4),
+                        fontSize: 14
                     ),
-                    suffixIcon: const Icon(Icons.location_on_outlined,color: Color(0xffD3D3D3),),
+                    suffixIcon: const Icon(Icons.email_outlined,color: Color(0xffD3D3D3),),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
@@ -664,16 +660,50 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
-                key: const ValueKey('Location'),
-                controller: locationController,
-                focusNode: locationNode,
+                key: const ValueKey('Email'),
+                controller: emailController,
+                focusNode: emailNode,
                 // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
                 onFieldSubmitted: (text) {
-                  location = text;
+                  email = text;
                   // FocusScope.of(context).requestFocus(locationNode);
                 },
               ),
             ),
+            // const Text("Home Location",style: t1,),
+            // const SizedBox(height: 2,),
+            // SizedBox(
+            //   width: w * 0.8,
+            //   child: TextFormField(
+            //     decoration: InputDecoration(
+            //         fillColor: const Color(0xff838383),
+            //         filled: true,
+            //         hintText: 'Ex: Navrang, Bangalore - 560010',
+            //         hintStyle: TextStyle(
+            //           color: Colors.white.withOpacity(0.4),
+            //           fontSize: 14
+            //         ),
+            //         suffixIcon: const Icon(Icons.location_on_outlined,color: Color(0xffD3D3D3),),
+            //         border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //             borderSide: const BorderSide(
+            //                 style: BorderStyle.none))),
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //     textInputAction: TextInputAction.next,
+            //     keyboardType: TextInputType.name,
+            //     key: const ValueKey('Location'),
+            //     controller: locationController,
+            //     focusNode: locationNode,
+            //     // onEditingComplete: ()=>Focus.of(context).requestFocus(locationNode),
+            //     onFieldSubmitted: (text) {
+            //       location = text;
+            //       // FocusScope.of(context).requestFocus(locationNode);
+            //     },
+            //   ),
+            // ),
 
             SizedBox(height: h*0.02,),
             Text(
@@ -1275,7 +1305,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
         child: Center(
             child: InkWell(
               onTap: () {
-                _pickDJImage();
+                _pickProfileImage();
               },
               child: Container(
                   height: 50,
@@ -1370,7 +1400,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                       child: const Center(child: Text("Ok",style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.redAccent,
-                          fontSize: 16
+                          fontSize: 18
                       ),),),
                     ),
                   ),

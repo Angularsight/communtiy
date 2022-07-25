@@ -38,6 +38,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
   ///For Chips Choice
   List<int> selectedOption = [];
   bool imageLoading = false;
+  bool proPicLoading = false;
   int loadingIndex = 0;
 
   @override
@@ -83,21 +84,40 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                        radius: w*0.15,
+                      FocusedMenuHolder(
+
+                        blurBackgroundColor: Colors.blueGrey[900],
+                        onPressed: (){},
+                        bottomOffsetHeight: 10,
+                        menuOffset: 10,
+                        menuWidth: w*0.4-5,
+                        menuItems: [
+                          FocusedMenuItem(
+                            title: const Text("Replace image"),
+                            onPressed: ()async{
+                              setState(() {
+                                proPicLoading= true;
+                              });
+                              var newImage = await userController.pickImageFromGallery();
+                              var newImageUrl = await userController.updateProfilePicToStorage(user.userName.toString(), newImage);
+                              await userController.updateProPicToFirebase(user.userName.toString(), newImageUrl);
+                              setState(() {
+                                user.userProfilePic = newImageUrl;
+                                proPicLoading = false;
+                              });
+                            },
+                            trailingIcon: const Icon(Icons.image,size: 20,),
+                            backgroundColor: Theme.of(context).canvasColor,
+                          )
+                        ],
                         child: CircleAvatar(
-                          radius: w*0.15-5,
-                          child: ClipOval(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(user.userProfilePic.toString()),
-                                      fit: BoxFit.cover
-                                  )
-                              ),
-                            ),
-                          ),
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          radius: w*0.15,
+                          child: (proPicLoading==false)?CircleAvatar(
+                            radius: w*0.15-5,
+                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                            backgroundImage: NetworkImage(user.userProfilePic.toString()),
+                          ):Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),),
                         ),
                       ),
                     ],
@@ -244,60 +264,50 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
             ],
           ),
           SizedBox(height: h*0.005,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Location",style: t1.copyWith(
-                    color: Colors.white,
-                    fontSize: 18
-                  ),),
-                  SizedBox(
-                    // width: w*0.23,
-                    height: h*0.1,
-                    child: Text('${address[0]}\n${address[1]}',style:t1.copyWith(
-                      color:const Color(0xffDFA91D),
-                      fontSize: 14
-                    )),
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Age",style: t1.copyWith(
-                      color: Colors.white,
+                      color: Colors.grey,
                       fontSize: 18
                   ),),
-                  SizedBox(
-                    // width: w*0.23,
-                    height: h*0.1,
-                    child: Text(user.age.toString(),style:t1.copyWith(
-                        color:Colors.white,
-                        fontSize: 14
-                    )),
-                  )
+                  Text(user.age.toString(),style:t1.copyWith(
+                      color:Colors.white,
+                      fontSize: 14
+                  ))
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: h*0.005,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Phone",style: t1.copyWith(
-                      color: Colors.white,
+                      color: Colors.grey,
                       fontSize: 18
                   ),),
-                  SizedBox(
-                    // width: w*0.23,
-                    height: h*0.1,
-                    child: Text(user.phoneNumber.toString(),style:t1.copyWith(
-                        color:const Color(0xff61FF00),
-                        fontSize: 14
-                    )),
-                  )
+                  Text(user.phoneNumber.toString(),style:t1.copyWith(
+                      color:const Color(0xff61FF00),
+                      fontSize: 14
+                  ))
                 ],
-              )
+              ),
+              SizedBox(height: h*0.005,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Email",style: t1.copyWith(
+                      color: Colors.grey,
+                      fontSize: 18
+                  ),),
+                  Text('${user.email}',style:t1.copyWith(
+                      color:const Color(0xffDFA91D),
+                      fontSize: 14
+                  ))
+                ],
+              ),
             ],
           )
         ]

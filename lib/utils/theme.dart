@@ -75,8 +75,18 @@ class Themes {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        Center progressDialog = Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),);
-        return progressDialog;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),),
+            SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+            Text("Will be done\nwithin 15 seconds",textAlign: TextAlign.center,style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              decoration: TextDecoration.none,
+              fontSize: 14
+            ),)
+          ],
+        );
       },
     );
   }

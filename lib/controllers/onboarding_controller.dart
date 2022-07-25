@@ -161,7 +161,7 @@ class OnBoardingController extends GetxController{
     final ref = FirebaseStorage.instance
         .ref()
         .child("users")
-        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(2)})').trim())
+        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
         .child(username + i.toString() + '.jpg');
     await ref.putFile(replacementImage).whenComplete(() async {
       await ref.getDownloadURL().then((value) {
@@ -171,12 +171,37 @@ class OnBoardingController extends GetxController{
     return url;
   }
 
+  Future<String> updateProfilePicToStorage(String username,File replacementImage)async{
+    String url ='';
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("users")
+        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
+        .child('profile pic').child(username+'.jpg');
+    await ref.putFile(replacementImage).whenComplete(() async {
+      await ref.getDownloadURL().then((value) {
+        url = value;
+      });
+    });
+    return url;
+  }
+
+
   Future<void> updateDataToFirebase(String userName,List newImages)async{
     var doc = await FirebaseFirestore.instance.collection("UserDetails").where('userName',isEqualTo: userName).get();
     String docId = doc.docs[0].id;
 
     FirebaseFirestore.instance.collection("UserDetails").doc(docId).update({
       'images':newImages
+    });
+  }
+
+  Future<void> updateProPicToFirebase(String userName,String newImage)async{
+    var doc = await FirebaseFirestore.instance.collection("UserDetails").where('userName',isEqualTo: userName).get();
+    String docId = doc.docs[0].id;
+
+    FirebaseFirestore.instance.collection("UserDetails").doc(docId).update({
+      'userProfilePic':newImage
     });
   }
 
