@@ -52,6 +52,7 @@ class FirebaseController extends GetxController {
   Stream<List<PartyDetails>> fetchPartyFromFirebase() {
     return FirebaseFirestore.instance
         .collection('PartyDetails')
+        .where('isValid',isEqualTo: true)
         .snapshots()
         .map((query) {
       return query.docs.map((e) => PartyDetails.fromDocument(e)).toList();

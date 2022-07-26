@@ -7,6 +7,7 @@ import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../controllers/onboarding_controller.dart';
@@ -28,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   final FocusNode searchFocusNode = FocusNode();
   late PageController pageController;
   int currentPage = 0;
+  DateTime currentDateTime = DateTime.now();
 
 
   // bool queryComplete = false;
@@ -187,41 +189,44 @@ class _MainScreenState extends State<MainScreen> {
                                       try{
                                         return pageViewCard(index, isActive,h);
                                       }catch(e){
-                                        return ClipRRect(
-                                          borderRadius: BorderRadius.circular(20),
-                                          child: Container(
-                                            height: h*0.45,
-                                            width: w*0.9,
-                                            color: const Color(0xff414141),
-                                            child: Shimmer.fromColors(
-                                              baseColor: const Color(0xff2d2d2d),
-                                              highlightColor: const Color(0xff6a737c),
-                                              child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(top: h*0.4,left: w*0.008,right: w*0.008),
-                                                    child: Container(
-                                                      width: w * 0.4,
-                                                      height: h*0.03,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.circular(10)
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: w*0.02),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: Container(
+                                              height: h*0.45,
+                                              width: w*0.9,
+                                              color: const Color(0xff414141),
+                                              child: Shimmer.fromColors(
+                                                baseColor: const Color(0xff2d2d2d),
+                                                highlightColor: const Color(0xff6a737c),
+                                                child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(top: h*0.4,left: w*0.008,right: w*0.008),
+                                                      child: Container(
+                                                        width: w * 0.4,
+                                                        height: h*0.03,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.circular(10)
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(height: h*0.025,),
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Container(
-                                                      width: double.infinity,
-                                                      height: h*0.03,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.circular(10)
+                                                    SizedBox(height: h*0.025,),
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Container(
+                                                        width: double.infinity,
+                                                        height: h*0.03,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.circular(10)
+                                                        ),
                                                       ),
-                                                    ),
-                                                  )
-                                                ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -248,94 +253,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 
-
-  buildAppBar(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
-    return SliverAppBar(
-        backgroundColor: Colors.transparent,
-        expandedHeight: 50,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: Themes.appBarGradient,
-              borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(17),
-                  bottomLeft: Radius.circular(17)),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0,4),
-                    blurRadius: 4,
-                    spreadRadius: 0
-                )
-              ]
-          ),
-        ),
-        title:Padding(
-          padding: EdgeInsets.only(left: w * 0.35),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Stack(
-                  children: [
-                    Text(
-                      "Leagues",
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 4
-                            ..color = Colors.black,
-                          letterSpacing: 1,
-                        fontSize: 30
-                      ),
-                    ),
-                    Text(
-                      "Leagues",
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        letterSpacing: 1,
-                          fontSize: 30
-
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(top: h*0.01, right: h*0.01),
-            child: InkWell(
-              splashColor: Colors.grey,
-              onTap: () {},
-              child: const Icon(
-                Icons.search_outlined,
-                size: 30,
-              ),
-            ),
-          ),
-        ],
-    );
-  }
-
-
   Widget pageViewCard(int index, bool isActive, double h) {
     // final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     double paddingTop = isActive?0:h*0.045;
     // double containerHeight = isActive?150:100;
 
-
     return InkWell(
       onTap: (){
         Get.to(() =>  PartyDetails2(index:currentPage));
       },
-      child: AnimatedPadding(
+      child:AnimatedPadding(
         duration: const Duration(milliseconds: 500),
         padding: EdgeInsets.only(top: paddingTop,right: h*0.02),
         child: ClipRRect(

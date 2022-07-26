@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/getx_ui/party_details.dart';
-import 'package:communtiy/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../controllers/onboarding_controller.dart';
+import 'new_ui/coupons_screen.dart';
 
 class MatchedScreen extends StatelessWidget {
   MatchedScreen({Key? key}) : super(key: key);
@@ -22,44 +24,56 @@ class MatchedScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
-      appBar: buildAppBar(context),
+      // appBar: buildAppBar(context),
+
       body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: h*0.09),
-            child: SizedBox(
-              height: h*0.6,
-              width: w,
-              child: GetX<FirebaseController>(
-                  builder: (ctr) {
-                    return CarouselSlider.builder(
-                        itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
-                        itemBuilder: (context,index,realIndex){
-                          return GestureDetector(
-                            onTap: (){
-                              final partyIndex = controller.partyIndexForMatchedPage.value;
-                              Get.to(()=>PartyDetails2(index: partyIndex,));
+          SafeArea(
+            child: Column(
+              children: [
+                buildHomeLocationBar2(context, w, h),
+                SizedBox(height: h*0.01,),
+                SizedBox(
+                  height: h*0.57,
+                  width: w,
+                  child: GetX<FirebaseController>(
+                      builder: (ctr) {
+                        return CarouselSlider.builder(
+                            itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
+                            itemBuilder: (context,index,realIndex){
+                              return GestureDetector(
+                                onTap: (){
+                                  final partyIndex = controller.partyIndexForMatchedPage.value;
+                                  Get.to(()=>PartyDetails2(index: partyIndex,));
+                                },
+                                child: SizedBox(
+                                    height: h * 0.7,
+                                    width: w,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        topLeft: Radius.circular(10)
+                                      ),
+                                      child: Image.network(
+                                        controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
+                                      ),
+                                    )),
+                              );
                             },
-                            child: SizedBox(
-                                height: h * 0.7,
-                                width: w,
-                                child: Image.network(
-                                  controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
-                                )),
-                          );
-                        },
-                        options: CarouselOptions(
-                            height: h*0.7,
-                            viewportFraction: 1,
-                            enableInfiniteScroll: false,
-                            enlargeCenterPage: true,
-                            initialPage: 0,
-                            onPageChanged: (int index,reason){
-                              controller.pageIndicatorIndex.value = index;
-                            }
-                        ));
-                  }
-              ),
+                            options: CarouselOptions(
+                                height: h*0.7,
+                                viewportFraction: 1,
+                                enableInfiniteScroll: false,
+                                enlargeCenterPage: true,
+                                initialPage: 0,
+                                onPageChanged: (int index,reason){
+                                  controller.pageIndicatorIndex.value = index;
+                                }
+                            ));
+                      }
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -163,93 +177,110 @@ class MatchedScreen extends StatelessWidget {
             ),
           ),
 
-          GetX<FirebaseController>(
-              builder: (controller) {
-                return Padding(
-                  padding:  EdgeInsets.only(top:h*0.08),
-                  child: Container(
-                    height: h*0.12,
-                    width: w,
-                    decoration: BoxDecoration(
-                      gradient: Themes.softBlackGradientReverse,
-                    ),
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(controller.parties[controller.partyIndexForMatchedPage.value].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
-                            color: Colors.white),),
-                        Text(controller.parties[controller.partyIndexForMatchedPage.value].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
-                            color: Colors.white),),
-                        Text("Rs.${controller.parties[controller.partyIndexForMatchedPage.value].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
-                            color: Colors.white),),
-                      ],
-                    ),
-                  ),
-                );
-              }
-          )
+          // GetX<FirebaseController>(
+          //     builder: (controller) {
+          //       return Container(
+          //         height: h*0.12,
+          //         width: w,
+          //         decoration: BoxDecoration(
+          //           gradient: Themes.softBlackGradientReverse,
+          //         ),
+          //         child:Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //           children: [
+          //             Text(controller.parties[controller.partyIndexForMatchedPage.value].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
+          //                 color: Colors.white),),
+          //             Text(controller.parties[controller.partyIndexForMatchedPage.value].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
+          //                 color: Colors.white),),
+          //             Text("Rs.${controller.parties[controller.partyIndexForMatchedPage.value].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
+          //                 color: Colors.white),),
+          //           ],
+          //         ),
+          //       );
+          //     }
+          // )
 
         ],
       ),
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
-    return AppBar(
-        backgroundColor: Colors.transparent,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              // gradient: Themes.appBarGradient,
-              borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(17),
-                  bottomLeft: Radius.circular(17)),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4,
-                    spreadRadius: 0)
-              ]),
-        ),
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding: EdgeInsets.only(left: w * 0.35),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Stack(
-                  children: [
-                    Text(
-                      "Leagues",
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 4
-                            ..color = Colors.black,
-                          letterSpacing: 1,
-                          fontSize: 30
-                      ),
-                    ),
-                    Text(
-                      "Leagues",
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          letterSpacing: 1,
-                          fontSize: 30
+  Widget buildHomeLocationBar2(BuildContext context, double w,double h) {
 
+    return GetX<OnBoardingController>(
+      // init: Get.put(OnBoardingController()),
+        builder: (userController) {
+          // userController.userProfile.bindStream(userController.connectUserToApp());
+          // final profilePic = userController.userProfile.value.userProfilePic;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: w * 0.06,vertical: h * 0.01),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.location_on_rounded,color: Theme.of(context).canvasColor,size: 30,),
+                SizedBox(width: w*0.01,),
+                // const SizedBox(width: 5,),
+                Expanded(
+                  child: InkWell(
+                    onTap: (){},
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18
+                        ),),
+                        userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),
+                          style: Theme.of(context).textTheme.headline1!.copyWith(
+                              color: const Color(0xffB6B6B6),
+                              fontSize: 12
+                          ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
+                            color: const Color(0xffB6B6B6),
+                            fontSize: 12
+                        ),),
+                      ],
+                    ),
+                  ),
+                ),
+
+                Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
+                SizedBox(width: w*0.03,),
+                Ink(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: ()async{
+                      var couponImages = await userController.fetchCouponImages();
+                      var discountAndImages = await userController.fetchDiscountAndImages();
+                      Get.to(()=>CouponsScreen(couponImages: couponImages, discountAndImage: discountAndImages,));
+                    },
+                    child: ClipOval(
+                      child: CircleAvatar(
+                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          radius: w*0.042,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/Drinks with wings 7.png'),
+                                  fit: BoxFit.contain,
+                                )
+                            ),
+                          )
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
     );
   }
 

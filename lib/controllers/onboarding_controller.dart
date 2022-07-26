@@ -144,7 +144,7 @@ class OnBoardingController extends GetxController{
     ///Image compression part
     var compressedFileUintList = await FlutterImageCompress.compressWithFile(
         pickedImageFile.absolute.path,
-        quality: 25
+        quality: 15
     );
     final tempDirectory = await getTemporaryDirectory();
     final compressedFile = await File('${tempDirectory.path}/image.jpg').create();

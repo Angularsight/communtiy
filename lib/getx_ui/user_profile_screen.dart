@@ -153,21 +153,21 @@ class UserProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: h*0.023,),
 
-                  Padding(
-                    padding: EdgeInsets.only(left: w*0.02),
-                    child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
-                      fontSize: 20,
-                      color: Colors.white
-                    ),),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: w*0.02),
+                  //   child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
+                  //     fontSize: 20,
+                  //     color: Colors.white
+                  //   ),),
+                  // ),
                   Container(
                     width: w*0.7,
                     height: h*0.043,
                     decoration: BoxDecoration(
                       color: t.scaffoldBackgroundColor,
                       borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
+                        topRight: Radius.circular(5),
+                        bottomRight: Radius.circular(5)
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -183,11 +183,11 @@ class UserProfileScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Balance: 50 coins",style: t.textTheme.headline1!.copyWith(
+                          Text("League Wallet",style: t.textTheme.headline1!.copyWith(
                             color: t.primaryColor,
                             fontSize: 20,
                           ),),
-                          Text('Refill',style: t.textTheme.headline1!.copyWith(
+                          Text('coming soon',style: t.textTheme.headline1!.copyWith(
                             color: const Color(0xff417ACF),
                             fontSize: 14,
                             decoration: TextDecoration.underline,

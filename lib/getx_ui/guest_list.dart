@@ -358,6 +358,8 @@ class RPSCustomPainter extends CustomPainter {
     path0.close();
 
     canvas.drawShadow(path0, Colors.black, 3.5, false);
+    canvas.drawShadow(path0, Colors.black, 3.5, false);
+    canvas.drawShadow(path0, Colors.black, 3.5, false);
     canvas.drawPath(path0, paint0);
   }
 
