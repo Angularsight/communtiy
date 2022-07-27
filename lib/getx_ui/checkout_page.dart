@@ -73,6 +73,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           backgroundColor: Colors.transparent,
           extendBodyBehindAppBar: true,
           body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.only(left: w*0.015,right: w*0.015,bottom: w*0.015,top: h*0.1),
               child: Column(
@@ -203,35 +204,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ),
                       ),
 
-                      SizedBox(height: h*0.013,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("Party Info",style: t.textTheme.headline3!.copyWith(
-                                fontSize: 18,
-                                color: Colors.white,
-                              shadows: [
-                                const Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(0,4),
-                                    blurRadius: 2
-                                ),
-                                const Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(0,4),
-                                    blurRadius: 1
-                                )
-                              ]
-                            ),),
-                          ],
-                        ),
-                      ),
-
-                      buildPartyInfo(t),
-                      // const SizedBox(height: 25,),
-                      SizedBox(height: h*0.03,),
+                      // SizedBox(height: h*0.013,),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 15),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     children: [
+                      //       Text("Party Info",style: t.textTheme.headline3!.copyWith(
+                      //           fontSize: 18,
+                      //           color: Colors.white,
+                      //         shadows: [
+                      //           const Shadow(
+                      //               color: Colors.black,
+                      //               offset: Offset(0,4),
+                      //               blurRadius: 2
+                      //           ),
+                      //           const Shadow(
+                      //               color: Colors.black,
+                      //               offset: Offset(0,4),
+                      //               blurRadius: 1
+                      //           )
+                      //         ]
+                      //       ),),
+                      //     ],
+                      //   ),
+                      // ),
+                      //
+                      // buildPartyInfo(t),
+                      // // const SizedBox(height: 25,),
+                      // SizedBox(height: h*0.03,),
 
                     ],
                   )

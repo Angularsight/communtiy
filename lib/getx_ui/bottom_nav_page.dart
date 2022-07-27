@@ -36,7 +36,7 @@ class BottomNavigationPage extends StatelessWidget {
           body: IndexedStack(
             index: controller.bottomIndex,
             children:  [
-              MainScreen(),
+              // MainScreen(),
               MatchedScreen(),
               // UploadTab(),
               UserProfileScreen(),
@@ -61,9 +61,9 @@ class BottomNavigationPage extends StatelessWidget {
                     label: 'Home',
                     icon: Icon(Icons.all_inclusive)
                 ),
-                BottomNavigationBarItem(
-                    label: 'Matched',
-                    icon: Icon(Icons.watch)),
+                // BottomNavigationBarItem(
+                //     label: 'Matched',
+                //     icon: Icon(Icons.watch)),
                 // BottomNavigationBarItem(
                 //     label: 'Boss',
                 //     icon: Icon(Icons.add_box_outlined)),

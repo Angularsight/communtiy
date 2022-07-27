@@ -29,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
   final FocusNode searchFocusNode = FocusNode();
   late PageController pageController;
   int currentPage = 0;
-  DateTime currentDateTime = DateTime.now();
 
 
   // bool queryComplete = false;

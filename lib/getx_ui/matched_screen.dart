@@ -11,8 +11,10 @@ import 'new_ui/coupons_screen.dart';
 class MatchedScreen extends StatelessWidget {
   MatchedScreen({Key? key}) : super(key: key);
 
-  final FirebaseController controller = Get.put(FirebaseController());
+  final FirebaseController controller = Get.find();
   final PageController pageController = PageController(initialPage: 0, viewportFraction: 1);
+  final OnBoardingController userController = Get.put(OnBoardingController());
+
   int currentIndex =0;
 
   @override
@@ -117,58 +119,62 @@ class MatchedScreen extends StatelessWidget {
                             color: Colors.white
                         ),),
                       ),
-                      SizedBox(
-                        width:w,
-                        height: h*0.18,
-                        child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  InkWell(
-                                    onTap:(){
-                                      controller.partyIndexForMatchedPage.value = index;
-                                    },
-                                    child: GetX<FirebaseController>(
-                                        builder: (controller) {
-                                          return Container(
-                                            width: w * 0.3,
-                                            height: h*0.13,
-                                            margin: EdgeInsets.symmetric(horizontal: w*0.025),
-                                            decoration: BoxDecoration(
-                                                border: index==controller.partyIndexForMatchedPage.value?Border.all(color: t.primaryColor):Border.all(color: Colors.transparent),
-                                                borderRadius: BorderRadius.circular(10)
-                                            ),
-                                            child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Image.network(controller.parties[index].images?[0].toString()?? defaultImageString,fit: BoxFit.cover,)),
-                                          );
-                                        }
-                                    ),
-                                  ),
-                                  SizedBox(height: h*0.01,),
+                      GetX<FirebaseController>(
+                        builder: (something) {
+                          return SizedBox(
+                            width:w,
+                            height: h*0.18,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return GetX<FirebaseController>(
+                                    builder: (controller) {
+                                      return Column(
+                                        children: [
+                                          InkWell(
+                                            onTap:(){
+                                              controller.partyIndexForMatchedPage.value = index;
+                                            },
+                                            child: Container(
+                                                    width: w * 0.3,
+                                                    height: h*0.13,
+                                                    margin: EdgeInsets.symmetric(horizontal: w*0.025),
+                                                    decoration: BoxDecoration(
+                                                        border: index==controller.partyIndexForMatchedPage.value?Border.all(color: t.primaryColor):Border.all(color: Colors.transparent),
+                                                        borderRadius: BorderRadius.circular(10)
+                                                    ),
+                                                    child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        child: Image.network(controller.parties[index].images?[0].toString()?? defaultImageString,fit: BoxFit.cover,)),
+                                                  )
+                                          ),
+                                          SizedBox(height: h*0.01,),
 
-                                  Text(controller.parties[index].partyName.toString(),style: t.textTheme.headline3!.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      shadows: [
-                                        const Shadow(
-                                            color: Colors.black,
-                                            offset: Offset(0,4),
-                                            blurRadius: 4
-                                        ),
-                                        const Shadow(
-                                            color: Colors.black,
-                                            offset: Offset(1,4),
-                                            blurRadius: 4
-                                        )
-                                      ]
-                                  ),)
-                                ],
-                              );
-                            },
-                            separatorBuilder: (context, index) => const SizedBox(width: 2,),
-                            itemCount: controller.parties.length),
+                                          Text(controller.parties[index].partyName.toString(),style: t.textTheme.headline3!.copyWith(
+                                              color: Colors.white,
+                                              fontSize: 17,
+                                              shadows: [
+                                                const Shadow(
+                                                    color: Colors.black,
+                                                    offset: Offset(0,4),
+                                                    blurRadius: 4
+                                                ),
+                                                const Shadow(
+                                                    color: Colors.black,
+                                                    offset: Offset(1,4),
+                                                    blurRadius: 4
+                                                )
+                                              ]
+                                          ),)
+                                        ],
+                                      );
+                                    }
+                                  );
+                                },
+                                separatorBuilder: (context, index) => const SizedBox(width: 2,),
+                                itemCount: controller.parties.length),
+                          );
+                        }
                       ),
                     ],
                   ),
