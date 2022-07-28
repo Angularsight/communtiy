@@ -71,6 +71,7 @@ class Themes {
 
 
   static showProgressDialogWithoutText(BuildContext context) {
+    final s = MediaQuery.of(context).textScaleFactor;
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -83,7 +84,7 @@ class Themes {
             Text("Will be done\nwithin 15 seconds",textAlign: TextAlign.center,style: TextStyle(
               color: Theme.of(context).primaryColor,
               decoration: TextDecoration.none,
-              fontSize: 14
+              fontSize: 13*s
             ),)
           ],
         );

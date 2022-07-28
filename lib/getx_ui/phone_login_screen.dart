@@ -32,6 +32,7 @@ class PhoneLoginScreen extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
     return GetX<AuthController>(
       builder: (controller) {
         if (controller.hasInternet==false) {
@@ -70,7 +71,7 @@ class PhoneLoginScreen extends StatelessWidget {
                         children: [
                           SizedBox(height: h*0.07,),
                           Text("Pick up lines 101:",style:GoogleFonts.roboto(
-                            fontSize: 18,
+                            fontSize: 16*s,
                             color: Theme.of(context).scaffoldBackgroundColor,
                             fontWeight: FontWeight.bold,
                           ) ,),
@@ -84,7 +85,7 @@ class PhoneLoginScreen extends StatelessWidget {
                             ),
                             child: Center(
                               child:Text("I ought to complain to Spotify for you not being named this week’s hottest single.",style:GoogleFonts.roboto(
-                                fontSize: 14,
+                                fontSize: 13*s,
                                 color: const Color(0xffB8B8B8),
                                 fontWeight: FontWeight.bold,
                               ),textAlign: TextAlign.center,) ,
@@ -235,19 +236,19 @@ class PhoneLoginScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Hi",style: GoogleFonts.roboto(
-                                    fontSize: 18,
+                                    fontSize: 17*s,
                                     // color: const Color(0xff909090),
                                     color: Theme.of(context).scaffoldBackgroundColor,
                                     fontWeight: FontWeight.bold
                                 ),),
                                 Text("Let's get you acquainted",style:GoogleFonts.roboto(
-                                    fontSize: 20,
+                                    fontSize: 19*s,
                                     color: Theme.of(context).scaffoldBackgroundColor,
                                     fontWeight: FontWeight.bold,
                                 ) ,),
                                 SizedBox(height: h*0.02,),
                                 Text("Phone Number",style:GoogleFonts.roboto(
-                                  fontSize: 16,
+                                  fontSize: 15*s,
                                   color: Theme.of(context).scaffoldBackgroundColor,
                                   fontWeight: FontWeight.bold,
                                 ) ,),
@@ -255,8 +256,8 @@ class PhoneLoginScreen extends StatelessWidget {
                                   controller: _phoneNoController,
                                   focusNode: _phoneNoNode,
                                   keyboardType: TextInputType.phone,
-                                  style: const TextStyle(
-                                      fontSize: 17,
+                                  style: TextStyle(
+                                      fontSize: 16*s,
                                       color: Colors.white,
                                       letterSpacing: 12,
                                       fontWeight: FontWeight.bold,
@@ -325,8 +326,8 @@ class PhoneLoginScreen extends StatelessWidget {
                                             )
                                           ]
                                       ),
-                                      child: const Center(child: Text("Sign up ",style:TextStyle(
-                                          fontSize: 17,
+                                      child: Center(child: Text("Sign up ",style:TextStyle(
+                                          fontSize: 16*s,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold
                                       ) ,),),

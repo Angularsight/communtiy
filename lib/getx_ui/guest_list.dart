@@ -78,6 +78,8 @@ class GuestList2 extends StatelessWidget {
   }
 
   void openDialogBox(BuildContext context, UserDetailsModel guest, Interests interests) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     var t = Theme.of(context);
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
@@ -134,7 +136,7 @@ class GuestList2 extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Interests', style: t.textTheme.headline1!.copyWith(
-                                color: Colors.white, fontSize: 20),
+                                color: Colors.white, fontSize: 20*s),
                             ),
                             SizedBox(height: h*0.008),
                             Text("Favorites", style: t.textTheme.headline3!.copyWith(
@@ -144,9 +146,9 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Movie : ", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 12*s),
                                 ),
-                                buildInterestAttributeList(h, w, interests.movies, t, false)
+                                buildInterestAttributeList(context,h, w, interests.movies, t, false)
                               ],
                             ),
                             const SizedBox(
@@ -155,9 +157,9 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Anime : ", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),
+                                    color: const Color(0xffA4A4A4), fontSize: 12*s),
                                 ),
-                                buildInterestAttributeList(h, w, interests.anime, t, false)
+                                buildInterestAttributeList(context,h, w, interests.anime, t, false)
                               ],
                             ),
                             const SizedBox(
@@ -166,13 +168,13 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Sports : ", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),),
-                                buildInterestAttributeList(h, w, interests.sport, t, false)
+                                    color: const Color(0xffA4A4A4), fontSize: 12*s),),
+                                buildInterestAttributeList(context,h, w, interests.sport, t, false)
                               ],
                             ),
                             const SizedBox(height: 5,),
                             Text("Pet : ${interests.pet}", style: t.textTheme.headline3!.copyWith(
-                                color: const Color(0xffA4A4A4), fontSize: 13),),
+                                color: const Color(0xffA4A4A4), fontSize: 12*s),),
 
                             const SizedBox(
                               height: 5,
@@ -180,8 +182,8 @@ class GuestList2 extends StatelessWidget {
                             Row(
                               children: [
                                 Text("Series : ", style: t.textTheme.headline3!.copyWith(
-                                    color: const Color(0xffA4A4A4), fontSize: 13),),
-                                buildInterestAttributeList(h, w, interests.series, t, false)
+                                    color: const Color(0xffA4A4A4), fontSize: 12*s),),
+                                buildInterestAttributeList(context,h, w, interests.series, t, false)
                               ],
                             ),
                           ],
@@ -196,7 +198,8 @@ class GuestList2 extends StatelessWidget {
         });
   }
 
-  SizedBox buildInterestAttributeList(double h, double w, var list, ThemeData t, bool hobbies) {
+  SizedBox buildInterestAttributeList(BuildContext context,double h, double w, var list, ThemeData t, bool hobbies) {
+    final s = MediaQuery.of(context).textScaleFactor;
     if (hobbies) {
       return SizedBox(
         height: h*0.02,
@@ -205,7 +208,7 @@ class GuestList2 extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                  color: const Color(0xffA4A4A4), fontSize: 13),
+                  color: const Color(0xffA4A4A4), fontSize: 12*s),
               );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 10,),
@@ -219,7 +222,7 @@ class GuestList2 extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Text("${list![index]}", style: t.textTheme.headline3!.copyWith(
-                  color: const Color(0xffA4A4A4), fontSize: 13),
+                  color: const Color(0xffA4A4A4), fontSize: 12*s),
               );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 7,),
@@ -232,6 +235,7 @@ class GuestList2 extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
     return GestureDetector(
       onTap: () {
         ///interestIndex is needed to fetch the index of this particular guest
@@ -262,7 +266,7 @@ class GuestList2 extends StatelessWidget {
                           Text(
                             "${guests![index].userName}",
                             style: t.textTheme.headline1!
-                                .copyWith(color: Colors.white, fontSize: 18),
+                                .copyWith(color: Colors.white, fontSize: 17*s),
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: w*0.02),
@@ -282,11 +286,11 @@ class GuestList2 extends StatelessWidget {
                       ),
                       Text(interests![index].occupation.toString(),
                           style: t.textTheme.headline1!.copyWith(
-                              color: const Color(0xffABAAAA), fontSize: 15)),
+                              color: const Color(0xffABAAAA), fontSize: 14*s)),
                       Text(
                         "#Party#Fun#Yes#No#Host#Invited",
                         style: t.textTheme.headline1!
-                            .copyWith(color: const Color(0xff696969), fontSize: 12),
+                            .copyWith(color: const Color(0xff696969), fontSize: 11*s),
                       ),
                       // Padding(
                       //   padding: EdgeInsets.all(w*0.02),

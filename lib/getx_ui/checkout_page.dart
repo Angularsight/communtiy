@@ -53,6 +53,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
 
     return Container(
       decoration: BoxDecoration(
@@ -118,7 +119,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               blurRadius: 1
                           )
                         ],
-                        fontSize: 32,
+                        fontSize: 31*s,
                         color: Colors.white
                       ),),
 
@@ -152,7 +153,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text("Payment Details",style: t.textTheme.headline3!.copyWith(
-                                      fontSize: 18,
+                                      fontSize: 17*s,
                                       color: Colors.white,
                                       shadows: [
                                         const Shadow(
@@ -193,7 +194,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         height: h*0.028,
                                         child: Text("Grand Total",style: t.textTheme.headline3!.copyWith(
                                             color: const Color(0xffFAFF00),
-                                            fontSize: 18
+                                            fontSize: 17*s
                                         ),)),
                                     buildGrandTotalRow(w, h, t,)
                                   ],
@@ -244,6 +245,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Padding buildPaymentButton(double w, double h, ThemeData t) {
+    final s = MediaQuery.of(context).textScaleFactor;
     return Padding(
           padding: EdgeInsets.symmetric(horizontal: w*0.16,vertical: h*0.01),
           child: Stack(
@@ -261,7 +263,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text("Rs.${getCheckAmount()}",
                     style: t.textTheme.headline3!.copyWith(
-                        fontSize: 18,
+                        fontSize: 16*s,
                         fontWeight: FontWeight.bold,
                         color: Colors.black
                     ),
@@ -315,7 +317,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     child: Center(
                       child: Text("Proceed to Payment",
                         style: t.textTheme.headline3!.copyWith(
-                            fontSize: 16,
+                            fontSize: 15*s,
                             color: Colors.black,
                             fontWeight: FontWeight.normal
                         ),
@@ -383,6 +385,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Padding buildPaymentDetailsRow(BuildContext context, String title , String text) {
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
     return Padding(
       padding: const EdgeInsets.only(left: 18, ),
       child: Row(
@@ -393,14 +396,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       height: 25,
                       child: Text(title,style: t.textTheme.headline3!.copyWith(
                         color: Colors.white,
-                        fontSize: 14
+                        fontSize: 13*s
                       ),)),
                   SizedBox(
                       width: w*0.2,
                       height: 25,
                       child: Text(text,style: t.textTheme.headline3!.copyWith(
                           color: Colors.white,
-                          fontSize: 14
+                          fontSize: 13*s
                       ),)),
                 ],
               ),
@@ -410,6 +413,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Padding buildPartyDetailRow(BuildContext context,String head,String headText, String tail ,String tailText) {
     final t = Theme.of(context);
     final w = MediaQuery.of(context).size.width;
+    final s = MediaQuery.of(context).textScaleFactor;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Row(
@@ -424,12 +428,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       children: [
                         Text(head,style: t.textTheme.headline3!.copyWith(
                           color: const Color(0xffB5B5B5),
-                          fontSize: 18
+                          fontSize: 17*s
                         ),),
                         const SizedBox(height: 5,),
                         Text(headText,style: t.textTheme.headline3!.copyWith(
                           color: Colors.white,
-                          fontSize: 18
+                          fontSize: 17*s
                         ),)
                       ],
                     ),
@@ -443,12 +447,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       children: [
                         Text(tail,style: t.textTheme.headline3!.copyWith(
                           color: const Color(0xffB5B5B5),
-                            fontSize: 18
+                            fontSize: 17*s
                         ),),
                         const SizedBox(height: 5,),
                         Text(tailText,style: t.textTheme.headline3!.copyWith(
                             color: Colors.white,
-                            fontSize: 18
+                            fontSize: 17*s
                         ),)
                       ],
                     ),
@@ -463,6 +467,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     String appliedCoupon ='';
     int couponStreakNo = 0; /// No coupon has streak=0, hence it can set as default value
     int couponIndex = -1;
+    final s = MediaQuery.of(context).textScaleFactor;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -473,7 +478,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             collapsedBackgroundColor: const Color(0xff062732),
             title: Text("Apply Coupon Code",style: Theme.of(context).textTheme.headline1!.copyWith(
                 color: Colors.white,
-                fontSize: 18
+                fontSize: 17*s
             ),),
             children: [
               SizedBox(height: h*0.01,),
@@ -557,6 +562,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget buildInviteAndDiscountTile(BuildContext context,double w, double h, PartyDetails party) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: ExpansionTile(
@@ -566,16 +573,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
           collapsedBackgroundColor: const Color(0xff062732),
           title: Text("Invite and get discount",style: Theme.of(context).textTheme.headline1!.copyWith(
               color: Colors.white,
-              fontSize: 18
+              fontSize: 17*s
           ),),
         children: [
           Text("Invite 5 of your friends and get Rs.200/- off each",style: Theme.of(context).textTheme.headline1!.copyWith(
             color: const Color(0xffA0A0A0),
-            fontSize: 14
+            fontSize: 13.5*s
           ),),
           Text("Invite 3 of your friends and get Rs.100/- off each ",style: Theme.of(context).textTheme.headline1!.copyWith(
               color: const Color(0xffA0A0A0),
-              fontSize: 14
+              fontSize: 13.5*s
           )),
           SizedBox(height: h*0.01,),
 
@@ -585,7 +592,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               SizedBox(width: w*0.05,),
               Text("Copy your friends'  ID and paste here",style: Theme.of(context).textTheme.headline1!.copyWith(
                   color: Colors.white,
-                  fontSize: 14
+                  fontSize: 12.5*s
               )),
             ],
           ),
@@ -758,13 +765,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   SizedBox buildGrandTotalRow(double w, double h, ThemeData t) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     if((discountPercent==-1)&& friendDiscount==0){
       return SizedBox(
           width: w*0.2,
           height: h*0.028,
           child: Text("Rs.${widget.party.entryFee!}",style: t.textTheme.headline3!.copyWith(
               color: const Color(0xffFAFF00),
-              fontSize: 18
+              fontSize: 17*s
           ),));
     }else if((friendDiscount!=0)&&(discountPercent!=-1)){
       return SizedBox(
@@ -772,7 +781,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           height: h*0.028,
           child: Text("Rs.${(widget.party.entryFee!*multiplier)-friendDiscount-discountAmount}",style: t.textTheme.headline3!.copyWith(
               color: const Color(0xffFAFF00),
-              fontSize: 18
+              fontSize: 17*s
           ),));
     }else if(friendDiscount!=0 && discountPercent==-1){
       return SizedBox(
@@ -780,7 +789,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           height: h*0.028,
           child: Text("Rs.${(widget.party.entryFee!*multiplier)-friendDiscount}",style: t.textTheme.headline3!.copyWith(
               color: const Color(0xffFAFF00),
-              fontSize: 18
+              fontSize: 17*s
           ),));
     }else{
       return SizedBox(
@@ -788,7 +797,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           height: h*0.028,
           child: Text("Rs.$discountPartyFee",style: t.textTheme.headline3!.copyWith(
               color: const Color(0xffFAFF00),
-              fontSize: 18
+              fontSize: 17*s
           ),));
     }
   }

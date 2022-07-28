@@ -45,10 +45,11 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final s = MediaQuery.of(context).textScaleFactor;
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 50,
-      textStyle: const TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+      textStyle: TextStyle(fontSize: 19*s, color: const Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(15),
@@ -83,7 +84,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 SizedBox(height: MediaQuery.of(context).size.height*0.1,),
                 Center(
                   child: Text("Verify your \n Phone number",textAlign: TextAlign.center,style:GoogleFonts.roboto(
-                      fontSize: 24,
+                      fontSize: 23*s,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       shadows: [
@@ -97,7 +98,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 ),
                 const SizedBox(height: 7,),
                 Center(child:Text("Enter your OTP code here",style: GoogleFonts.roboto(
-                  fontSize: 15,
+                  fontSize: 14*s,
                   color: Colors.grey.withOpacity(0.5),
                   fontWeight: FontWeight.normal,
                 ),)),
@@ -152,7 +153,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
                 const SizedBox(height: 25,),
                 Center(child:Text("Didn't receive any code?",style:GoogleFonts.roboto(
-                  fontSize: 15,
+                  fontSize: 14*s,
                   color: Colors.grey.withOpacity(0.5),
                   fontWeight: FontWeight.normal,
                 ) ,)),
@@ -162,7 +163,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     _verifyPhone();
                   },
                   child: Text("Resend OTP",style:GoogleFonts.roboto(
-                    fontSize: 20,
+                    fontSize: 19*s,
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.normal,
                   ) ,),
@@ -193,7 +194,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       ),
                       child: Center(child:Text("Change Number",style: GoogleFonts.roboto(
                         color:Theme.of(context).scaffoldBackgroundColor,
-                        fontSize: 18,
+                        fontSize: 17*s,
                         fontWeight: FontWeight.w500,
                       ),)),
                     ),

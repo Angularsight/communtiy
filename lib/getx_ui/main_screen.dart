@@ -58,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
+    final s = MediaQuery.of(context).textScaleFactor;
 
     return SafeArea(
       child: Scaffold(
@@ -179,7 +180,7 @@ class _MainScreenState extends State<MainScreen> {
                             padding: EdgeInsets.only(left: w * 0.06,bottom: w*0.06),
                             child: Text("This month's events",style: Theme.of(context).textTheme.headline1!.copyWith(
                                 color: Colors.white,
-                                fontSize: 22,
+                                fontSize: 20*s,
                                 fontWeight: FontWeight.bold
                             ),),
                           ),
@@ -266,6 +267,7 @@ class _MainScreenState extends State<MainScreen> {
     final h = MediaQuery.of(context).size.height;
     double paddingTop = isActive?0:h*0.045;
     // double containerHeight = isActive?150:100;
+    String date = partyController.parties[index].date!.split(',')[1];
 
     return InkWell(
       onTap: (){
@@ -307,12 +309,14 @@ class _MainScreenState extends State<MainScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(partyController.parties[index].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
+                          Text(date,style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
                           Text(partyController.parties[index].location.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
-                          Text("Rs.${partyController.parties[index].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
+                          Text(partyController.parties[index].time.toString(),style: Theme.of(context).textTheme.headline3!.copyWith(
                               color: Colors.white),),
+                          // Text("Rs.${partyController.parties[index].entryFee}",style: Theme.of(context).textTheme.headline3!.copyWith(
+                          //     color: Colors.white),),
                         ],
                       ),
                     ],
@@ -328,7 +332,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget buildHomeLocationBar2(BuildContext context, double w,double h) {
-
+    final s = MediaQuery.of(context).textScaleFactor;
     return GetX<OnBoardingController>(
       // init: Get.put(OnBoardingController()),
       builder: (userController) {
@@ -351,15 +355,15 @@ class _MainScreenState extends State<MainScreen> {
                       children: [
                         Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: Colors.white,
-                            fontSize: 18
+                            fontSize: 18*s
                         ),),
                         userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),
                           style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
-                            fontSize: 12
+                            fontSize: 12*s
                         ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
-                            fontSize: 12
+                            fontSize: 12*s
                         ),),
                       ],
                     ),

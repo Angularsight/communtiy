@@ -38,6 +38,7 @@ class PartyDetails2 extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h =  MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
     const defaultImageString = 'http://www.lyon-ortho-clinic.com/files/cto_layout/img/placeholder/book.jpg';
     List<String> imagesList = [];
     for (var element in controller.parties[index!].images!) {
@@ -66,7 +67,7 @@ class PartyDetails2 extends StatelessWidget {
                 )
               ],
               color: Colors.black,
-              fontSize: 18
+              fontSize: 18*s
           ),)),
         ),
       ),
@@ -179,7 +180,7 @@ class PartyDetails2 extends StatelessWidget {
                                             )
                                           ],
                                           color: Colors.black,
-                                          fontSize: 18
+                                          fontSize: 17*s
                                       ),),
                                     ),
                                   ),
@@ -210,7 +211,7 @@ class PartyDetails2 extends StatelessWidget {
                                         },
                                         child: Text('Directions',style: t.textTheme.headline1!.copyWith(
                                           color: const Color(0xff417ACF),
-                                          fontSize: 14,
+                                          fontSize: 13*s,
                                           decoration: TextDecoration.underline,
                                           decorationThickness: 2,
                                         ),),
@@ -426,7 +427,9 @@ class PartyDetails2 extends StatelessWidget {
     );
   }
 
-  Stack buildStrokeText(String text, ThemeData t,Color color,Color strokeColor,double fontSize) {
+  Stack buildStrokeText(BuildContext context,String text, ThemeData t,Color color,Color strokeColor,double fontSize) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     return Stack(
       children: [
         Text(text,style: t.textTheme.headline2!.copyWith(
@@ -441,11 +444,11 @@ class PartyDetails2 extends StatelessWidget {
               ..style = PaintingStyle.stroke
               ..strokeWidth = 1
               ..color = strokeColor,
-            fontSize: fontSize
+            fontSize: fontSize*s
         ),),
         Text(text.toString(),style: t.textTheme.headline2!.copyWith(
             color: color,
-            fontSize: fontSize
+            fontSize: fontSize*s
         ),)
       ],
     );
@@ -493,6 +496,8 @@ class PartyDetails2 extends StatelessWidget {
   }
 
   Widget buildActivitiesSection(BuildContext context, PartyDetails party) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     final activities = {};
     for (String element in party.activities!) {
       final split = element.toString().split(',');
@@ -529,7 +534,7 @@ class PartyDetails2 extends StatelessWidget {
                   crossAxisAlignment:
                   CrossAxisAlignment.start,
                   children: [
-                    buildStrokeText(activities.keys.toList()[index], t, Colors.black87, Colors.white, 14),
+                    buildStrokeText(context,activities.keys.toList()[index], t, Colors.black87, Colors.white, 14),
                     Text(activities[activities.keys.toList()[index]].toString(),style: t.textTheme.headline3),
                     SizedBox(height: h*0.01,)
                   ],
@@ -539,7 +544,7 @@ class PartyDetails2 extends StatelessWidget {
                 child: Center(child: Text("No activities in this event as of yet",style: Theme.of(context).textTheme.headline3!.copyWith(
                     color: Colors.black.withOpacity(0.5),
                     fontWeight: FontWeight.bold,
-                    fontSize: 15
+                    fontSize: 15*s
                 )),)
               );
             }),
@@ -548,6 +553,8 @@ class PartyDetails2 extends StatelessWidget {
   }
 
   Widget buildActivitiesSection2(BuildContext context, PartyDetails party) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     final activities = {};
     for (String element in party.activities!) {
       final split = element.toString().split(',');
@@ -587,7 +594,7 @@ class PartyDetails2 extends StatelessWidget {
                     buildStrokeText2(activities.keys.toList()[index], t, Colors.white, Colors.black, 14),
                     Text(activities[activities.keys.toList()[index]].toString(),style: t.textTheme.headline3!.copyWith(
                         color: const Color(0xffCBCBCB),
-                      fontSize: 15
+                      fontSize: 15*s
                     )),
                     SizedBox(height: h*0.01,)
                   ],
@@ -597,7 +604,7 @@ class PartyDetails2 extends StatelessWidget {
                   child: Center(child: Text("No activities in this event as of yet",style: Theme.of(context).textTheme.headline3!.copyWith(
                       color: Colors.white.withOpacity(0.8),
                       fontWeight: FontWeight.bold,
-                      fontSize: 15
+                      fontSize: 15*s
                   )),)
               );
             }),
@@ -606,6 +613,7 @@ class PartyDetails2 extends StatelessWidget {
   }
 
   Widget buildSpecialAppearanceSection(BuildContext context, PartyDetails party) {
+    final s = MediaQuery.of(context).textScaleFactor;
     final t = Theme.of(context);
     final h = MediaQuery.of(context).size.height;
     if (party.specialAppearance!) {
@@ -648,7 +656,7 @@ class PartyDetails2 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(party.djName!,style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: 16*s,
                     color: Colors.white,
                     fontWeight: FontWeight.bold
                 ) ,),
@@ -658,7 +666,7 @@ class PartyDetails2 extends StatelessWidget {
                     SizedBox(
                       height: h*0.03,
                       child: Text("Playing : ",style: GoogleFonts.poppins(
-                          fontSize: 12,
+                          fontSize: 12*s,
                           color: Colors.white,
                           fontWeight: FontWeight.normal
                       ),),
@@ -670,11 +678,11 @@ class PartyDetails2 extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                           itemBuilder: (context,index)=>index!=party.playing!.length-1?Text("${party.playing![index]},",style: GoogleFonts.poppins(
-                              fontSize: 12,
+                              fontSize: 12*s,
                               color: Colors.white,
                               fontWeight: FontWeight.normal
                           )):Text("${party.playing![index]}",style: GoogleFonts.poppins(
-                              fontSize: 12,
+                              fontSize: 12*s,
                               color: Colors.white,
                               fontWeight: FontWeight.normal
                           )),
@@ -706,11 +714,11 @@ class PartyDetails2 extends StatelessWidget {
               Text("Not available for this event ",style: Theme.of(context).textTheme.headline3!.copyWith(
                   color: Colors.black.withOpacity(0.5),
                   fontWeight: FontWeight.bold,
-                  fontSize: 15
+                  fontSize: 15*s
               )),
               Text("Keep looking in other parties",style: Theme.of(context).textTheme.headline2!.copyWith(
                   color: const Color(0xff5B5B5B),
-                  fontSize: 18
+                  fontSize: 18*s
               ),)
             ],
           ),
@@ -721,6 +729,7 @@ class PartyDetails2 extends StatelessWidget {
   }
 
   Widget buildSpecialAppearanceSection2(BuildContext context, PartyDetails party) {
+    final s = MediaQuery.of(context).textScaleFactor;
     final t = Theme.of(context);
     final h = MediaQuery.of(context).size.height;
     if (party.specialAppearance!) {
@@ -763,7 +772,7 @@ class PartyDetails2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(party.djName!,style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 15*s,
                       color: Colors.white,
                       fontWeight: FontWeight.bold
                   ) ,),
@@ -773,7 +782,7 @@ class PartyDetails2 extends StatelessWidget {
                       SizedBox(
                         height: h*0.03,
                         child: Text("Playing : ",style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: 11*s,
                             color: Colors.white,
                             fontWeight: FontWeight.normal
                         ),),
@@ -785,11 +794,11 @@ class PartyDetails2 extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context,index)=>index!=party.playing!.length-1?Text("${party.playing![index]},",style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11*s,
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal
                               )):Text("${party.playing![index]}",style: GoogleFonts.poppins(
-                                  fontSize: 12,
+                                  fontSize: 11*s,
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal
                               )),
@@ -821,11 +830,11 @@ class PartyDetails2 extends StatelessWidget {
                 Text("Not available for this event ",style: Theme.of(context).textTheme.headline3!.copyWith(
                     color: Colors.white.withOpacity(0.5),
                     fontWeight: FontWeight.bold,
-                    fontSize: 15
+                    fontSize: 15*s
                 )),
                 Text("Check out other parties",style: Theme.of(context).textTheme.headline2!.copyWith(
                     color: Colors.white.withOpacity(0.75),
-                    fontSize: 18
+                    fontSize: 17*s
                 ),)
               ],
             ),

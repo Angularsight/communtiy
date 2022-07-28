@@ -15,6 +15,7 @@ class SplashScreen extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
 
     /// SHOULD NOT USE THIS TIMER SINCE THE ROUTING IS ALREADY BEING DONE IN main.dart via getX authentication (line : 20)
     // Timer(const Duration(seconds: 5), (){
@@ -58,7 +59,7 @@ class SplashScreen extends StatelessWidget {
               height: h*0.05,
               child: DefaultTextStyle(
                 style: t.textTheme.headline3!.copyWith(
-                    fontSize: 18,
+                    fontSize: 17*s,
                   foreground: Paint()
                     ..shader = LinearGradient(
                                   colors: [const Color(0xffC4C4C4),const Color(0xffC4C4C4).withOpacity(0.22)],

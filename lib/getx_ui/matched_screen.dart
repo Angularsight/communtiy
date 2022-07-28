@@ -22,6 +22,7 @@ class MatchedScreen extends StatelessWidget {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
     const defaultImageString = 'http://www.lyon-ortho-clinic.com/files/cto_layout/img/placeholder/book.jpg';
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -162,7 +163,7 @@ class MatchedScreen extends StatelessWidget {
 
                                           Text(controller.parties[index].partyName.toString(),style: t.textTheme.headline3!.copyWith(
                                               color: Colors.white,
-                                              fontSize: 17,
+                                              fontSize: 16*s,
                                               shadows: [
                                                 const Shadow(
                                                     color: Colors.black,
@@ -222,6 +223,7 @@ class MatchedScreen extends StatelessWidget {
   }
 
   Widget buildHomeLocationBar2(BuildContext context, double w,double h) {
+    final s = MediaQuery.of(context).textScaleFactor;
 
     return GetX<OnBoardingController>(
       // init: Get.put(OnBoardingController()),
@@ -244,15 +246,15 @@ class MatchedScreen extends StatelessWidget {
                       children: [
                         Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: Colors.white,
-                            fontSize: 18
+                            fontSize: 17*s
                         ),),
                         userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),
                           style: Theme.of(context).textTheme.headline1!.copyWith(
                               color: const Color(0xffB6B6B6),
-                              fontSize: 12
+                              fontSize: 12*s
                           ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: const Color(0xffB6B6B6),
-                            fontSize: 12
+                            fontSize: 12*s
                         ),),
                       ],
                     ),

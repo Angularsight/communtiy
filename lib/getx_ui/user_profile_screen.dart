@@ -39,6 +39,8 @@ class UserProfileScreen extends StatelessWidget {
     var user = userController.userProfile.value;
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+    final s = MediaQuery.of(context).textScaleFactor;
+
     // print("FirebaseAuth user:${loginUser.displayName},${loginUser.email},${loginUser.photoURL}");
 
     List<ChartData> chartData = [];
@@ -67,10 +69,10 @@ class UserProfileScreen extends StatelessWidget {
                             child: SizedBox(
                               width: w*0.42,
                               child: controller.userProfile.value.userName!=null?Text("${user.userName}",style: t.textTheme.headline1!.copyWith(
-                                  fontSize: 24,
+                                  fontSize: 23*s,
                                   color: Colors.white
                               ),):Text("Legend",style: t.textTheme.headline1!.copyWith(
-                                  fontSize: 24,
+                                  fontSize: 23*s,
                                   color: Colors.white
                               ),),
                             ),
@@ -185,11 +187,11 @@ class UserProfileScreen extends StatelessWidget {
                         children: [
                           Text("League Wallet",style: t.textTheme.headline1!.copyWith(
                             color: t.primaryColor,
-                            fontSize: 20,
+                            fontSize: 19*s,
                           ),),
                           Text('coming soon',style: t.textTheme.headline1!.copyWith(
                             color: const Color(0xff417ACF),
-                            fontSize: 14,
+                            fontSize: 13*s,
                             decoration: TextDecoration.underline,
                             decorationThickness: 2,
                           ),)
@@ -224,6 +226,8 @@ class UserProfileScreen extends StatelessWidget {
   }
 
   Widget buildProfileListTile(double w, BuildContext context, String heading, String subHeading, IconData icon) {
+    final s = MediaQuery.of(context).textScaleFactor;
+
     return Padding(
       padding:EdgeInsets.only(bottom: w*0.05),
       child: InkWell(
@@ -250,10 +254,10 @@ class UserProfileScreen extends StatelessWidget {
                               onTap: (){
                                 logoutOfAccount();
                               },
-                              child: const Center(child: Text("Confirm",style: TextStyle(
+                              child: Center(child: Text("Confirm",style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.redAccent,
-                                  fontSize: 16
+                                  fontSize: 15*s
                               ),),),
                             ),
                           ),
@@ -263,10 +267,10 @@ class UserProfileScreen extends StatelessWidget {
                               onTap: (){
                                 Navigator.pop(context);
                               },
-                              child: const Center(child: Text("Cancel",style: TextStyle(
+                              child: Center(child: Text("Cancel",style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xff1A3841),
-                                  fontSize: 16
+                                  color: const Color(0xff1A3841),
+                                  fontSize: 15*s
                               ),),),
                             ),
                           ),
@@ -320,11 +324,11 @@ class UserProfileScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(heading,style: Theme.of(context).textTheme.headline1!.copyWith(
-                                  fontSize: 20,
+                                  fontSize: 19*s,
                                   color: Colors.white
                                 ),),
                                 Text(subHeading,style: Theme.of(context).textTheme.headline1!.copyWith(
-                                  fontSize: 12,
+                                  fontSize: 11.5*s,
                                   color: const Color(0xff707070)
                                 ),)
                               ],

@@ -87,6 +87,8 @@ class TicketPage extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
+
     final party = razorPayController.partyDetails;
     final host = razorPayController.host;
     uploadGuestToParty(party!);
@@ -138,7 +140,7 @@ class TicketPage extends StatelessWidget {
                                             blurRadius: 1
                                         )
                                       ],
-                                      fontSize: 32,
+                                      fontSize: 31*s,
                                       color: Colors.white
                                   ),),
 
@@ -237,11 +239,11 @@ class TicketPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 10,),
                         Text("Booking Confirmed",style: t.textTheme.caption!.copyWith(
-                          fontSize: 30,
+                          fontSize: 29*s,
                           color: Colors.white
                         ),),
                         Text("Ticket ID: ${razorPayController.paymentId}",style: GoogleFonts.ptSans(
-                          fontSize: 12,
+                          fontSize: 11*s,
                           color: const Color(0xff6D6D6D)
                         ),)
                       ],
@@ -271,7 +273,7 @@ class TicketPage extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text("Back to Home",style: t.textTheme.headline1!.copyWith(
-                      fontSize: 18,
+                      fontSize: 17*s,
                       color: Colors.black
                     ),),
                   ),
@@ -302,6 +304,8 @@ class TicketPage extends StatelessWidget {
    Padding buildPartyDetailRow(BuildContext context,String head,String headText, String tail ,String tailText) {
      final t = Theme.of(context);
      final w = MediaQuery.of(context).size.width;
+     final s = MediaQuery.of(context).textScaleFactor;
+
      return Padding(
        padding: const EdgeInsets.symmetric(horizontal: 25.0),
        child: Row(
@@ -316,12 +320,12 @@ class TicketPage extends StatelessWidget {
                children: [
                  Text(head,style: t.textTheme.headline3!.copyWith(
                      color: const Color(0xffB5B5B5),
-                     fontSize: 18
+                     fontSize: 17*s
                  ),),
                  const SizedBox(height: 5,),
                  Text(headText,style: t.textTheme.headline3!.copyWith(
                      color: Colors.white,
-                     fontSize: 18
+                     fontSize: 17*s
                  ),)
                ],
              ),
@@ -335,12 +339,12 @@ class TicketPage extends StatelessWidget {
                children: [
                  Text(tail,style: t.textTheme.headline3!.copyWith(
                      color: const Color(0xffB5B5B5),
-                     fontSize: 18
+                     fontSize: 17*s
                  ),),
                  const SizedBox(height: 5,),
                  Text(tailText,style: t.textTheme.headline3!.copyWith(
                      color: Colors.white,
-                     fontSize: 18
+                     fontSize: 17*s
                  ),)
                ],
              ),
