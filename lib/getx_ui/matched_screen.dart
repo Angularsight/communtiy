@@ -46,9 +46,9 @@ class MatchedScreen extends StatelessWidget {
                             ctr.partyDetailsCarouselIndex.value =0;
                             Get.to(()=>PartyDetails2(index: partyIndex,));
                           },
-                          child: Image.network(
+                          child: controller.parties[ctr.partyIndexForMatchedPage.value].images!=null?Image.network(
                           controller.parties[ctr.partyIndexForMatchedPage.value].images![0].toString(), fit: BoxFit.cover,
-                          ),
+                          ):Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),),
                         );
                         // return CarouselSlider.builder(
                         //     itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,

@@ -16,6 +16,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/onboarding_controller.dart';
 import '../models/party_details.dart';
@@ -126,7 +127,7 @@ class PartyDetails2 extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 AnimatedSmoothIndicator(
-                                  count: controller.parties[index!].images!.length ?? 0,
+                                  count: controller.parties[index!].images!.length ,
                                   activeIndex: ctr.partyDetailsCarouselIndex.value,
                                   effect: WormEffect(
                                       radius: 10,
@@ -195,7 +196,27 @@ class PartyDetails2 extends StatelessWidget {
 
 
                                   SizedBox(height: h*0.02,),
-                                  buildStrokeText2("Venue : ${controller.parties[index!].location}", t, Colors.white, Colors.black,17),
+                                  Row(
+                                    children: [
+                                      buildStrokeText2("Venue : ${controller.parties[index!].location}", t, Colors.white, Colors.black,17),
+                                      SizedBox(width: w*0.02,),
+                                      InkWell(
+                                        onTap: ()async{
+                                          var party = controller.parties[index!];
+                                          String googleUrl = 'https://www.google.com/maps/search/?api=1&query=${party.latitude}%2C${party.longitude}';
+                                          if(await canLaunch(googleUrl)){
+                                            await launch(googleUrl);
+                                          }
+                                        },
+                                        child: Text('Directions',style: t.textTheme.headline1!.copyWith(
+                                          color: const Color(0xff417ACF),
+                                          fontSize: 14,
+                                          decoration: TextDecoration.underline,
+                                          decorationThickness: 2,
+                                        ),),
+                                      )
+                                    ],
+                                  ),
 
                                   SizedBox(height: h*0.015,),
                                   Flexible(
@@ -206,13 +227,13 @@ class PartyDetails2 extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                              height:h*0.022,
+                                              height:h*0.03,
                                               width: w*0.56,
                                               child: Text("Date : ${controller.parties[index!].date}",style: t.textTheme.headline3!.copyWith(
                                                 color: const Color(0xffCBCBCB)
                                               ),)),
                                           SizedBox(
-                                              height:h*0.022,
+                                              height:h*0.03,
                                               width: w*0.3,
                                               child: Text("Time : ${controller.parties[index!].time}",style: t.textTheme.headline3!.copyWith(
                                                   color: const Color(0xffCBCBCB)
@@ -231,7 +252,7 @@ class PartyDetails2 extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                              height:h*0.022,
+                                              height:h*0.03,
                                               width: w*0.56,
                                               child: Text("Ratio : Will be updated ",style: t.textTheme.headline3!.copyWith(
                                                   color: const Color(0xffCBCBCB)
@@ -838,7 +859,7 @@ class _FullImageViewState extends State<FullImageView> {
             return PhotoViewGalleryPageOptions(
               imageProvider: NetworkImage(widget.imageList[index]),
               minScale: PhotoViewComputedScale.contained,
-              maxScale: PhotoViewComputedScale.contained * 4
+              maxScale: PhotoViewComputedScale.contained * 4,
             );
           }),
     );

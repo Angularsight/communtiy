@@ -1,10 +1,7 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
-class PartyDetails with ChangeNotifier{
-
+class PartyDetails with ChangeNotifier {
   final String? partyName;
   final String? partyId;
   final String? partyHostId;
@@ -12,6 +9,8 @@ class PartyDetails with ChangeNotifier{
   final int? entryFee;
   final String? description;
   final String? location;
+  final double? latitude;
+  final double? longitude;
   final String? time;
   final String? date;
   final List? guests;
@@ -24,10 +23,30 @@ class PartyDetails with ChangeNotifier{
   final String? djPhoto;
   final List? activities;
 
-  PartyDetails(
-      {this.partyName, this.partyId, this.partyHostId, this.hostId, this.entryFee, this.description, this.location, this.time,this.date,this.guests,this.images,this.isValid,this.specialAppearance, this.djName, this.playing, this.djPhoto, this.activities, });
+  PartyDetails({
+    this.partyName,
+    this.partyId,
+    this.partyHostId,
+    this.hostId,
+    this.entryFee,
+    this.description,
+    this.location,
+    this.latitude,
+    this.longitude,
+    this.time,
+    this.date,
+    this.guests,
+    this.images,
+    this.isValid,
+    this.specialAppearance,
+    this.djName,
+    this.playing,
+    this.djPhoto,
+    this.activities,
+  });
 
-  factory PartyDetails.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
+  factory PartyDetails.fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final d = snapshot.data();
     return PartyDetails(
         partyName: d!['partyName'],
@@ -38,18 +57,17 @@ class PartyDetails with ChangeNotifier{
         description: d['description'],
         location: d['location'],
         time: d['time'],
-        guests:d['guests'],
-        images:d['images'],
+        guests: d['guests'],
+        images: d['images'],
         date: d['date'],
-      specialAppearance: d['specialAppearance'],
-      djName: d['djName'],
-      playing: d['playing'],
-      djPhoto: d['djPhoto'],
-      activities: d['activities'],
-      isValid: d['isValid']
+        specialAppearance: d['specialAppearance'],
+        djName: d['djName'],
+        playing: d['playing'],
+        djPhoto: d['djPhoto'],
+        activities: d['activities'],
+        isValid: d['isValid'],
+        latitude: d['lat'],
+        longitude: d['long']
     );
-
   }
-
-
 }
