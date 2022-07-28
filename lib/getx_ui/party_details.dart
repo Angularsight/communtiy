@@ -304,7 +304,7 @@ class PartyDetails2 extends StatelessWidget {
 
 
                                   SizedBox(height: h*0.02,),
-                                  Flexible(
+                                  controller.parties[index!].showGuests!?Flexible(
                                     flex: 5,
                                     child: Row(
                                       children: [
@@ -324,10 +324,10 @@ class PartyDetails2 extends StatelessWidget {
                                       ],
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
-                                  ),
+                                  ):Row(),
                                   SizedBox(height: h*0.01,),
 
-                                  GetX<FirebaseController>(
+                                  controller.parties[index!].showGuests!?GetX<FirebaseController>(
                                       builder: (controller) {
                                         return FutureBuilder(builder: (context,AsyncSnapshot<List<UserDetailsModel>> snapshot){
                                           try{
@@ -381,7 +381,7 @@ class PartyDetails2 extends StatelessWidget {
                                           future: controller.fetchGuests(controller.parties[index!].guests!),
                                         );
                                       }
-                                  ),
+                                  ):Row(),
 
 
                                   SizedBox(height: h*0.01,),

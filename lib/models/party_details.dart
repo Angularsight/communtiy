@@ -16,6 +16,7 @@ class PartyDetails with ChangeNotifier {
   final List? guests;
   final List? images;
   final bool? isValid;
+  final bool? showGuests;
 
   final bool? specialAppearance;
   final String? djName;
@@ -38,6 +39,7 @@ class PartyDetails with ChangeNotifier {
     this.guests,
     this.images,
     this.isValid,
+    this.showGuests,
     this.specialAppearance,
     this.djName,
     this.playing,
@@ -67,7 +69,8 @@ class PartyDetails with ChangeNotifier {
         activities: d['activities'],
         isValid: d['isValid'],
         latitude: d['lat'],
-        longitude: d['long']
+        longitude: d['long'],
+        showGuests: d['showGuests']
     );
   }
 }
