@@ -57,6 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget buildPageOne(double h,double w) {
 
     const descriptionText = "Finding a place where everyone you see \nis single is sometimes considered as \nparadise. We at leagues are here to make \nthat place available to everyone.";
+    final s = MediaQuery.of(context).textScaleFactor;
 
     return Container(
       width: double.infinity,
@@ -86,14 +87,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           const SizedBox(height: 2,),
 
-          const Text("A place where",style: TextStyle(
-            fontSize: 14,
+          Text("A place where",style: TextStyle(
+            fontSize: 13*s,
             color: Colors.white,
           ),),
 
           // const SizedBox(height: 10,),
           Text("Everyone is single",style: Theme.of(context).textTheme.caption!.copyWith(
-            fontSize: 30,
+            fontSize: 29*s,
             color: Colors.white,
             shadows: [
               Shadow(
@@ -106,7 +107,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           const SizedBox(height: 10,),
           Text(descriptionText,textAlign: TextAlign.center,style: GoogleFonts.ptSans(
-            fontSize: 14,
+            fontSize: 13*s,
             // color: const Color(0xff353535),
 
           ))
@@ -118,7 +119,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget buildPageTwo(double h,double w){
-
+    final s = MediaQuery.of(context).textScaleFactor;
     const descriptionText = 'Swiping through 1000 profiles to get\n1 match is something no one wants.\nHere at leagues, each event or party you \ngo to is a fixed match since you will be \nmeeting someone. So indirectly you are \nskipping the swiping and texting phase.';
 
     return Container(
@@ -178,14 +179,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           const SizedBox(height: 2,),
 
-          const Text("Beginning of",style: TextStyle(
-            fontSize: 14,
+          Text("Beginning of",style: TextStyle(
+            fontSize: 13*s,
             color: Colors.white,
           ),),
 
           // const SizedBox(height: 10,),
           Text("End of swipes",style: Theme.of(context).textTheme.caption!.copyWith(
-              fontSize: 30,
+              fontSize: 29*s,
               color: Colors.white,
               shadows: [
                 Shadow(
@@ -198,7 +199,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           const SizedBox(height: 10,),
           Text(descriptionText,textAlign: TextAlign.center,style: GoogleFonts.ptSans(
-            fontSize: 14,
+            fontSize: 14*s,
             // color: const Color(0xff353535),
 
           ))
@@ -210,7 +211,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget buildPageThree(double h,double w){
-
+    final s = MediaQuery.of(context).textScaleFactor;
     const descriptionText = "This app gives you the freedom to choose,\nthe place you want, the time of your choice \nand finally the partner of your match.";
 
     return Container(
@@ -271,14 +272,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
           const SizedBox(height: 2,),
 
-          const Text("Who Where When",style: TextStyle(
-            fontSize: 14,
+          Text("Who Where When",style: TextStyle(
+            fontSize: 13*s,
             color: Color(0xffEEE741),
           ),),
 
           // const SizedBox(height: 10,),
           Text("You Here Now",style: Theme.of(context).textTheme.caption!.copyWith(
-              fontSize: 30,
+              fontSize: 29*s,
               color: Color(0xffEEE741),
               shadows: [
                 Shadow(
@@ -292,7 +293,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           const SizedBox(height: 10,),
           Expanded(
             child: Text(descriptionText,textAlign: TextAlign.center,style: GoogleFonts.ptSans(
-              fontSize: 14,
+              fontSize: 13*s,
               color: const Color(0xff969696),
             )),
           ),
@@ -313,7 +314,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       borderRadius: BorderRadius.circular(8)
                     ),
                     child: Center(child: Text("Next",style: GoogleFonts.ptSans(
-                      fontSize: 18,
+                      fontSize: 17*s,
                       fontWeight: FontWeight.w600
                     ),),),
                   ),

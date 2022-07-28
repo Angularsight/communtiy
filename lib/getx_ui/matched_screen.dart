@@ -228,6 +228,12 @@ class MatchedScreen extends StatelessWidget {
     return GetX<OnBoardingController>(
       // init: Get.put(OnBoardingController()),
         builder: (userController) {
+          int streaksValue = -1;
+          if(userController.userProfile.value.streaks!=null){
+            streaksValue = userController.userProfile.value.streaks!;
+          } else{
+            streaksValue = 0;
+          }
           // userController.userProfile.bindStream(userController.connectUserToApp());
           // final profilePic = userController.userProfile.value.userProfilePic;
           return Padding(
@@ -235,7 +241,7 @@ class MatchedScreen extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.location_on_rounded,color: Theme.of(context).canvasColor,size: 30,),
+                Icon(Icons.person,color: Theme.of(context).canvasColor,size: 35,),
                 SizedBox(width: w*0.01,),
                 // const SizedBox(width: 5,),
                 Expanded(
@@ -244,18 +250,18 @@ class MatchedScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Home",style: Theme.of(context).textTheme.headline1!.copyWith(
+                        userController.userProfile.value.userName!=null?Text(userController.userProfile.value.userName.toString(),style: Theme.of(context).textTheme.headline1!.copyWith(
                             color: Colors.white,
-                            fontSize: 17*s
+                            fontSize: 18*s
+                        ),):Text("Legend",style: Theme.of(context).textTheme.headline1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18*s
                         ),),
-                        userController.userProfile.value.location!=null?Text(userController.userProfile.value.location.toString(),
+                        Text("Your Streaks :  "+streaksValue.toString(),
                           style: Theme.of(context).textTheme.headline1!.copyWith(
                               color: const Color(0xffB6B6B6),
                               fontSize: 12*s
-                          ),):Text("Somewhere on earth",style: Theme.of(context).textTheme.headline1!.copyWith(
-                            color: const Color(0xffB6B6B6),
-                            fontSize: 12*s
-                        ),),
+                          ),)
                       ],
                     ),
                   ),

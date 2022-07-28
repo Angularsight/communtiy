@@ -54,6 +54,8 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
     final h = MediaQuery.of(context).size.height;
     const dummyImage = 'https://bestprofilepictures.com/wp-content/uploads/2021/07/Dope-Profile-Picture.jpg';
     final user = userController.userProfile.value;
+    final s = MediaQuery.of(context).textScaleFactor;
+
     // fetchInterest();
 
     return Scaffold(
@@ -135,7 +137,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                     children: [
                       Text("${user.userId}",style: Theme.of(context).textTheme.headline1!.copyWith(
                         color: Theme.of(context).primaryColor,
-                        fontSize: 15
+                        fontSize: 14*s
                       ),),
                       const SizedBox(width: 5,),
                       InkWell(
@@ -199,6 +201,8 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
   Widget basicsTab(double w,double h,UserDetailsModel user){
     var t1 = Theme.of(context).textTheme.headline1;
     final address = user.location!.split(',');
+    final s = MediaQuery.of(context).textScaleFactor;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal:w*0.02,vertical: h*0.02),
       child: Column(
@@ -258,7 +262,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
             children: [
               Text("Info",style:  t1!.copyWith(
                   color: Colors.white,
-                  fontSize: 25
+                  fontSize: 24*s
               )),
               SizedBox(width: w*0.02,),
             ],
@@ -272,11 +276,11 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                 children: [
                   Text("Age",style: t1.copyWith(
                       color: Colors.grey,
-                      fontSize: 18
+                      fontSize: 17*s
                   ),),
                   Text(user.age.toString(),style:t1.copyWith(
                       color:Colors.white,
-                      fontSize: 14
+                      fontSize: 13*s
                   ))
                 ],
               ),
@@ -286,11 +290,11 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                 children: [
                   Text("Phone",style: t1.copyWith(
                       color: Colors.grey,
-                      fontSize: 18
+                      fontSize: 17*s
                   ),),
                   Text(user.phoneNumber.toString(),style:t1.copyWith(
                       color:const Color(0xff61FF00),
-                      fontSize: 14
+                      fontSize: 13*s
                   ))
                 ],
               ),
@@ -300,11 +304,11 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                 children: [
                   Text("Email",style: t1.copyWith(
                       color: Colors.grey,
-                      fontSize: 18
+                      fontSize: 17*s
                   ),),
                   Text('${user.email}',style:t1.copyWith(
                       color:const Color(0xffDFA91D),
-                      fontSize: 14
+                      fontSize: 13*s
                   ))
                 ],
               ),
@@ -316,6 +320,8 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
   }
 
   Widget interestsTab(w,h){
+    final s = MediaQuery.of(context).textScaleFactor;
+
     var userInterests = widget.interests;
     List<String> permanentInterests = ['Anime','Drama','Movies','Series','Sports'];
 
@@ -391,7 +397,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                       ),
                       child: Center(child: Text(permanentInterests[index],style: Theme.of(context).textTheme.headline1!.copyWith(
                         color: Colors.black,
-                        fontSize: 16
+                        fontSize: 15*s
                       ),),),
                     ),
                   );
@@ -426,7 +432,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                             children: [
                               Text(variables[mainIndex],style: Theme.of(context).textTheme.headline1!.copyWith(
                                 color: Colors.white,
-                                fontSize: 16
+                                fontSize: 15*s
                               ),),
                               InkWell(
                                   onTap: (){
@@ -445,7 +451,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                                 itemBuilder: (context,index){
                                   return Text("${variablesList[mainIndex]![index]} , ",style:Theme.of(context).textTheme.headline1!.copyWith(
                                       color: Colors.white,
-                                      fontSize: 14
+                                      fontSize: 13.5*s
                                   ),);
                                 }),
                           )
@@ -463,6 +469,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
   }
 
   openInterestEditDialogBox(BuildContext context,String variable, List<dynamic>? variablesList,double w,double h) {
+    final s = MediaQuery.of(context).textScaleFactor;
 
     ///Converting dynamic list to string list
     List<String> newInterestList = [];
@@ -495,7 +502,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                     children: [
                       Text(variable,style: Theme.of(context).textTheme.headline1!.copyWith(
                         color: Colors.white,
-                        fontSize: 22
+                        fontSize: 21
                       ),),
                       // SizedBox(height: h*0.01,),
                       Text("Enter values separated by commas",style: Theme.of(context).textTheme.headline1!.copyWith(
@@ -553,7 +560,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> with TickerProviderStat
                             },
                             child: Text("Done",style: Theme.of(context).textTheme.headline2!.copyWith(
                               color: Colors.white,
-                              fontSize: 18
+                              fontSize: 17*s
                             ),),
                           )
                         ],

@@ -22,6 +22,8 @@ class CouponsScreen extends StatelessWidget {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     final t = Theme.of(context);
+    final s = MediaQuery.of(context).textScaleFactor;
+
     user.carouselIndicatorIndex.value = 0;
 
     return Scaffold(
@@ -52,7 +54,7 @@ class CouponsScreen extends StatelessWidget {
                         SizedBox(width: w*0.03,),
                         Text("Leagues",style: t.textTheme.headline1!.copyWith(
                           color: Colors.white,
-                          fontSize: 25
+                          fontSize: 24*s
                         ),)
                       ],
                     ),
@@ -109,7 +111,7 @@ class CouponsScreen extends StatelessWidget {
                       child: Center(
                         child: Text("Streaks : $streaksValue",style: t.textTheme.headline1!.copyWith(
                           // color: Color(0xffDFA91D),
-                          fontSize: 18,
+                          fontSize: 17*s,
                           color: Colors.black,
                           fontWeight: FontWeight.bold
                         ),),
@@ -119,7 +121,7 @@ class CouponsScreen extends StatelessWidget {
                     SizedBox(height: h*0.02,),
                     Text("Streak Rewards",style: t.textTheme.headline1!.copyWith(
                       color: Colors.white,
-                      fontSize: 18
+                      fontSize: 17*s
                     ),),
 
                     ListView.builder(
@@ -148,12 +150,12 @@ class CouponsScreen extends StatelessWidget {
                                           children:[
                                             Text(discountAndImage[index].name.toString(),style:t.textTheme.headline1!.copyWith(
                                               color: (index+1)==user.userProfile.value.streaks?Colors.white:Colors.grey,
-                                              fontSize: 20
+                                              fontSize: 19*s
                                             ),),
                                             Expanded(
                                               child: Text("Get ${discountAndImage[index].discount}% off on any event you enter",style: t.textTheme.headline1!.copyWith(
                                                 color: Colors.white.withOpacity(0.6),
-                                                fontSize: 14
+                                                fontSize: 13*s
                                               ),),
                                             ),
                                             Container(
@@ -178,7 +180,7 @@ class CouponsScreen extends StatelessWidget {
                                                   children: [
                                                     Text(discountAndImage[index].code.toString(),style: t.textTheme.headline1!.copyWith(
                                                       color:(index+1)==user.userProfile.value.streaks? const Color(0xff1D4956):Colors.grey.shade900.withOpacity(0.5),
-                                                      fontSize: 14
+                                                      fontSize: 13*s
                                                     ),),
                                                     InkWell(
                                                         onTap: (){
@@ -233,7 +235,7 @@ class CouponsScreen extends StatelessWidget {
                                       ),
                                       child: Center(child: Text((index+1).toString(),style: TextStyle(
                                         color:(index+1)==user.userProfile.value.streaks? Colors.white:Colors.grey.shade900.withOpacity(0.5),
-                                        fontSize: 15,
+                                        fontSize: 14*s,
                                         fontWeight: FontWeight.bold
                                       ),),),
                                     ),

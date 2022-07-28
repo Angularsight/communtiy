@@ -22,6 +22,8 @@ class PartyHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
+    final s = MediaQuery.of(context).textScaleFactor;
+
 
     return Scaffold(
       body: SafeArea(
@@ -41,7 +43,7 @@ class PartyHistory extends StatelessWidget {
                     SizedBox(width: w*0.03,),
                     Text("History",style: Theme.of(context).textTheme.headline1!.copyWith(
                       color: Colors.white,
-                      fontSize: 25,
+                      fontSize: 24*s,
                     ),)
                   ],
                 ),
@@ -87,7 +89,9 @@ class PartyHistory extends StatelessWidget {
   }
 
   Widget buildHistoryTile(BuildContext context,int index,double w, double h, HistoryController c) {
-        var history = c.historyList.value[index];
+    final s = MediaQuery.of(context).textScaleFactor;
+
+    var history = c.historyList.value[index];
         var t = Theme.of(context).textTheme.headline1;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -125,7 +129,7 @@ class PartyHistory extends StatelessWidget {
                       children: [
                         Text(history.partyName.toString(),style: t!.copyWith(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 24*s,
                         ),),
                         InkWell(
                           onTap: (){
@@ -154,14 +158,14 @@ class PartyHistory extends StatelessWidget {
                       children: [
                         Text("Venue : ${history.partyVenue}",style: t.copyWith(
                             color: Colors.white,
-                            fontSize: 14
+                            fontSize: 13*s
                         ),),
                         Text("Time : ${history.partyTime}",style: t.copyWith(
-                          fontSize: 14,
+                          fontSize: 13*s,
                           color: Colors.white,
                         ),),
                         Text("Price: Rs.500",style: t.copyWith(
-                          fontSize: 14,
+                          fontSize: 13*s,
                           color: Colors.white,
                         ),),
                       ],
