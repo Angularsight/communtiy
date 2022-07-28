@@ -75,6 +75,7 @@ class _MainScreenState extends State<MainScreen> {
                 SliverToBoxAdapter(
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children:  [
                           Padding(
                               padding: EdgeInsets.symmetric(horizontal: w * 0.06,vertical: h * 0.03),
@@ -174,6 +175,14 @@ class _MainScreenState extends State<MainScreen> {
                               )
                           ),
 
+                          Padding(
+                            padding: EdgeInsets.only(left: w * 0.06,bottom: w*0.06),
+                            child: Text("This month's events",style: Theme.of(context).textTheme.headline1!.copyWith(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold
+                            ),),
+                          ),
                           GetX<FirebaseController>(
                             builder: (FirebaseController partyController) {
                               return SizedBox(
@@ -260,6 +269,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return InkWell(
       onTap: (){
+        partyController.partyDetailsCarouselIndex.value =0;
         Get.to(() =>  PartyDetails2(index:currentPage));
       },
       child:AnimatedPadding(
@@ -356,7 +366,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
 
-                Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
+                // Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
                 SizedBox(width: w*0.03,),
                 Ink(
                   decoration: BoxDecoration(

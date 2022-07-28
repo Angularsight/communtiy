@@ -36,7 +36,7 @@ class BottomNavigationPage extends StatelessWidget {
           body: IndexedStack(
             index: controller.bottomIndex,
             children:  [
-              // MainScreen(),
+              MainScreen(),
               MatchedScreen(),
               // UploadTab(),
               UserProfileScreen(),
@@ -49,7 +49,6 @@ class BottomNavigationPage extends StatelessWidget {
               onTap: (int index){
                 controller.changeIndex(index);
               },
-
               backgroundColor: Colors.transparent,
               elevation: 0,
               type: BottomNavigationBarType.fixed,
@@ -61,9 +60,9 @@ class BottomNavigationPage extends StatelessWidget {
                     label: 'Home',
                     icon: Icon(Icons.all_inclusive)
                 ),
-                // BottomNavigationBarItem(
-                //     label: 'Matched',
-                //     icon: Icon(Icons.watch)),
+                BottomNavigationBarItem(
+                    label: 'Matched',
+                    icon: Icon(Icons.watch)),
                 // BottomNavigationBarItem(
                 //     label: 'Boss',
                 //     icon: Icon(Icons.add_box_outlined)),
@@ -80,22 +79,6 @@ class BottomNavigationPage extends StatelessWidget {
 
   Widget buildNoInternetPage(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   flexibleSpace: Container(
-      //     decoration: BoxDecoration(
-      //       color: Theme.of(context).scaffoldBackgroundColor,
-      //         borderRadius: const BorderRadius.only(
-      //             bottomRight: Radius.circular(17),
-      //             bottomLeft: Radius.circular(17)),
-      //     ),
-      //   ),
-      //   leading: InkWell(
-      //       onTap: (){
-      //         Get.off(()=>BottomNavigationPage());
-      //       },
-      //       child: const Icon(Icons.arrow_back_rounded,color: Colors.white,)),
-      // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

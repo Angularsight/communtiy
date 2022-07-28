@@ -40,38 +40,48 @@ class MatchedScreen extends StatelessWidget {
                   width: w,
                   child: GetX<FirebaseController>(
                       builder: (ctr) {
-                        return CarouselSlider.builder(
-                            itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
-                            itemBuilder: (context,index,realIndex){
-                              return GestureDetector(
-                                onTap: (){
-                                  final partyIndex = controller.partyIndexForMatchedPage.value;
-                                  Get.to(()=>PartyDetails2(index: partyIndex,));
-                                },
-                                child: SizedBox(
-                                    height: h * 0.7,
-                                    width: w,
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(10),
-                                        topLeft: Radius.circular(10)
-                                      ),
-                                      child: Image.network(
-                                        controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
-                                      ),
-                                    )),
-                              );
-                            },
-                            options: CarouselOptions(
-                                height: h*0.7,
-                                viewportFraction: 1,
-                                enableInfiniteScroll: false,
-                                enlargeCenterPage: true,
-                                initialPage: 0,
-                                onPageChanged: (int index,reason){
-                                  controller.pageIndicatorIndex.value = index;
-                                }
-                            ));
+                        return InkWell(
+                          onTap: (){
+                            final partyIndex = controller.partyIndexForMatchedPage.value;
+                            ctr.partyDetailsCarouselIndex.value =0;
+                            Get.to(()=>PartyDetails2(index: partyIndex,));
+                          },
+                          child: Image.network(
+                          controller.parties[ctr.partyIndexForMatchedPage.value].images![0].toString(), fit: BoxFit.cover,
+                          ),
+                        );
+                        // return CarouselSlider.builder(
+                        //     itemCount: controller.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
+                        //     itemBuilder: (context,index,realIndex){
+                        //       return GestureDetector(
+                        //         onTap: (){
+                        //           final partyIndex = controller.partyIndexForMatchedPage.value;
+                        //           Get.to(()=>PartyDetails2(index: partyIndex,));
+                        //         },
+                        //         child: SizedBox(
+                        //             height: h * 0.7,
+                        //             width: w,
+                        //             child: ClipRRect(
+                        //               borderRadius: const BorderRadius.only(
+                        //                 topRight: Radius.circular(10),
+                        //                 topLeft: Radius.circular(10)
+                        //               ),
+                        //               child: Image.network(
+                        //                 controller.parties[ctr.partyIndexForMatchedPage.value].images![index].toString(), fit: BoxFit.cover,
+                        //               ),
+                        //             )),
+                        //       );
+                        //     },
+                        //     options: CarouselOptions(
+                        //         height: h*0.7,
+                        //         viewportFraction: 1,
+                        //         enableInfiniteScroll: false,
+                        //         enlargeCenterPage: true,
+                        //         initialPage: 0,
+                        //         onPageChanged: (int index,reason){
+                        //           controller.pageIndicatorIndex.value = index;
+                        //         }
+                        //     ));
                       }
                   ),
                 ),
@@ -80,26 +90,26 @@ class MatchedScreen extends StatelessWidget {
           ),
 
           Padding(
-            padding: EdgeInsets.only(top: h*0.64),
+            padding: EdgeInsets.only(top: h*0.66),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GetX<FirebaseController>(
-                      builder: (ctr) {
-                        return AnimatedSmoothIndicator(
-                          count: ctr.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
-                          activeIndex: ctr.pageIndicatorIndex.value,
-                          effect: WormEffect(
-                              radius: 10,
-                              dotWidth: 12,
-                              dotHeight: 12,
-                              activeDotColor: t.primaryColor
-                          ),
-                        );
-                      }
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: GetX<FirebaseController>(
+                //       builder: (ctr) {
+                //         return AnimatedSmoothIndicator(
+                //           count: ctr.parties[controller.partyIndexForMatchedPage.value].images?.length ?? 0,
+                //           activeIndex: ctr.pageIndicatorIndex.value,
+                //           effect: WormEffect(
+                //               radius: 10,
+                //               dotWidth: 12,
+                //               dotHeight: 12,
+                //               activeDotColor: t.primaryColor
+                //           ),
+                //         );
+                //       }
+                //   ),
+                // ),
                 Container(
                   height: h * 0.25,
                   width: w,
@@ -115,7 +125,7 @@ class MatchedScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: w*0.025,vertical: h*0.01),
-                        child: Text("Community",style: t.textTheme.caption!.copyWith(
+                        child: Text("Leagues",style: t.textTheme.caption!.copyWith(
                             color: Colors.white
                         ),),
                       ),
@@ -249,7 +259,7 @@ class MatchedScreen extends StatelessWidget {
                   ),
                 ),
 
-                Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
+                // Icon(Icons.notifications_none,color: Theme.of(context).canvasColor,size: 30,),
                 SizedBox(width: w*0.03,),
                 Ink(
                   decoration: BoxDecoration(

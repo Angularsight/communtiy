@@ -37,6 +37,7 @@ class FirebaseController extends GetxController {
   RxInt pageIndicatorIndex = 0.obs;
   RxInt partyIndexForMatchedPage = 0.obs;
 
+  RxInt partyDetailsCarouselIndex = 0.obs;
 
 
 
@@ -111,7 +112,7 @@ class FirebaseController extends GetxController {
 
   /// Suggestions loader in TypeAhead text field
   Future<List<PartyDetails>> partyQuerySuggestions(String query)async{
-    var v = await FirebaseFirestore.instance.collection('PartyDetails').get();
+    var v = await FirebaseFirestore.instance.collection('PartyDetails').where('isValid',isEqualTo: true).get();
     return v.docs.map((doc) => PartyDetails.fromDocument(doc)).where((party) {
       final partyName = party.partyName!.toLowerCase();
       final inputQuery = query.toLowerCase();

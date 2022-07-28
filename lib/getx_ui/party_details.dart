@@ -1,4 +1,5 @@
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
 import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/getx_ui/checkout_page.dart';
@@ -14,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../controllers/onboarding_controller.dart';
 import '../models/party_details.dart';
@@ -74,20 +76,38 @@ class PartyDetails2 extends StatelessWidget {
           children: [
             Stack(
               children: [
-                SizedBox(
-                  height: h*0.6,
-                  width: w,
-                  child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context,thisIndex){
-                        return InkWell(
-                            onTap: (){
-                              openFullImageView(index,imagesList);
-                            },
-                            child: imageCard(context,thisIndex,w));
-                      },
-                      separatorBuilder: (context,index)=>const SizedBox(width: 0,),
-                      itemCount: controller.parties[index!].images!.length),
+                SafeArea(
+                  child: SizedBox(
+                    height: h*0.6,
+                    width: w,
+                    // child: ListView.separated(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemBuilder: (context,thisIndex){
+                    //       return InkWell(
+                    //           onTap: (){
+                    //             openFullImageView(index,imagesList);
+                    //           },
+                    //           child: imageCard(context,thisIndex,w));
+                    //     },
+                    //     separatorBuilder: (context,index)=>const SizedBox(width: 0,),
+                    //     itemCount: controller.parties[index!].images!.length),
+                    child: CarouselSlider.builder(
+                        itemCount: controller.parties[index!].images!.length,
+                        itemBuilder: (context,thisIndex,realIndex){
+                          return imageCard(context,thisIndex,w);
+                        },
+                        options: CarouselOptions(
+                            height: h*0.6,
+                            viewportFraction: 1,
+                            enableInfiniteScroll: false,
+                            enlargeCenterPage: true,
+                            initialPage: 0,
+                            onPageChanged: (int index,reason){
+                              // controller.pageIndicatorIndex.value = index;
+                              controller.partyDetailsCarouselIndex.value = index;
+                            }
+                        )),
+                  ),
                 ),
 
 
@@ -97,6 +117,28 @@ class PartyDetails2 extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: h*0.55,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GetX<FirebaseController>(
+                          builder: (ctr) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AnimatedSmoothIndicator(
+                                  count: controller.parties[index!].images!.length ?? 0,
+                                  activeIndex: ctr.partyDetailsCarouselIndex.value,
+                                  effect: WormEffect(
+                                      radius: 10,
+                                      dotWidth: 12,
+                                      dotHeight: 12,
+                                      activeDotColor: t.primaryColor
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                      ),
                     ),
                     Container(
                       // height: h*1.2,
@@ -342,6 +384,17 @@ class PartyDetails2 extends StatelessWidget {
 
                   ],
                 ),
+
+                Positioned(
+                  right: 10,
+                  top: h*0.55,
+                  child:InkWell(
+                      onTap: (){
+                        openFullImageView(index,imagesList);
+                      },
+                      child: const Icon(Icons.fullscreen,color: Colors.white,size: 25,)),
+                )
+
               ],
             )
 
