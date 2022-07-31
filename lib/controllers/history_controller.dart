@@ -21,15 +21,15 @@ class HistoryController extends GetxController{
       historyList.value = await firebaseController.fetchPartiesHistory(userDocId);
     }catch (r){
       historyList.value = [];
-      Fluttertoast.showToast(
-          msg: "Complete About You to see history",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      // Fluttertoast.showToast(
+      //     msg: "Complete About You to see history",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.SNACKBAR,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Colors.red,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0
+      // );
     }
 
   }

@@ -300,7 +300,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.SNACKBAR,
                             timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
+                            backgroundColor: Colors.black,
                             textColor: Colors.white,
                             fontSize: 16.0
                         );

@@ -83,26 +83,26 @@ class _NewUserUploadState extends State<NewUserUpload> {
   final userProfilePicUrlList = [];
   void _pickImageFromGallery() async {
     final imagePicker = ImagePicker();
-    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    final selectedImage = await imagePicker.pickImage(source: ImageSource.gallery,imageQuality: 10);
     final pickedImageFile = File(selectedImage!.path);
 
     ///Image compression part
-    var compressedFileUintList = await FlutterImageCompress.compressWithFile(
-        pickedImageFile.absolute.path,
-        quality: 10
-    );
-    final tempDirectory = await getTemporaryDirectory();
-    final compressedFile = await File('${tempDirectory.path}/image.jpg').create();
-    compressedFile.writeAsBytesSync(compressedFileUintList!);
+    // var compressedFileUintList = await FlutterImageCompress.compressWithFile(
+    //     pickedImageFile.absolute.path,
+    //     quality: 10
+    // );
+    // final tempDirectory = await getTemporaryDirectory();
+    // final compressedFile = await File('${tempDirectory.path}/image${photoIndex2+1}.jpg').create();
+    // compressedFile.writeAsBytesSync(compressedFileUintList!);
 
 
     print("File length before compression:${pickedImageFile.lengthSync()}");
-    print("File length after compression:${compressedFile.lengthSync()}");
+    // print("File length after compression:${compressedFile.lengthSync()}");
 
     setState(() {
       pickedImageBool2 = true;
       pickedImage2 = pickedImageFile;
-      imageList2.add(compressedFile);
+      imageList2.add(pickedImageFile);
       photoIndex2 = imageList2.length - 1;
     });
   }
@@ -143,8 +143,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
       final ref = FirebaseStorage.instance
           .ref()
           .child("users")
-          .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
-          .child(username + i.toString() + '.jpg');
+          .child((userNameController.text+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
+          .child(userNameController.text + i.toString() + '.jpg');
       await ref.putFile(imageList2[j]).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
           urlList2.add(value);
@@ -156,8 +156,8 @@ class _NewUserUploadState extends State<NewUserUpload> {
     print(urlList2);
 
     final ref2 = FirebaseStorage.instance.ref().child('users')
-        .child((username+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
-        .child('profile pic').child(username+'.jpg');
+        .child((userNameController.text+'(${FirebaseAuth.instance.currentUser!.phoneNumber!.substring(3)})').trim())
+        .child('profile pic').child(userNameController.text+'.jpg');
     await ref2.putFile(userProfilePic[0]).whenComplete(() async {
       await ref2.getDownloadURL().then((value) {
         userProfilePicUrlList.add(value);
@@ -185,32 +185,32 @@ class _NewUserUploadState extends State<NewUserUpload> {
     if(currentUser.phoneNumber!.isNotEmpty){
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
-        'userName':username,
+        'userName':userNameController.text,
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
         'phoneNumber':int.parse(phoneNumber),
         'location':'Navrang,Bangalore-560010',
-        'age':int.parse(age),
+        'age':int.parse(ageController.text),
         'xp':int.parse('5'),
         'images':urlList2,
         'streaks':1,
         'gender':_radioValueGender.toString(),
-        'email':email
+        'email':emailController.text
       });
     }else{
       FirebaseFirestore.instance.collection('UserDetails').doc().set({
         'userId':currentUser.uid,
-        'userName':username,
+        'userName':userNameController.text,
         'password':"something useless",
         'userProfilePic':userProfilePicUrlList[0],
         'phoneNumber':int.parse(phoneNumber),
         'location':'Navrang,Bangalore-560010',
-        'age':int.parse(age),
+        'age':int.parse(ageController.text),
         'xp':int.parse('5'),
         'images':urlList2,
         'streaks':1,
         'gender':_radioValueGender.toString(),
-        'email':email
+        'email':emailController.text
       });
     }
 
@@ -310,7 +310,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                 onTap: (){
                   setState(() {
                     if(selectedStep==0){
-                      if(imageList2.isNotEmpty && username!='' && age!='' && userProfilePic.isNotEmpty){
+                      if(imageList2.isNotEmpty && userNameController.text!='' && ageController.text!='' && emailController.text!='' && userProfilePic.isNotEmpty){
                         selectedStep = selectedStep+1;
                         pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                       }else{
@@ -320,7 +320,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
                         ));
                       }
                     }else if(selectedStep==1){
-                      if(_radioValue!='' && occupation!='' && _pinPutController.text!='' && pet!=''){
+                      if(_radioValue!='' && occupationController.text!='' && _pinPutController.text!='' && petController.text!=''){
                         selectedStep = selectedStep+1;
                         pageController.animateToPage(selectedStep, duration: const Duration(milliseconds: 300), curve: Curves.bounceIn);
                       }else{
@@ -503,7 +503,7 @@ class _NewUserUploadState extends State<NewUserUpload> {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
-        padding:EdgeInsets.only(left: w*0.05,top: h*0.03,right: w*0.02),
+        padding:EdgeInsets.only(left: w*0.05,right: w*0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

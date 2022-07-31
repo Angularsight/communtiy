@@ -27,7 +27,7 @@ class ChartData {
 class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key? key}) : super(key: key);
   final OnBoardingController userController = Get.put(OnBoardingController());
-  final HistoryController historyController = Get.put(HistoryController());
+  // final HistoryController historyController = Get.put(HistoryController());
   final FirebaseController partyController = Get.find();
   // final loginUser = FirebaseAuth.instance.currentUser!;
 
@@ -54,10 +54,13 @@ class UserProfileScreen extends StatelessWidget {
     var t = Theme.of(context);
 
     double streaksValue = -1;
+    double attended = 0;
     if(userController.userProfile.value.streaks!=null){
       streaksValue = userController.userProfile.value.streaks!.toDouble();
+      attended = streaksValue - 1;
     } else{
       streaksValue = 0.5;
+      attended = 0;
     }
 
     return Scaffold(
@@ -115,7 +118,7 @@ class UserProfileScreen extends StatelessWidget {
                                 groupsSpace: 25,
                                 barGroups: [
                                   BarChartGroupData(x: 1,barRods: [
-                                    BarChartRodData(toY: historyController.historyList.value.length.toDouble(),
+                                    BarChartRodData(toY: attended,
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             topLeft: Radius.circular(10)),

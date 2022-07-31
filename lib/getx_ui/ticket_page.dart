@@ -153,7 +153,7 @@ class TicketPage extends StatelessWidget {
                                   const SizedBox(height: 15,),
                                   insertDottedLine(),
                                   const SizedBox(height: 20,),
-                                  buildPartyDetailRow(context, "Venue", party.location!, "Amount Paid", 'Rs. '+ razorPayController.overallAmount.value.toString() ),
+                                  buildPartyDetailRow(context, "Venue", party.location!, "Paid", 'Rs. '+ razorPayController.overallAmount.value.toString() ),
 
 
                                 ],

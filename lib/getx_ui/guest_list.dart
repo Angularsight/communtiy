@@ -131,7 +131,7 @@ class GuestList2 extends StatelessWidget {
                       SizedBox(height: h*0.01),
                       Padding(
                         padding: EdgeInsets.only(left: h*0.01),
-                        child: Text('Doesnt matter if you win by an inch or a mile winning is winning', style: t.textTheme.headline1!.copyWith(
+                        child: Text('${guest.userName}  Streaks : ${guest.streaks}\n${guest.gender} (Invited)', style: t.textTheme.headline1!.copyWith(
                             color: Colors.white, fontSize: 15*s),
                         ),
                       ),
@@ -295,7 +295,7 @@ class GuestList2 extends StatelessWidget {
                           style: t.textTheme.headline1!.copyWith(
                               color: const Color(0xffABAAAA), fontSize: 14*s)),
                       Text(
-                        "#Party#Fun#Yes#No#Host#Invited",
+                        "#${guests![index].userName}#${guests![index].streaks}#${guests![index].gender}#Invited",
                         style: t.textTheme.headline1!
                             .copyWith(color: const Color(0xff696969), fontSize: 11*s),
                       ),
