@@ -54,6 +54,8 @@ class TicketPage extends StatelessWidget {
      /// The same information can be used to replicate the QR code in party history tab
      var userDoc = await FirebaseFirestore.instance.collection("UserDetails").where('userId',isEqualTo: userController.currentUser.uid).get();
      var userDocId = userDoc.docs[0].id;
+
+     print("Checkout Amount in Ticket Page:${razorPayController.overallAmount.value}");
      FirebaseFirestore.instance.collection("UserDetails").doc(userDocId).collection("History").doc().set({
        'partyId':party.partyId,
        'partyImage':party.images![0],
@@ -63,6 +65,8 @@ class TicketPage extends StatelessWidget {
        'partyVenue':party.location,
        'partyHost':razorPayController.host!.hostName,
        'qrDetail': razorPayController.paymentId,
+       'amountPaid':razorPayController.overallAmount.value,
+       'noOfTicketsBought': razorPayController.friendsList.value.length + 1  // Here 1 is user himself/herself
      });
 
      /// Incrementing streak of user
@@ -295,8 +299,9 @@ class TicketPage extends StatelessWidget {
                                   'paymentId:${razorPayController.paymentId}\n '
                                   'Date:${party.date} @${party.time}\n '
                                   'NoOfTickets:$noOfTickets\n'
-                                  'Venue:${party.location}\n '
-                                  'Host:${host.hostName}',
+                                  'Amount Paid : ${razorPayController.overallAmount.value}\n'
+                                  'Venue:${party.location}\n'
+                                  'Host:${host.hostName}\n',
                               backgroundColor: Colors.white,
                               size: 200,);
   }

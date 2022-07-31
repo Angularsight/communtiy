@@ -1,6 +1,3 @@
-
-
-
 import 'dart:ui';
 
 import 'package:communtiy/controllers/history_controller.dart';
@@ -156,15 +153,18 @@ class PartyHistory extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Venue : ${history.partyVenue}",style: t.copyWith(
-                            color: Colors.white,
-                            fontSize: 13*s
-                        ),),
-                        Text("Time : ${history.partyTime}",style: t.copyWith(
+                        SizedBox(
+
+                          child: Text("Venue : ${history.partyVenue}",style: t.copyWith(
+                              color: Colors.white,
+                              fontSize: 13*s
+                          ),),
+                        ),
+                        Text("Tickets : ${history.noOfTicketsBought}",style: t.copyWith(
                           fontSize: 13*s,
                           color: Colors.white,
                         ),),
-                        Text("Price: Rs.500",style: t.copyWith(
+                        Text("Paid: ${history.amountPaid}",style: t.copyWith(
                           fontSize: 13*s,
                           color: Colors.white,
                         ),),
@@ -203,7 +203,8 @@ class PartyHistory extends StatelessWidget {
                       data:'partyName:${history.partyName}\n'
                           'paymentId:${history.qrDetail}\n '
                           'Date:${history.partyDate} @${history.partyTime}\n '
-                          'NoOfTickets:$noOfTickets\n'
+                          'NoOfTickets:${history.noOfTicketsBought}\n'
+                          'Amount Paid : ${history.amountPaid}\n'
                           'Venue:${history.partyVenue}\n '
                           'Host:${history.partyHost}',
                       backgroundColor: Colors.transparent,

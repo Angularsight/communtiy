@@ -15,6 +15,8 @@ class RazorPayController extends GetxController{
   HostModel? host;
   String? paymentId;
 
+
+  var overallAmount= 0.obs;
   var friendsList =  [].obs;
 
 

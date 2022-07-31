@@ -5,6 +5,7 @@ import 'package:communtiy/controllers/razorpay_controller.dart';
 import 'package:communtiy/models/coupons/discountAndImage.dart';
 import 'package:communtiy/models/host/host.dart';
 import 'package:communtiy/models/party_details.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -175,7 +176,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   padding: EdgeInsets.only(top: h*0.013),
                                   child:buildPaymentDetailsRow(context, "Entry Fee", "Rs.${widget.party.entryFee}")),
 
-                              buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
+                              // buildPaymentDetailsRow(context, "Finders fee", "Rs.20"),
                               if (discountPercent!=-1 && friendDiscount !=0) buildPaymentDetailsRow(context, "Discount", "Rs.${friendDiscount + discountAmount}")
                               else if(friendDiscount!=0)buildPaymentDetailsRow(context, "Discount", "Rs.$friendDiscount")
                               else if(discountPercent!=-1) buildPaymentDetailsRow(context, "Discount", "$discountPercent%")
@@ -292,6 +293,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   child: InkWell(
                     onTap: (){
                       int checkoutAmount = getCheckAmount();
+                      razorPayController.overallAmount.value = checkoutAmount;
                       if(userController.userProfile.value.userName==null){
                         Fluttertoast.showToast(
                             msg: "Complete About You in profile to proceed",
@@ -302,15 +304,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             textColor: Colors.white,
                             fontSize: 16.0
                         );
+                      // }else{
+                      //   razorPayController.updateTicketDetails(widget.party,widget.host);
+                      //   razorPayController.openCheckout(
+                      //       widget.party.partyName!,
+                      //       checkoutAmount,
+                      //       "7411001185",
+                      //       "angularsight77@gmail.com",
+                      //       ["Gpay","paytm","PhonePe"],
+                      //       "9482397595");
+                      // }
                       }else{
                         razorPayController.updateTicketDetails(widget.party,widget.host);
                         razorPayController.openCheckout(
                             widget.party.partyName!,
                             checkoutAmount,
-                            "7411001185",
-                            "angularsight77@gmail.com",
+                            userController.userProfile.value.phoneNumber.toString(),
+                            userController.userProfile.value.email.toString(),
                             ["Gpay","paytm","PhonePe"],
-                            "9482397595");
+                            "7411001185");
                       }
 
                     },

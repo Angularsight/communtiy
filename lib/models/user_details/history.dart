@@ -9,6 +9,8 @@ class History {
   String? partyTime;
   String? partyVenue;
   String? qrDetail;
+  int? amountPaid;
+  int? noOfTicketsBought;
 
   History(
       {this.partyDate,
@@ -18,7 +20,9 @@ class History {
       this.partyName,
       this.partyTime,
       this.partyVenue,
-      this.qrDetail});
+      this.qrDetail,
+      this.amountPaid,
+      this.noOfTicketsBought});
 
   factory History.fromDocument(DocumentSnapshot<Map<String,dynamic>> snapshot){
     final d = snapshot.data();
@@ -30,7 +34,9 @@ class History {
       partyName: d['partyName'],
       partyTime: d['partyTime'],
       partyVenue: d['partyVenue'],
-      qrDetail: d['qrDetail']
+      qrDetail: d['qrDetail'],
+      amountPaid: d['amountPaid'],
+      noOfTicketsBought: d['noOfTicketsBought']
     );
   }
 
