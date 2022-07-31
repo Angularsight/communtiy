@@ -95,7 +95,7 @@ class GuestList2 extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
                 width: w * 0.75,
-                height: h * 0.6,
+                height: h * 0.7,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -109,7 +109,7 @@ class GuestList2 extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: w * 0.7 ,
-                            height: w * 0.6,
+                            height: w * 0.7,
                             child: PageView.builder(
                                 controller: pageController,
                                 physics: const BouncingScrollPhysics(),
@@ -128,8 +128,15 @@ class GuestList2 extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       SizedBox(height: h*0.01),
+                      Padding(
+                        padding: EdgeInsets.only(left: h*0.01),
+                        child: Text('Doesnt matter if you win by an inch or a mile winning is winning', style: t.textTheme.headline1!.copyWith(
+                            color: Colors.white, fontSize: 15*s),
+                        ),
+                      ),
+                      SizedBox(height: h*0.01),
+
                       Padding(
                         padding: EdgeInsets.only(left: h*0.01),
                         child: Column(
@@ -363,7 +370,7 @@ class RPSCustomPainter extends CustomPainter {
 
     canvas.drawShadow(path0, Colors.black, 3.5, false);
     canvas.drawShadow(path0, Colors.black, 3.5, false);
-    canvas.drawShadow(path0, Colors.black, 3.5, false);
+    // canvas.drawShadow(path0, Colors.black, 3.5, false);
     canvas.drawPath(path0, paint0);
   }
 

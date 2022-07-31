@@ -255,8 +255,8 @@ class PartyDetails2 extends StatelessWidget {
                                           SizedBox(
                                               height:h*0.03,
                                               width: w*0.56,
-                                              child: Text("Ratio : Will be updated ",style: t.textTheme.headline3!.copyWith(
-                                                  color: const Color(0xffCBCBCB)
+                                              child: Text("Free : Pint and Appetizer ",style: t.textTheme.headline3!.copyWith(
+                                                  color: Theme.of(context).primaryColor
                                               ),)),
                                           // Text("Host : ${controller.parties[index!].hostId}",style: t.textTheme.headline3,),
                                           GetX<FirebaseController>(
@@ -278,7 +278,7 @@ class PartyDetails2 extends StatelessWidget {
                                                       return ClipRRect(
                                                         borderRadius: BorderRadius.circular(5),
                                                         child: Shimmer.fromColors(
-                                                          baseColor: const Color(0xffd5d7d5),
+                                                          baseColor: const Color(0xff2d2d2d),
                                                           highlightColor: const Color(0xfff3f3f3),
                                                           child: Container(
                                                             width: h*0.05,
@@ -370,7 +370,7 @@ class PartyDetails2 extends StatelessWidget {
                                             }
                                           }catch(e){
                                             return Shimmer.fromColors(
-                                              baseColor: const Color(0xffd5d7d5),
+                                              baseColor: const Color(0xff2d2d2d),
                                               highlightColor: const Color(0xfff3f3f3),
                                               child: const CircleAvatar(
                                                 radius: 40,

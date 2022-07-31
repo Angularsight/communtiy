@@ -2,6 +2,7 @@
 
 import 'package:communtiy/controllers/auth_controller.dart';
 import 'package:communtiy/controllers/firebase_controller.dart';
+import 'package:communtiy/controllers/history_controller.dart';
 import 'package:communtiy/controllers/onboarding_controller.dart';
 import 'package:communtiy/getx_ui/new_ui/new_user_upload.dart';
 import 'package:communtiy/models/user_details/user_detail.dart';
@@ -26,7 +27,8 @@ class ChartData {
 class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({Key? key}) : super(key: key);
   final OnBoardingController userController = Get.put(OnBoardingController());
-
+  final HistoryController historyController = Get.put(HistoryController());
+  final FirebaseController partyController = Get.find();
   // final loginUser = FirebaseAuth.instance.currentUser!;
 
   void bindStreamToUser(){
@@ -50,6 +52,14 @@ class UserProfileScreen extends StatelessWidget {
     chartData.add(ChartData(1, 20, const Color(0xff8CDB80)));
 
     var t = Theme.of(context);
+
+    double streaksValue = -1;
+    if(userController.userProfile.value.streaks!=null){
+      streaksValue = userController.userProfile.value.streaks!.toDouble();
+    } else{
+      streaksValue = 0.5;
+    }
+
     return Scaffold(
       body:SafeArea(
         child: SingleChildScrollView(
@@ -78,10 +88,11 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: h*0.023,),
+
                           RotatedBox(
                             quarterTurns: 1,
                             child: SizedBox(
-                              width: w*0.45,
+                              width: w*0.35,
                               height: h*0.2,
                               child: BarChart(BarChartData(
                                 barTouchData: BarTouchData(
@@ -104,7 +115,7 @@ class UserProfileScreen extends StatelessWidget {
                                 groupsSpace: 25,
                                 barGroups: [
                                   BarChartGroupData(x: 1,barRods: [
-                                    BarChartRodData(toY: 6,
+                                    BarChartRodData(toY: historyController.historyList.value.length.toDouble(),
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             topLeft: Radius.circular(10)),
@@ -112,7 +123,8 @@ class UserProfileScreen extends StatelessWidget {
                                         color: Colors.green)
                                   ]),
                                   BarChartGroupData(x: 2,barRods: [
-                                    BarChartRodData(toY: 5,
+                                    BarChartRodData(toY: streaksValue.toDouble(),
+
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             topLeft: Radius.circular(10)),
@@ -120,7 +132,7 @@ class UserProfileScreen extends StatelessWidget {
                                         color: Theme.of(context).canvasColor)
                                   ]),
                                   BarChartGroupData(x: 3,barRods: [
-                                    BarChartRodData(toY: 7,
+                                    BarChartRodData(toY: partyController.parties.length.toDouble(),
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(20),
                                             topLeft: Radius.circular(10)),
@@ -153,15 +165,57 @@ class UserProfileScreen extends StatelessWidget {
 
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: Colors.green,
+                            radius: 5,
+                          ),
+                          const SizedBox(width: 2,),
+                          Text("Attended",style: t.textTheme.headline1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 15*s,
+                          ))
+                        ],
+                      ),
+                      SizedBox(width: w*0.03,),
+
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).canvasColor,
+                            radius: 5,
+                          ),
+                          const SizedBox(width: 2,),
+                          Text("Streaks",style: t.textTheme.headline1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 15*s,
+                          ))
+                        ],
+                      ),
+                      SizedBox(width: w*0.03,),
+
+                      Row(
+                        children:  [
+                          const CircleAvatar(
+                            backgroundColor: Colors.purple,
+                            radius: 5,
+                          ),
+                          const SizedBox(width: 2,),
+                          Text("Total Events",style: t.textTheme.headline1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 15*s,
+                          ))
+                        ],
+                      ),
+
+                    ],
+                  ),
                   SizedBox(height: h*0.023,),
 
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: w*0.02),
-                  //   child: Text("League Wallet",style: t.textTheme.headline1!.copyWith(
-                  //     fontSize: 20,
-                  //     color: Colors.white
-                  //   ),),
-                  // ),
                   Container(
                     width: w*0.7,
                     height: h*0.043,

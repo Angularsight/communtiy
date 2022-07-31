@@ -13,7 +13,8 @@ class PartyHistory extends StatelessWidget {
   PartyHistory({Key? key}) : super(key: key);
 
   final HistoryController historyController = Get.put(HistoryController());
-  final RazorPayController razorPayController = Get.put(RazorPayController());
+  // final HistoryController historyController = Get.find();
+  // final RazorPayController razorPayController = Get.put(RazorPayController());
 
   @override
   Widget build(BuildContext context) {
@@ -154,11 +155,13 @@ class PartyHistory extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-
                           child: Text("Venue : ${history.partyVenue}",style: t.copyWith(
                               color: Colors.white,
                               fontSize: 13*s
                           ),),
+                          width: w*0.35,
+                          height: 25,
+
                         ),
                         Text("Tickets : ${history.noOfTicketsBought}",style: t.copyWith(
                           fontSize: 13*s,
@@ -179,7 +182,7 @@ class PartyHistory extends StatelessWidget {
   }
 
   void showQrCodeImage(BuildContext context,History history) {
-    var noOfTickets = razorPayController.friendsList.value.length + 1; // Here 1 is the user himself
+    // var noOfTickets = razorPayController.friendsList.value.length + 1; // Here 1 is the user himself
     showDialog(
         context: context,
         builder: (context){
